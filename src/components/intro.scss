@@ -1,0 +1,17 @@
+#intro-root {
+  background-color: blue;
+  max-height: 100vh !important;
+  height: 100vh !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  h1 {
+    background-color: white;
+  }
+}
+
+#intro-rh-container{
+  li{
+    list-style-type: circle;
+  }
+}

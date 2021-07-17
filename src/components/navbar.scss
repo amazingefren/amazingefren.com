@@ -1,0 +1,25 @@
+@import "../assets/shared.scss";
+#navbar-root{
+  // Container  
+  height: 100%;
+  width: $navbar-width;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: red;
+
+  // Grid
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-end;
+  * {
+    padding-right: 10px;
+  }
+
+  @media only screen and (max-width: $mobile-rule) {
+    display: none; 
+  }
+}
