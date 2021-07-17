@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/navbar";
 import Intro from "../components/intro";
+import Education from '../components/education'
 import About from "../components/about";
 import "../assets/normalize.scss";
 import "../assets/index.scss";
@@ -15,6 +16,7 @@ export default function () {
       <div id="container">
         <Intro />
         <About />
+        <Education />
         <Skills />
         <div>Hello World</div>
         <button

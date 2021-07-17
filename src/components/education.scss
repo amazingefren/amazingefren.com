@@ -1,0 +1,23 @@
+#education-root {
+  width: 100%;
+  background-color:bisque;
+  color:black;
+}
+#education-list-root {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  grid-template-rows: 50% 50%;
+  grid-template-columns: 50% 50%;
+  list-style-type: none;
+}
+
+.education-list-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .education-list-img{
+    align-self: center;
+  }
+}
+
