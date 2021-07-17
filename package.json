@@ -16,11 +16,15 @@
     "preload-fonts": "gatsby-preload-fonts"
   },
   "dependencies": {
+    "@graphql-tools/url-loader": "^6.10.1",
     "gatsby": "^3.9.1",
+    "gatsby-plugin-image": "^1.9.0",
     "gatsby-plugin-preload-fonts": "^2.9.0",
     "gatsby-plugin-sass": "^4.9.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "gatsby-plugin-sharp": "^3.9.0",
+    "gatsby-source-filesystem": "^3.9.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "sass": "^1.35.2"
   }
 }
