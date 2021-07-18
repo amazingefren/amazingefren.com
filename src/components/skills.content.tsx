@@ -32,6 +32,7 @@ export default {
         <li>User Management</li>
         <li>Package Management</li>
         <li>Init Systems</li>
+        <li>IPC stuff</li>
       </ul>
     </div>
   ),

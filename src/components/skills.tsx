@@ -10,7 +10,7 @@ const Skills: React.FC = () => {
     <div id="skills-root">
       <header className="skills-header">Skills</header>
       <div id="skills-container">
-        <div id="skills-sections-wrapper">
+        <div id="skills-section-wrapper">
           {/* prettier-ignore */}
           <a onClick={()=>{setActive('lang')}}>
             {Sections.Lang(active)}
