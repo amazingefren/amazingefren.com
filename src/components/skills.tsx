@@ -1,72 +1,63 @@
 import React from "react";
-import Sections from './skills.sections'
-import Content from './skills.content'
+import Sections from "./skills.sections";
+import Content from "./skills.content";
 import { useState } from "react";
 import "./skills.scss";
 
-
 const Skills: React.FC = () => {
   const [active, setActive] = useState("none");
-  const toggle = (sec: string) => {
-    if (sec == active) {
-      setActive('none')
-    } else {
-     setActive(sec) 
-    }
-  }
   return (
     <div id="skills-root">
-      <div className="skills-container" id="skills-container">
-        <header className="skills-header">SKILLS</header>
+      <header className="skills-header">Skills</header>
+      <div id="skills-container">
         <div id="skills-sections-wrapper">
           {/* prettier-ignore */}
-          <a onClick={()=>{toggle('lang')}}>
+          <a onClick={()=>{setActive('lang')}}>
             {Sections.Lang(active)}
           </a>
           {/* prettier-ignore */}
-          <a onClick={()=>{toggle('web')}}>
+          <a onClick={()=>{setActive('web')}}>
             {Sections.Web(active)}
           </a>
           {/* prettier-ignore */}
-          <a onClick={()=>{toggle('linux')}}>
+          <a onClick={()=>{setActive('linux')}}>
             {Sections.Linux(active)}
           </a>
           {/* prettier-ignore */}
-          <a onClick={()=>{toggle('front')}}>
+          <a onClick={()=>{setActive('front')}}>
             {Sections.FrontEnd(active)}
           </a>
           {/* prettier-ignore */}
-          <a onClick={()=>{toggle('back')}}>
+          <a onClick={()=>{setActive('back')}}>
             {Sections.BackEnd(active)}
           </a>
           {/* prettier-ignore */}
-          <a onClick={()=>{toggle('cross')}}>
+          <a onClick={()=>{setActive('cross')}}>
             {Sections.Cross(active)}
           </a>
           {/* prettier-ignore */}
-          <a onClick={()=>{toggle('db')}}>
+          <a onClick={()=>{setActive('db')}}>
             {Sections.Database(active)}
           </a>
           {/* prettier-ignore */}
-          <a onClick={()=>{toggle('ui')}}>
+          <a onClick={()=>{setActive('ui')}}>
             {Sections.Ui(active)}
           </a>
           {/* prettier-ignore */}
-          <a onClick={()=>{toggle('photo')}}>
+          <a onClick={()=>{setActive('photo')}}>
             {Sections.Photo(active)}
           </a>
         </div>
-
         <div id="skills-content-wrapper">
-        {active=="lang" && <Content.LangContent/>}
-        {active=="web" && <Content.WebContent/>}
-        {active=="linux" && <Content.LinuxContent/>}
-        {active=="front" && <Content.FrontContent/>}
-        {active=="back" && <Content.BackContent/>}
-        {active=="cross" && <Content.CrossContent/>}
-        {active=="db" && <Content.DatabaseContent/>}
-        {active=="ui" && <Content.UiContent/>}
-        {active=="photo" && <Content.PhotoContent/>}
+          {active == "lang" && <Content.LangContent />}
+          {active == "web" && <Content.WebContent />}
+          {active == "linux" && <Content.LinuxContent />}
+          {active == "front" && <Content.FrontContent />}
+          {active == "back" && <Content.BackContent />}
+          {active == "cross" && <Content.CrossContent />}
+          {active == "db" && <Content.DatabaseContent />}
+          {active == "ui" && <Content.UiContent />}
+          {active == "photo" && <Content.PhotoContent />}
         </div>
       </div>
     </div>

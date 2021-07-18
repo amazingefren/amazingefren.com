@@ -1,30 +1,28 @@
-import React from 'react'
+import React from "react";
 
 export default {
   LangContent: () => (
-    <div>
-      <ul>
-        <li>Javascript</li>
-        <li>Rust</li>
-        <li>C</li>
-        <li>C++</li>
-        <li>Python</li>
-        <li>Bash</li>
-      </ul>
-    </div>
+    <ul id="skills-lang-grid">
+      <li>Javascript</li>
+      <li>Rust</li>
+      <li>C</li>
+      <li>C++</li>
+      <li>Python</li>
+      <li>Bash</li>
+      <li>Lua</li>
+      <li>Typescript</li>
+    </ul>
   ),
 
-  WebContent: ()=>(
-    <div>
+  WebContent: () => (
       <ul>
         <li>Javascript</li>
         <li>HTML</li>
         <li>CSS</li>
       </ul>
-    </div>
   ),
-  
-  LinuxContent: ()=>(
+
+  LinuxContent: () => (
     <div>
       <ul>
         <li>Shell Scripting</li>
@@ -38,7 +36,7 @@ export default {
     </div>
   ),
 
-  FrontContent: ()=>(
+  FrontContent: () => (
     <div>
       <ul>
         <li>React</li>
@@ -49,7 +47,7 @@ export default {
       </ul>
     </div>
   ),
-  BackContent: ()=>(
+  BackContent: () => (
     <div>
       <ul>
         <li>Express</li>
@@ -58,14 +56,14 @@ export default {
       </ul>
     </div>
   ),
-  CrossContent: ()=>(
+  CrossContent: () => (
     <div>
       <ul>
         <li>Work In Progress</li>
       </ul>
     </div>
   ),
-  DatabaseContent: ()=>(
+  DatabaseContent: () => (
     <div>
       <ul>
         <li>MySQL</li>
@@ -74,7 +72,7 @@ export default {
       </ul>
     </div>
   ),
-  UiContent: ()=>(
+  UiContent: () => (
     <div>
       <ul>
         <li>WebGL</li>
@@ -83,7 +81,7 @@ export default {
       </ul>
     </div>
   ),
-  PhotoContent: ()=>(
+  PhotoContent: () => (
     <div>
       <ul>
         <li>Video Editor</li>
@@ -94,6 +92,5 @@ export default {
         <li>something something issa hobby</li>
       </ul>
     </div>
-  )
-
-}
+  ),
+};

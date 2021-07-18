@@ -3,73 +3,77 @@ import React from "react";
 export default {
   Lang: (active: string) => {
     if (active == "lang") {
-      return <div>Languages Active</div>;
+      return <div className="skills-btn-active">Languages</div>;
     } else {
-      return <div>Languages</div>;
+      return <div className="skills-section-btn">Languages</div>;
     }
   },
 
   Web: (active: string) => {
     if (active == "web") {
-      return <div>Web Development Active</div>;
+      return <div className="skills-btn-active">Web Development</div>;
     } else {
-      return <div>Web Development</div>;
+      return <div className="skills-section-btn">Web Development</div>;
     }
   },
 
   Linux: (active: string) => {
     if (active == "linux") {
-      return <div>Linux Active</div>;
+      return <div className="skills-btn-active">Linux</div>;
     } else {
-      return <div>Linux</div>;
+      return <div className="skills-section-btn">Linux</div>;
     }
   },
 
   FrontEnd: (active: string) => {
     if (active == "front") {
-      return <div>Frontend Frameworks Active</div>;
+      return (
+        <div className="skills-btn-active">Frontend Frameworks</div>
+      );
     } else {
-      return <div>Frontend Frameworks</div>;
+      return <div className="skills-section-btn">Frontend Frameworks</div>;
     }
   },
 
   BackEnd: (active: string) => {
     if (active == "back") {
-      return <div>Backend Frameworks Active</div>;
+      return (
+        <div className="skills-btn-active">Backend Frameworks</div>
+      );
     } else {
-      return <div>Backend Frameworks</div>;
+      return <div className="skills-section-btn">Backend Frameworks</div>;
     }
   },
 
   Cross: (active: string) => {
     if (active == "cross") {
-      return <div>Cross Platform Active</div>;
+      return <div className="skills-btn-active">Cross Platform</div>;
     } else {
-      return <div>Cross Platform</div>;
+      return <div className="skills-section-btn">Cross Platform</div>;
     }
   },
 
   Database: (active: string) => {
     if (active == "db") {
-      return <div>Database Active</div>;
+      return <div className="skills-btn-active">Database</div>;
     } else {
-      return <div>Database</div>;
+      return <div className="skills-section-btn">Database</div>;
     }
   },
 
   Ui: (active: string) => {
     if (active == "ui") {
-      return <div>UI/UX Active</div>;
+      return <div className="skills-btn-active">UI/UX</div>;
     } else {
-      return <div>UI/UX</div>;
+      return <div className="skills-section-btn">UI/UX</div>;
     }
   },
 
   Photo: (active: string) => {
     if (active == "photo") {
-      return <div>Photo/Video Active</div>;
+      return <div className="skills-btn-active">Photo/Video</div>;
     } else {
-      return <div>Photo/Video</div>;
+      return <div className="skills-section-btn">Photo/Video</div>;
     }
   },
 };
