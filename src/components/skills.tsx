@@ -1,11 +1,12 @@
 import React from "react";
 import Sections from './skills.sections'
+import Content from './skills.content'
 import { useState } from "react";
 import "./skills.scss";
 
 
 const Skills: React.FC = () => {
-  const [active, setActive] = useState("lang");
+  const [active, setActive] = useState("none");
   const toggle = (sec: string) => {
     if (sec == active) {
       setActive('none')
@@ -15,48 +16,59 @@ const Skills: React.FC = () => {
   }
   return (
     <div id="skills-root">
-      <div className="skills-container" id="skills-skills-container">
+      <div className="skills-container" id="skills-container">
         <header className="skills-header">SKILLS</header>
-        <div>
+        <div id="skills-sections-wrapper">
           {/* prettier-ignore */}
-          <div onClick={()=>{toggle('lang')}}>
+          <a onClick={()=>{toggle('lang')}}>
             {Sections.Lang(active)}
-          </div>
+          </a>
           {/* prettier-ignore */}
-          <div onClick={()=>{toggle('web')}}>
+          <a onClick={()=>{toggle('web')}}>
             {Sections.Web(active)}
-          </div>
+          </a>
           {/* prettier-ignore */}
-          <div onClick={()=>{toggle('linux')}}>
+          <a onClick={()=>{toggle('linux')}}>
             {Sections.Linux(active)}
-          </div>
+          </a>
           {/* prettier-ignore */}
-          <div onClick={()=>{toggle('front')}}>
+          <a onClick={()=>{toggle('front')}}>
             {Sections.FrontEnd(active)}
-          </div>
+          </a>
           {/* prettier-ignore */}
-          <div onClick={()=>{toggle('back')}}>
+          <a onClick={()=>{toggle('back')}}>
             {Sections.BackEnd(active)}
-          </div>
+          </a>
           {/* prettier-ignore */}
-          <div onClick={()=>{toggle('cross')}}>
+          <a onClick={()=>{toggle('cross')}}>
             {Sections.Cross(active)}
-          </div>
+          </a>
           {/* prettier-ignore */}
-          <div onClick={()=>{toggle('db')}}>
+          <a onClick={()=>{toggle('db')}}>
             {Sections.Database(active)}
-          </div>
+          </a>
           {/* prettier-ignore */}
-          <div onClick={()=>{toggle('ui')}}>
+          <a onClick={()=>{toggle('ui')}}>
             {Sections.Ui(active)}
-          </div>
+          </a>
           {/* prettier-ignore */}
-          <div onClick={()=>{toggle('photo')}}>
+          <a onClick={()=>{toggle('photo')}}>
             {Sections.Photo(active)}
-          </div>
+          </a>
+        </div>
+
+        <div id="skills-content-wrapper">
+        {active=="lang" && <Content.LangContent/>}
+        {active=="web" && <Content.WebContent/>}
+        {active=="linux" && <Content.LinuxContent/>}
+        {active=="front" && <Content.FrontContent/>}
+        {active=="back" && <Content.BackContent/>}
+        {active=="cross" && <Content.CrossContent/>}
+        {active=="db" && <Content.DatabaseContent/>}
+        {active=="ui" && <Content.UiContent/>}
+        {active=="photo" && <Content.PhotoContent/>}
         </div>
       </div>
-      <div>_spacer</div>
     </div>
   );
 };
