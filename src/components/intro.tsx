@@ -3,78 +3,51 @@ import anime from "animejs";
 import "./intro.scss";
 import { useEffect } from "react";
 
-const anim_elements = (count) => {
-  const tl = anime.timeline({loop:false})
-  for (let i = 1; i <= count; i++){
+const animate = () => {
+  console.log("something");
+  const text = ["developer", "software", "efren"];
+  const parent = document.getElementById("#intro-animation-container");
+  if (parent) {
+    text.forEach((child, i) => {
+      const node = document.createElement("span");
+      node.classList.add("iao");
+      node.setAttribute("id", (i + 1).toString());
+      const content = document.createTextNode(child);
+      node.appendChild(content);
+      parent?.appendChild(node);
+    });
+  }
+  const tl = anime.timeline({ loop: false });
+  for (let i = 1; i <= 3; i++) {
     tl.add({
       targets: `#intro-anim-${i}`,
       duration: 1000,
       // opacity: 1,
       easing: "easeOutQuint",
       delay: 200,
-      translateY: [150, '-50%']
+      translateY: [150, "-50%"],
     })
-    .add({
-      targets: `#intro-anim-${i}`,
-      opacity: 1,
-      easing: "easeOutQuint",
-      duration: 1500,
-    }, '-=800')
-    .add({
-      targets: `#intro-anim-${i}`,
-      opacity: 0,
-      duration: 1000,
-      easing: "easeInQuint",
-      delay: 0,
-      translateY: -150
-    }, '-=200')
+      .add(
+        {
+          targets: `#intro-anim-${i}`,
+          opacity: 1,
+          easing: "easeOutQuint",
+          duration: 1500,
+        },
+        "-=800"
+      )
+      .add(
+        {
+          targets: `#intro-anim-${i}`,
+          opacity: 0,
+          duration: 1000,
+          easing: "easeInOutQuint",
+          delay: 0,
+          // translateY: -150
+        },
+        "-=200"
+      );
   }
- 
-}
-
-
-const animate = () => {
-  console.log("something");
-  anim_elements(3)
-
-  // anime
-  //   .timeline({ loop: false })
-  //   .add({
-  //     targets: "#intro-anim-1",
-  //     duration: 1000,
-  //     // opacity: 1,
-  //     easing: "easeOutQuint",
-  //     delay: 200,
-  //     translateY: [150, '-50%']
-  //   })
-  //   .add({
-  //     targets: "#intro-anim-1",
-  //     opacity: 1,
-  //     easing: "easeOutQuint",
-  //     duration: 1500,
-  //   }, '-=800')
-  //   .add({
-  //     targets: "#intro-anim-1",
-  //     opacity: 0,
-  //     duration: 1000,
-  //     easing: "easeInQuint",
-  //     delay: 0,
-  //     translateY: -150
-  //   }, '-=200')
-  //   .add({
-  //     targets: "#intro-anim-2",
-  //     duration: 1000,
-  //     // opacity: 1,
-  //     easing: "easeOutQuint",
-  //     delay: 200,
-  //     translateY: [150, '-50%']
-  //   })
-  //   .add({
-  //     targets: "#intro-anim-2",
-  //     opacity: 1,
-  //     easing: "easeOutQuint",
-  //     duration: 1500,
-  //   }, '-=800')
 };
 
 const Intro: React.FC = () => {
