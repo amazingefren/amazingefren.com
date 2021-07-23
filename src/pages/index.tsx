@@ -16,8 +16,8 @@ export default function () {
       <div id="container">
         <Intro />
         <About />
-        <Education />
         <Skills />
+        <Education />
         <div>Hello World</div>
         <button
           onClick={() => {

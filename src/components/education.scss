@@ -1,7 +1,9 @@
+@import "../assets/_shared.scss";
+
 #education-root {
   width: 100%;
-  background-color:bisque;
-  color:black;
+  background-color:$theme-bg;
+  color: $theme-fg;
 }
 #education-list-root {
   display: grid;

@@ -73,12 +73,15 @@ const Intro: React.FC = () => {
           &nbsp;software engineer
         </span>
         <span id="intro-anim-3" className="iao">
-          efren
+          &nbsp;efren
         </span>
       </div>
-      <div id="intro-footer">
-        <span id="intro-footer-arrow">↓</span>
-      </div>
+      {/*<div id="intro-footer">
+        <div className="intro-footer-link">Git</div>
+        <div className="intro-footer-link">Linked</div>
+        <div className="intro-footer-link">Email</div>
+        <div className="intro-footer-link">Twitter</div>
+      </div>*/}
     </div>
   );
 };

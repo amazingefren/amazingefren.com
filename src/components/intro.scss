@@ -3,9 +3,10 @@
 #intro-root {
   background-color: $theme-bg;
   color: $theme-fg;
-  max-height: 100vh !important;
-  height: 100vh !important;
+  max-height: 30vh !important;
+  height: 30vh !important;
   display: flex;
+  position:relative;
   justify-content: center;
   align-items: center;
   font-size: 2em;
@@ -33,33 +34,31 @@
   left:0;
   top: 50%;
   transform: translateY(-50%);
+  color: $theme-orange;
+  font-weight: bold;
+  font-style: italic;
 }
 
 #intro-anim-1 {
-  color: $theme-green;
   font-weight: bold;
   font-style: italic;
 }
 #intro-anim-2 {
-  color: $theme-blue;
   font-weight: bold;
   font-style: italic;
 }
 
+
 #intro-footer {
   position: absolute;
-  bottom: 5%;
-  color: $theme-bg-selection;
+  bottom: 15%;
+  color: $theme-blue;
   font-size: 0.5em;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-}
-
-#intro-footer-arrow {
-  font-size: 50px;
-  font-weight: bold;
-  transform: scaleX(1.2);
-  opacity: 0;
+  .intro-footer-link{
+    margin: 10px;
+  }
 }
