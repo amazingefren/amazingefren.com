@@ -1,7 +1,7 @@
 @import "./_shared.scss";
 
 #root {
-  background-color: grey;
+  background-color: $theme-bg;
   display: flex;
   justify-content: center;
   font-family: 'Libre Franklin'
@@ -10,7 +10,7 @@
 #container {
   max-width: 1600px !important;
   width: 100vw;
-  background-color: #283291;
+  background-color: $theme-bg;
   padding-left: 0;
   @media only screen and (max-width: calc(1620px + calc(#{$navbar-width} * 2))) {
     padding-left: $navbar-width;

@@ -1,13 +1,21 @@
+@import "../assets/_shared.scss";
+
 #intro-root {
-  background-color: blue;
+  background-color: $theme-bg;
+  color: $theme-fg;
   max-height: 100vh !important;
   height: 100vh !important;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 2em;
 }
 
-#intro-header{text-align:right}
+#intro-header{
+  text-align:right;
+  opacity: 0;
+  color: $theme-fg
+}
 
 #intro-header,#intro-animation-container{
   width: 50%;
@@ -25,5 +33,33 @@
   left:0;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 40px;
+}
+
+#intro-anim-1 {
+  color: $theme-green;
+  font-weight: bold;
+  font-style: italic;
+}
+#intro-anim-2 {
+  color: $theme-blue;
+  font-weight: bold;
+  font-style: italic;
+}
+
+#intro-footer {
+  position: absolute;
+  bottom: 5%;
+  color: $theme-bg-selection;
+  font-size: 0.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#intro-footer-arrow {
+  font-size: 50px;
+  font-weight: bold;
+  transform: scaleX(1.2);
+  opacity: 0;
 }
