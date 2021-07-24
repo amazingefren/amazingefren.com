@@ -3,11 +3,12 @@
 #intro-root {
   background-color: $theme-bg;
   color: $theme-fg;
-  max-height: 30vh !important;
-  height: 30vh !important;
+  max-height: 100px !important;
+  padding-top: 64px;
+  height: 100px !important;
   display: flex;
   position:relative;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   font-size: 2em;
 }
@@ -18,8 +19,12 @@
   color: $theme-fg
 }
 
-#intro-header,#intro-animation-container{
-  width: 50%;
+// #intro-header,#intro-animation-container{
+//   width: auto;
+// }
+
+#intro-animation-container{
+  width: 100%;
 }
 
 #intro-animation-container{
@@ -34,9 +39,6 @@
   left:0;
   top: 50%;
   transform: translateY(-50%);
-  color: $theme-orange;
-  font-weight: bold;
-  font-style: italic;
 }
 
 #intro-anim-1 {

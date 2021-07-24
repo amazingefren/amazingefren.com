@@ -4,50 +4,23 @@ import "./about.scss";
 const about_me = () => {
   return (
     <p>
-      Hey! I'm Efren Castro, Full Stack Developer and Software Engineer
-      currently residing in Denver, CO.
+      Hey! I'm {" "}
+      <span className="about-emphasis">Efren Castro</span>, a 22 year-old {" "}
+      <span className="about-emphasis">coder</span> currently residing in {" "}
+      <span className="about-emphasis">Denver</span>, 
+      <span className="about-emphasis" id="about-colorado"> Colorado</span>
+      <br/>
+      I am currently {" "}
+      <span className="about-emphasis">seeking</span> new job opportunities as a {" "}
+      <span className="about-emphasis">web developer</span>
     </p>
   );
 };
 
-const describe_me = () => {
-  return <p></p>;
-};
-
-// const why_me = () => {
-//   return (
-//     <p>
-//       I have been a
-//       <i>
-//         <strong> lifelong </strong>
-//       </i>
-//       linux user and have to accredit most of my knowledge to it and its
-//       community
-//     </p>
-//   );
-// };
-
-// const also_me = () => {
-//   return (
-//     <p>
-//       My ventures have gone far and wide
-//       <li>Counter-Strike - Univeristy of Colorado Boulder</li>
-//       <li>Film Award Winner (x3) - Panasonic</li>
-//       <li>Robotic Engineering Mentor</li>
-//       <li>and more...</li>
-//     </p>
-//   );
-// };
-
 const About = () => {
   return (
     <div id="about-root">
-      <div>
-        {about_me()}
-        {describe_me()}
-        {/*why_me()*/}
-        {/*also_me()*/}
-      </div>
+      <div>{about_me()}</div>
     </div>
   );
 };

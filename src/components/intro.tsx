@@ -46,11 +46,10 @@ const animate = () => {
       );
     } else {
       tl.add({
-        targets: `#intro-footer-arrow`,
-        opacity: 1,
+        targets: `#intro-anim-container`,
+        left: 0,
         duration: 1000,
         easing: "easeOutQuint",
-        translateY: [-10, 0]
       })
     }
   }
@@ -73,7 +72,7 @@ const Intro: React.FC = () => {
           &nbsp;software engineer
         </span>
         <span id="intro-anim-3" className="iao">
-          &nbsp;efren
+          efren
         </span>
       </div>
       {/*<div id="intro-footer">

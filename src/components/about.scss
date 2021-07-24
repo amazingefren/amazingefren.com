@@ -4,4 +4,12 @@
   justify-content: center;
   background-color: $theme-bg;
   color: $theme-fg;
+  font-size: 4em;
 }
+
+.about-emphasis{
+  color: $theme-blue;
+  font-weight: bold;
+  text-decoration: $theme-bg-alt underline dotted;
+}
+
