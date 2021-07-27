@@ -1,7 +1,7 @@
 import anime from 'animejs'
 import React from 'react'
 import { useEffect } from 'react'
-import './navbar.scss'
+import '../assets/Navbar.scss'
 const animate = ()=>{
   const tl = anime.timeline()
   tl.add({

@@ -1,0 +1,34 @@
+@import "../assets/_shared.scss";
+#about-root {
+  background-color: $theme-bg-alt;
+  height:30vh;
+}
+
+#about-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: $theme-fg;
+  font-size: 2em;
+}
+
+#about-me-container{
+  opacity: 0;
+  p{
+    margin-bottom: 0;
+    margin-top: 15px;
+  }
+}
+
+#about-me-hey{
+  font-size: 2em;
+  color: $theme-fg;
+  font-weight: bold;
+}
+
+.about-emphasis{
+  color: $theme-blue;
+  font-weight: bold;
+  // text-decoration: $theme-bg-alt underline dotted;
+}
+

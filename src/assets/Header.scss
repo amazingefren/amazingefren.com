@@ -1,0 +1,87 @@
+@import "../assets/_shared.scss";
+
+#intro-container {
+  background-color: $theme-bg;
+  color: $theme-fg;
+  display: flex;
+  position:relative;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 4em;
+  height:50vh;
+  min-height: 700px;
+  max-height: 1000px;
+}
+
+#intro-header{
+  text-align:left;
+  opacity: 0;
+}
+
+#intro-header,#intro-animation-container{
+  // width: 50%;
+  font-weight: bold;
+  font-style: italic;
+}
+
+// #intro-animation-container{
+  // width: 50 %;
+// }
+
+#intro-animation-container{
+  position: relative;
+  height: 100%;
+}
+
+
+.iao{
+  opacity: 0;
+  position: absolute;
+  left:0;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: pre;
+}
+
+#intro-anim-1 {
+  font-weight: bold;
+  font-style: italic;
+}
+
+#intro-anim-2 {
+  font-weight: bold;
+  font-style: italic;
+}
+
+
+#intro-footer {
+  position: absolute;
+  bottom: 0%;
+  // right:0%;
+  // left:0%;
+  color: $theme-blue;
+  font-size: 0.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  .intro-footer-link{
+    margin: 10px;
+  }
+  a:link{
+    color: $theme-fg;
+    text-decoration: underline;
+    cursor: auto;
+  }
+  a:visited{
+    color: $theme-fg;
+    text-decoration: underline;
+    cursor: auto;
+  }
+  a:link:active{
+    color: $theme-fg;
+  }
+  a:visited:active{
+    color: $theme-fg;
+  }
+}
