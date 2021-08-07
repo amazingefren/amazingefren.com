@@ -3,142 +3,154 @@ import "../assets/Skills.scss";
 
 const Skills: React.FC = () => {
   return (
-    <div className="section-root">
+    <div className="section-root" id="skills-root">
       <div id="skills-container" className="section-container">
-        <h1>BIG OL LIST</h1>
         {/* SECTION: WEBDEV */}
-        <div>
-          <span>Web Development</span>
-          <ul>
-            <li>Javascript / Typescript</li>
-            <li>WASM</li>
-            <li>GraphQL</li>
-            <li>HTML5</li>
-            <li>CSS/SASS</li>
-            <li>React</li>
-            <li>Vue.js</li>
+        <div className="skills-section">
+          <h2>Web Development</h2>
+          <ul className="skills-section-list">
+            <li className="skills-section-list-parent">
+              <h3>Technologies</h3>
+              <ul>
+                <li className="skills-list-like">Typescript</li>
+                <li className="skills-list-good">Javascript</li>
+                <li className="skills-list-good">HTML5</li>
+                <li className="skills-list-good">CSS / SASS</li>
+                <li className="skills-list-learning">WebGL (wip)</li>
+                <li className="skills-list-learning">Web Assembly</li>
+              </ul>
+            </li>
+            <li className="skills-section-list-parent">
+              <h3>Frameworks</h3>
+              <ul>
+                <li className="skills-list-like">React</li>
+                <li className="skills-list-like">Gatsby.js</li>
+                <li className="skills-list-good">Next.js</li>
+                <li className="skills-list-good">jQuery</li>
+                <li className="skills-list-learning">Vue.js</li>
+              </ul>
+            </li>
           </ul>
         </div>
         {/* SECTION: Interfaces */}
-        <div>
-          <span>Programming Interfaces</span>
-          <ul>
+        <div className="skills-section">
+          <h2>Programming Interfaces</h2>
+          <ul className="skills-section-list">
             {/* SUB: NodeJS */}
-            <li>
-              <span>Node.js</span>
+            <li className="skills-section-list-parent">
+              <h3>Node.js</h3>
               <ul>
-                <li>Node.js</li>
-                <li>Express</li>
-                <li>Fastify</li>
-                <li>Koa</li>
-                <li>NestJS</li>
-                <li>GraphQL</li>
-                <li>Authentication</li>
+                <li className="skills-list-good">Node.js</li>
+                <li className="skills-list-good">Express</li>
+                <li className="skills-list-good">Fastify</li>
+                <li className="skills-list-good">Koa</li>
+                <li className="skills-list-good">NestJS</li>
+                <li className="skills-list-good">Authentication</li>
               </ul>
             </li>
             {/* SUB: Design */}
-            <li>
-              <span>Design Patterns</span>
+            <li className="skills-section-list-parent">
+              <h3>Design Patterns</h3>
               <ul>
-                <li>REST</li>
-                <li>CRUD</li>
-                <li>GraphQL</li>
-                <li>User Authentication</li>
-                <li>Session Management</li>
+                <li className="skills-list-good">REST</li>
+                <li className="skills-list-good">CRUD</li>
+                <li className="skills-list-good">GraphQL</li>
+                <li className="skills-list-good">User Authentication</li>
+                <li className="skills-list-good">Session Management</li>
               </ul>
             </li>
             {/* SUB: Database */}
-            <li>
-              <span>Database</span>
+            <li className="skills-section-list-parent">
+              <h3>Database</h3>
               <ul>
-                <li>MySQL</li>
-                <li>PostgreSQL</li>
-                <li>MongoDB</li>
+                <li className="skills-list-good">MySQL</li>
+                <li className="skills-list-good">PostgreSQL</li>
+                <li className="skills-list-good">MongoDB</li>
               </ul>
             </li>
             {/* SUB: Extra */}
-            <li>
-              <span>Extra</span>
+            <li className="skills-section-list-parent">
+              <h3>Extra</h3>
               <ul>
-                <li>Golang - http</li>
-                <li>Rust - Actix Web</li>
-                <li>Python - Flask</li>
+                <li className="skills-list-good">Golang - http</li>
+                <li className="skills-list-good">Rust - Actix Web</li>
+                <li className="skills-list-good">Python - Flask</li>
               </ul>
             </li>
           </ul>
         </div>
         {/* SECTION: Devops */}
-        <div>
-          <span>Devops</span>
-          <ul>
+        <div className="skills-section">
+          <h2>Devops</h2>
+          <ul className="skills-section-list">
             {/* SUB: Infrastructure */}
-            <li>
-              <span>Infrastructure</span>
+            <li className="skills-section-list-parent">
+              <h3>Infrastructure</h3>
               <ul>
-                <li>NGINX</li>
-                <li>Amazon AWS (wip)</li>
-                <li>Microsoft Azure (wip)</li>
+                <li className="skills-list-good">NGINX</li>
+                <li className="skills-list-good">Amazon AWS (wip)</li>
+                <li className="skills-list-good">Microsoft Azure (wip)</li>
               </ul>
             </li>
             {/* SUB: Automation / Virtualization */}
-            <li>
-              <span>Automation / Virtualization / Deployment</span>
+            <li className="skills-section-list-parent">
+              <h3>Deployment</h3>
               <ul>
-                <li>Jenkins (wip)</li>
-                <li>Docker</li>
-                <li>Vagrant (wip)</li>
-                <li>CI/CD (wip)</li>
-                <li>IaC Skills (wip)</li>
-                <li>Kubernetes (wip)</li>
-                <li>Virtual Machines / VMWare (wip)</li>
-                <li>Domain Management</li>
-                <li>SSL Certification</li>
-                <li>Proxies</li>
-                <li>Git</li>
+                <li className="skills-list-good">Jenkins (wip)</li>
+                <li className="skills-list-good">Docker</li>
+                <li className="skills-list-good">Vagrant (wip)</li>
+                <li className="skills-list-good">CI/CD (wip)</li>
+                <li className="skills-list-good">IaC Skills (wip)</li>
+                <li className="skills-list-good">Kubernetes (wip)</li>
+                <li className="skills-list-good">Virtual Machines / VMWare (wip)</li>
+                <li className="skills-list-good">Domain Management</li>
+                <li className="skills-list-good">SSL Certification</li>
+                <li className="skills-list-good">Proxies</li>
+                <li className="skills-list-good">Git</li>
               </ul>
             </li>
             {/* SUB: Extra */}
           </ul>
         </div>
         {/* SECTION: */}
-        <div>
-          <span>Extra</span>
-          <ul>
+        <div className="skills-section">
+          <h2>Extra</h2>
+          <ul className="skills-section-list">
             {/* SUB: Extra */}
-            <li>
-              <span>Languages (all types)</span>
+            <li className="skills-section-list-parent">
+              <h3>Languages (all types)</h3>
               <ul>
-                <li>C</li>
-                <li>C++</li>
-                <li>Rust</li>
-                <li>Golang</li>
-                <li>Python</li>
-                <li>Shell Scripts - bash/zsh/sh (not fish tho)</li>
-                <li>Markdown</li>
-                <li>Java (wip)</li>
-                <li>Mobile Development (wip)</li>
+                <li className="skills-list-good">C</li>
+                <li className="skills-list-good">C++</li>
+                <li className="skills-list-good">Rust</li>
+                <li className="skills-list-good">Golang</li>
+                <li className="skills-list-good">Python</li>
+                <li className="skills-list-good">Shell Scripts - bash/zsh/sh (not fish tho)</li>
+                <li className="skills-list-good">Markdown</li>
+                <li className="skills-list-good">Java (wip)</li>
+                <li className="skills-list-good">Mobile Development (wip)</li>
               </ul>
             </li>
             {/* SUB: Extra */}
-            <li>
-              <span>Linux</span>
+            <li className="skills-section-list-parent">
+              <h3>Linux</h3>
               <ul>
-                <li>Inter-Process Communications</li>
-                <li>-- Init Systems --</li>
-                <li>Systemd</li>
-                <li>OpenRC</li>
-                <li>Runit</li>
-                <li>-- Utilities --</li>
-                <li>Vim (currently using neovim tho)</li>
-                <li>wget/curl/awk/grep/ps + alot more (SECTION) WIP</li>
-                <li>-- Distributions --</li>
-                <li>Debian</li>
-                <li>Fedora</li>
-                <li>Gentoo</li>
-                <li>Arch</li>
-                <li>-- Learning --</li>
-                <li>Security (also for deployment section)</li>
-                <li>Serverless (also for deployment section)</li>
+                <li className="skills-list-good">Inter-Process Communications</li>
+                <li className="skills-list-good">-- Init Systems --</li>
+                <li className="skills-list-good">Systemd</li>
+                <li className="skills-list-good">OpenRC</li>
+                <li className="skills-list-good">Runit</li>
+                <li className="skills-list-good">-- Utilities --</li>
+                <li className="skills-list-good">Vim (currently using neovim tho)</li>
+                <li className="skills-list-good">wget/curl/awk/grep/ps + alot more (SECTION) WIP</li>
+                <li className="skills-list-good">-- Distributions --</li>
+                <li className="skills-list-good">Debian</li>
+                <li className="skills-list-good">Fedora</li>
+                <li className="skills-list-good">Gentoo</li>
+                <li className="skills-list-good">Arch</li>
+                <li className="skills-list-good">-- Learning --</li>
+                <li className="skills-list-good">Security (also for deployment section)</li>
+                <li className="skills-list-good">Serverless (also for deployment section)</li>
               </ul>
             </li>
             {/* SUB: Extra */}
@@ -147,6 +159,7 @@ const Skills: React.FC = () => {
             {/* SUB: Extra */}
           </ul>
         </div>
+        {/* SECTION: */}
       </div>
     </div>
   );

@@ -1,4 +1,110 @@
 @import "./_shared.scss";
-#skills-container {
+#skills-root {
   color: $theme-fg;
+  background-color: $theme-bg-alt;
+}
+#skills-container {
+  display: flex;
+  flex-direction: column;
+}
+.skills-section {
+  display: flex;
+  flex-direction: column;
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column;
+  }
+
+  margin-top: 30px;
+
+  h2 {
+    margin: 0;
+    color: $theme-orange;
+    padding-left: 40px;
+    padding-bottom: 10px;
+    font-size: 2em;
+    // text-align: center;
+  }
+  .skills-section-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 0 20px $theme-bg;
+
+    .skills-section-list-parent {
+      flex-grow: 1;
+      flex-basis: 50%;
+      box-sizing:border-box;
+      border: 1px solid $theme-comment;
+      background-color: $theme-bg;
+      @media only screen and (max-width: 1000px) {
+        flex-basis: 100%;
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 1.5em;
+        color: $theme-fg-light;
+        border-bottom:1px solid $theme-bg-selection;
+        padding: 10px 40px 10px 40px;
+        // background-color: $theme-bg-alt;
+        background-color: $theme-bg-selection;
+      }
+      ul {
+        min-width: 100%;
+        font-size: 1.3em;
+        padding: 10px 40px 10px 0;
+        list-style:none;
+        .skills-list-like{
+          font-weight:bold; 
+          color: $theme-fg;
+        }
+        .skills-list-good::before{
+          content: '✔';
+          font-weight:normal; 
+          color: $theme-green;
+
+          display: inline-block;
+          font-size: 0.8em;
+          width: 40px;
+          text-align: center;
+        }
+        .skills-list-like::before{
+          content: '★ ';
+          font-weight:normal; 
+          color: $theme-pink;
+          font-size: 1em;
+          display: inline-block;
+          width: 40px;
+          text-align: center;
+          // border-left: 3px solid $theme-pink;
+          // padding-left: 5px;
+        }
+        .skills-list-learning::before{
+          content: '●';
+          font-weight:normal; 
+          color: $theme-yellow;
+          font-size: 1em;
+          height:0px;
+          display: inline-block;
+          width: 40px;
+          text-align: center;
+        }
+
+        // .skills-list-like::before {
+        //   content: "━"; 
+        //   border-left: 5px solid $theme-blue;
+        //   color: $theme-blue;
+        //   font-weight: bold;
+        //   display: inline-block;
+        //   width: 1em; 
+        //   margin-left: -1em;
+        // }
+
+
+      }
+    }
+  }
 }
