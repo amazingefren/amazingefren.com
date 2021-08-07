@@ -6,7 +6,11 @@ const Skills: React.FC = () => {
     <div className="section-root">
       <div id="skills-container" className="section-container">
         <div>Skills</div>
-        <div>HI</div>
+        <div>
+          <ul>
+            <li>Hi</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

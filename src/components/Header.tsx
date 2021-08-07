@@ -1,67 +1,8 @@
 import React from "react";
-import anime from "animejs";
-import { useEffect } from "react";
 import "../assets/Header.scss";
 import { StaticImage } from "gatsby-plugin-image";
 
-const animate = () => {
-  let tl = anime.timeline({ loop: false });
-  tl.add({
-    targets: `#intro-header`,
-    opacity: 1,
-    delay: 100,
-    duration: 500,
-    easing: "easeOutQuint",
-  });
-  tl = anime.timeline({ loop: true });
-  for (let i = 1; i <= 3; i++) {
-    tl.add(
-      {
-        targets: `#intro-anim-${i}`,
-        duration: 1000,
-        // opacity: 1,
-        easing: "easeOutQuint",
-        delay: 200,
-        translateY: [100, "-50%"],
-      }
-      // "-=500"
-    )
-      .add(
-        {
-          targets: `#intro-anim-${i}`,
-          opacity: 1,
-          easing: "easeOutQuint",
-          duration: 1500,
-        },
-        "-=1000"
-      )
-      // if (i != 3) {
-      .add(
-        {
-          targets: `#intro-anim-${i}`,
-          opacity: 0,
-          duration: 1000,
-          easing: "easeInOutQuint",
-          delay: 1000,
-          translateY: -150,
-        },
-        "-=400"
-      );
-    // } else {
-    // tl.add({
-    // targets: `#intro-anim-container`,
-    // left: 0,
-    // duration: 1000,
-    // easing: "easeOutQuint",
-    // });
-    // }
-  }
-};
-
 const Intro: React.FC = () => {
-  useEffect(() => {
-    animate();
-  }, []);
   return (
     <div className="section-root">
       <div id="intro-container" className="section-container">
@@ -69,12 +10,6 @@ const Intro: React.FC = () => {
         <div id="intro-animation-container">
           <span id="intro-anim-1" className="iao">
             Developer
-          </span>
-          <span id="intro-anim-2" className="iao">
-            Software Engineer
-          </span>
-          <span id="intro-anim-3" className="iao">
-            Tech Enthusiast
           </span>
         </div>
         <div id="intro-footer">
@@ -88,7 +23,7 @@ const Intro: React.FC = () => {
               width={32}
               height={32}
             />
-            /amazingefren
+            <span>amazingefren</span>
           </a>
           <a
             className="intro-footer-link"
@@ -100,8 +35,7 @@ const Intro: React.FC = () => {
               width={32}
               height={32}
             />
-
-            /in/amazingefren
+            <span>amazingefren</span>
           </a>
           <a
             className="intro-footer-link"
@@ -113,7 +47,7 @@ const Intro: React.FC = () => {
               width={32}
               height={32}
             />
-            yuh
+            <span>efrencastro.dev@gmail.com</span>
           </a>
 
           <a
@@ -126,7 +60,7 @@ const Intro: React.FC = () => {
               width={32}
               height={32}
             />
-            yuh
+            <span>amazingefren</span>
           </a>
         </div>
       </div>

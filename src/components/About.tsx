@@ -1,28 +1,5 @@
 import React from "react";
-import { useEffect } from "react";
 import "../assets/About.scss";
-import anime from "animejs";
-
-const animate = () => {
-  const tl = anime.timeline({ loop: false });
-  tl.add({
-    targets: `#about-me-container`,
-    // opacity: 1,
-    duration: 1000,
-    delay: 1000,
-    easing: "easeOutQuint",
-    translateX: [-200, 0],
-  }).add(
-    {
-      targets: `#about-me-container`,
-      opacity: 1,
-      duration: 1000,
-      easing: "easeOutQuint",
-      // translateX: [-200,0]
-    },
-    "-=800"
-  );
-};
 
 const about_me = () => {
   return (
@@ -45,9 +22,6 @@ const about_me = () => {
 };
 
 const About = () => {
-  useEffect(() => {
-    animate();
-  });
   return (
     <div id="about-root" className="section-root">
       <div id="about-container" className="section-container">
