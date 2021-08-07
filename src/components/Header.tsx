@@ -4,7 +4,7 @@ import { StaticImage } from "gatsby-plugin-image";
 
 const Intro: React.FC = () => {
   return (
-    <div className="section-root">
+    <div className="section-root" id="header-root">
       <div id="intro-container" className="section-container">
         <div id="intro-header">AmazingEfren ≝&nbsp;</div>
         <div id="intro-animation-container">

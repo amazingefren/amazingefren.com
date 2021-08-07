@@ -1,16 +1,15 @@
 @import "../assets/_shared.scss";
 
 #intro-container {
-  background-color: $theme-bg;
+  // background-color: $theme-bg;
   color: $theme-fg;
   display: flex;
   position:relative;
   justify-content: flex-start;
   align-items: center;
-  font-size: 4em;
-  height:50vh;
-  min-height: 700px;
-  max-height: 1000px;
+  font-size: 3em;
+  min-height: 500px;
+  // max-height: 1000px;
 }
 
 #intro-header{
@@ -21,6 +20,12 @@
   // width: 50%;
   font-weight: bold;
   font-style: italic;
+}
+
+#header-root{
+  position: relative;
+  // box-shadow: 0 5px 30px $theme-bg;
+  // z-index: 20;
 }
 
 // #intro-animation-container{
