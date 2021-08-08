@@ -4,8 +4,9 @@ import "../assets/Education.scss";
 
 const Skills = () => {
   return (
-    <div className="section-root">
-      <div id="education-root" className="section-container">
+    <div className="section-root" id="education-root">
+      <div id="education-container" className="section-container">
+        <h2 id="education-section-header" className="section-header">Education</h2>
         <ul id="education-list-root">
           <li className="education-list-item">
             <StaticImage

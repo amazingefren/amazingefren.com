@@ -1,8 +1,21 @@
 @import "../assets/_shared.scss";
 
-#education-root {
+#education-root{
+  box-sizing: border-box;
+  // background-color: $theme-bg-alt;
+  // border: 5px solid $theme-bg;
+}
+
+#education-section-header{
+  font-size: 2.5em;
+  color: $theme-orange;
+  padding:0;
+  margin:0;
+  padding-bottom: 20px;
+}
+
+#education-container {
   width: 100%;
-  background-color:$theme-bg;
   color: $theme-fg;
 }
 #education-list-root {
@@ -26,7 +39,7 @@
   }
   .education-list-header{
     font-size: 1.3em;
-    color: $theme-fg-light;
+    color: $theme-fg;
     font-weight: bold;
   }
   main{

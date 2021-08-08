@@ -1,90 +1,86 @@
 @import "../assets/_shared.scss";
 
 #intro-container {
-  // background-color: $theme-bg;
   color: $theme-fg;
   display: flex;
-  position:relative;
+  position: relative;
   justify-content: flex-start;
   align-items: center;
   font-size: 3em;
-  min-height: 500px;
-  // max-height: 1000px;
+  // height: 200px;
+  padding-top: 50px;
 }
 
-#intro-header{
-  text-align:left;
+#intro-header {
+  text-align: left;
 }
 
-#intro-header,#intro-animation-container{
-  // width: 50%;
+#intro-header,
+#intro-animation-container {
   font-weight: bold;
   font-style: italic;
 }
 
-#header-root{
+#header-root {
   position: relative;
-  // box-shadow: 0 5px 30px $theme-bg;
-  // z-index: 20;
 }
 
-// #intro-animation-container{
-  // width: 50 %;
-// }
 
-#intro-animation-container{
+#intro-animation-container {
   position: relative;
   height: 100%;
 }
 
-
-.iao{
+.iao {
   position: absolute;
-  left:0;
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
   white-space: pre;
 }
 
-#intro-anim-1 {
-  font-weight: bold;
-  font-style: italic;
+#intro-footer-root{
+  box-sizing:border-box;
 }
 
-#intro-anim-2 {
-  font-weight: bold;
-  font-style: italic;
-}
-
-
-#intro-footer {
-  position: absolute;
-  bottom: 0%;
-  // right:0%;
-  // left:0%;
-  color: $theme-blue;
-  font-size: 0.5em;
-  display: flex;
+#intro-footer-container{
+  display:flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  width: 100%;
+  padding:0;
+
+  font-size: 1.7em;
   .intro-footer-link{
-    margin-bottom: 10px;
-  }
-  a:link{
+    max-width: 1600px !important;
+    width: 100%;
+    @media only screen and (max-width: calc(1620px + calc(#{$navbar-width} * 2))) {
+      padding-left: $navbar-width;
+      padding-right: $navbar-width;
+    }
+    @media only screen and (max-width: $mobile-rule){
+      padding-left:10px;
+      padding-right:10px;
+    }
+    width: 100%;
+
+    text-decoration: none;
+    padding-bottom: 10px;
+    padding-top: 10px;
     color: $theme-fg;
-    text-decoration: underline;
-    cursor: auto;
+    transition: all 0.2s;
+
+    span{
+      padding-left: 20px;
+      // opacity:0;
+      transition: all 0.2s;
+    }
   }
-  a:visited{
-    color: $theme-fg;
-    text-decoration: underline;
-    cursor: auto;
-  }
-  a:link:active{
-    color: $theme-fg;
-  }
-  a:visited:active{
-    color: $theme-fg;
+
+  .intro-footer-link:hover{
+    background-color: $theme-bg-selection;
+    span{
+      color: $theme-fg-light;
+      opacity:1;
+    }
   }
 }
