@@ -67,19 +67,20 @@
     padding-bottom: 10px;
     padding-top: 10px;
     color: $theme-fg;
-    transition: all 0.2s;
 
+    // transition: background-color 0s;
     span{
       padding-left: 20px;
       // opacity:0;
-      transition: all 0.2s;
     }
   }
 
   .intro-footer-link:hover{
     background-color: $theme-bg-selection;
+    transition: 0.2s;
     span{
       color: $theme-fg-light;
+      transition: 0.2s;
       opacity:1;
     }
   }
