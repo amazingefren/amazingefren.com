@@ -1,87 +1,29 @@
 @import "../assets/_shared.scss";
+#header-root{
+  border-bottom: 1px solid $theme-bg-selection;
+  box-shadow: 0 0 10px $theme-bg;
+  box-sizing: border-box;
+  background-color: $theme-bg;
+  position: fixed;
+  z-index: 999;
+  top:0;
+  padding:0;
+  clear: both;
+  height: 64px;
+}
 
 #intro-container {
   color: $theme-fg;
   display: flex;
-  position: relative;
   justify-content: flex-start;
   align-items: center;
-  font-size: 3em;
-  // height: 200px;
-  padding-top: 50px;
+  font-size: 1.5rem;
+  // padding-top: 20px;
+  // padding-bottom: 20px;
+  color: $theme-fg;
 }
 
 #intro-header {
   text-align: left;
 }
 
-#intro-header,
-#intro-animation-container {
-  font-weight: bold;
-  font-style: italic;
-}
-
-#header-root {
-  position: relative;
-}
-
-
-#intro-animation-container {
-  position: relative;
-  height: 100%;
-}
-
-.iao {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  white-space: pre;
-}
-
-#intro-footer-root{
-  box-sizing:border-box;
-}
-
-#intro-footer-container{
-  display:flex;
-  flex-direction: column;
-  width: 100%;
-  padding:0;
-
-  font-size: 1.7em;
-  .intro-footer-link{
-    max-width: 1600px !important;
-    width: 100%;
-    @media only screen and (max-width: calc(1620px + calc(#{$navbar-width} * 2))) {
-      padding-left: $navbar-width;
-      padding-right: $navbar-width;
-    }
-    @media only screen and (max-width: $mobile-rule){
-      padding-left:10px;
-      padding-right:10px;
-    }
-    width: 100%;
-
-    text-decoration: none;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    color: $theme-fg;
-
-    // transition: background-color 0s;
-    span{
-      padding-left: 20px;
-      // opacity:0;
-    }
-  }
-
-  .intro-footer-link:hover{
-    background-color: $theme-bg-selection;
-    transition: 0.2s;
-    span{
-      color: $theme-fg-light;
-      transition: 0.2s;
-      opacity:1;
-    }
-  }
-}

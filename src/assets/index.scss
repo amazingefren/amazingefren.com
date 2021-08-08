@@ -38,6 +38,7 @@
   // background-color: $theme-bg;
   .section-container {
     // transition: all 0.2s;
+  transition: all 0.3s !important;
     max-width: 1600px !important;
     width: 100%;
     @media only screen and (max-width: calc(1620px + calc(#{$navbar-width} * 2))) {

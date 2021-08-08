@@ -19,7 +19,7 @@
 
   h2 {
     margin: 0;
-    color: $theme-orange;
+    color: $theme-fg-light;
     // padding-left: 40px;
     padding-bottom: 10px;
     font-size: 2em;
@@ -63,19 +63,20 @@
           color: $theme-fg;
         }
         .skills-list-good::before{
-          content: '✔';
+          // content: '✔';
+          content: '✓';
           font-weight:normal; 
           color: $theme-green;
 
           display: inline-block;
-          font-size: 0.8em;
+          font-size: 1em;
           width: 40px;
           text-align: center;
         }
         .skills-list-like::before{
           content: '★ ';
           font-weight:normal; 
-          color: $theme-pink;
+          color: $theme-purple;
           font-size: 1em;
           display: inline-block;
           width: 40px;
@@ -84,7 +85,8 @@
           // padding-left: 5px;
         }
         .skills-list-learning::before{
-          content: '●';
+          // content: '●';
+          content: '▢';
           font-weight:normal; 
           color: $theme-yellow;
           font-size: 1em;

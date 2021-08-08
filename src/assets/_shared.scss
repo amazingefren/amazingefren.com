@@ -1,20 +1,35 @@
 $navbar-width: 50px;
 $mobile-rule: 1000px;
 
-$theme-bg: #111417;
-$theme-bg-alt: #191e22;
-$theme-bg-selection: #35363B;
-$theme-comment: #5E5C55;
-$theme-bg-light: #DBD6BD;
-$theme-fg: #acaaa4;
-$theme-fg-light: #DBDAD7;
-$theme-red: #D27979;
-$theme-orange: #D29E79;
-$theme-yellow: #D2C479;
-$theme-green: #88D279;
-$theme-cyan: #79D2A6;
-$theme-blue: #79C4D2;
-$theme-pink: #D279D2;
+// $theme-bg: #111417;
+// $theme-bg-alt: #191e22;
+// $theme-bg-selection: #35363B;
+// $theme-comment: #5E5C55;
+// $theme-bg-light: #DBD6BD;
+// $theme-fg: #acaaa4;
+// $theme-fg-light: #DBDAD7;
+// $theme-red: #D27979;
+// $theme-orange: #D29E79;
+// $theme-yellow: #D2C479;
+// $theme-green: #88D279;
+// $theme-cyan: #79D2A6;
+// $theme-blue: #79C4D2;
+// $theme-pink: #D279D2;
+
+$theme-bg: #0A0E1F;
+$theme-bg-alt: #131939;
+$theme-bg-selection: #202A60;
+$theme-comment: #3D4B8F;
+$theme-bg-light: #DEE0ED;
+$theme-fg: #ACB3D2;
+$theme-fg-light: #DEE0ED;
+$theme-red: #DB7070;
+$theme-orange: #EB8B47;
+$theme-yellow: #DBC970;
+$theme-green: #82DB70;
+$theme-cyan: #70DBA6;
+$theme-blue: #70C9DB;
+$theme-purple: #9470DB;
 
 /* libre-franklin-regular - latin */
 @font-face {
