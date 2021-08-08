@@ -30,14 +30,14 @@
 .section-root {
   width: 100%;
   display: flex;
-  transition: all 0.2s;
+  // transition: all 0.2s;
   justify-content: center;
   padding-bottom: 20px;
   padding-top: 20px;
   // border: 1px solid red;
   // background-color: $theme-bg;
   .section-container {
-    transition: all 0.2s;
+    // transition: all 0.2s;
     max-width: 1600px !important;
     width: 100%;
     @media only screen and (max-width: calc(1620px + calc(#{$navbar-width} * 2))) {
