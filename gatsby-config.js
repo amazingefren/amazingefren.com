@@ -4,16 +4,24 @@ module.exports = {
     title: "amazingefren",
   },
   plugins: [
+    "gatsby-plugin-preload-fonts",
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sass",
-    "gatsby-plugin-preload-fonts",
-    "gatsby-plugin-image",
     "gatsby-plugin-sharp",
+    "gatsby-plugin-image",
     {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "images",
         path: `${__dirname}/src/images/`,
+      },
+    },
+    {
+      resolve: "gatsby-plugin-react-svg",
+      options: {
+        rule: {
+          include: /\.react\.svg$/
+        },
       },
     },
   ],

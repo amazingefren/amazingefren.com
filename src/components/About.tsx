@@ -1,4 +1,5 @@
 import React from "react";
+import Links from './Links'
 import "../assets/About.scss";
 
 const about_me = () => {
@@ -29,6 +30,7 @@ const About = () => {
       <div id="about-container" className="section-container">
         {about_me()}
       </div>
+      <Links/>
     </div>
   );
 };

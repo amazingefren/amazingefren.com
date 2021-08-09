@@ -20,7 +20,7 @@ const scroll = (name: string) => {
   document.getElementById(name)?.scrollIntoView();
 };
 
-const Links = () => {
+const NavbarItems = () => {
   const [enabled, enable] = useState(false);
   useEffect(() => {
     console.log("Javascript: Enabled");
@@ -88,7 +88,7 @@ const Intro: React.FC = () => {
           <div id="navbar-header-text">amazingefren</div>
         </div>
         <div id="navbar-link-container">
-          <Links />
+          <NavbarItems />
         </div>
       </div>
     </div>
