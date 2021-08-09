@@ -13,7 +13,7 @@ const Skills = () => {
               alt="Harvard_University_Logo"
               width={50}
               height={50}
-              layout="fixed"
+              // layout="fixed"
               className="education-list-img"
             />
             <div className="education-flex-toggle">
@@ -30,7 +30,7 @@ const Skills = () => {
               alt="DENVER_UNIVERSITY_LOGO"
               width={50}
               height={50}
-              layout="fixed"
+              // layout="fixed"
               className="education-list-img"
             />
             <div className="education-flex-toggle">
@@ -47,7 +47,7 @@ const Skills = () => {
               alt="CU_BOULDER_LOGO"
               width={50}
               height={50}
-              layout="fixed"
+              // layout="fixed"
               className="education-list-img"
             />
             <div className="education-flex-toggle">
@@ -64,7 +64,7 @@ const Skills = () => {
               alt="CC_AURORA_LOGO"
               width={50}
               height={50}
-              layout="fixed"
+              // layout="fixed"
               className="education-list-img"
             />
             <div className="education-flex-toggle">

@@ -1,6 +1,6 @@
 // @import "../assets/shared.scss";
 // #navbar-root{
-//   // Container  
+//   // Container
 //   height: 100%;
 //   width: $navbar-width;
 //   position: fixed;
@@ -23,36 +23,118 @@
 //   }
 
 //   @media only screen and (max-width: $mobile-rule) {
-//     display: none; 
+//     display: none;
 //   }
 // }
 
 @import "../assets/_shared.scss";
-#navbar-root{
-  border-bottom: 1px solid $theme-bg-selection;
-  box-shadow: 0 0 10px $theme-bg;
+#navbar-root {
+  border-bottom: 1px solid $theme-comment;
+  box-shadow: 0 0 20px black;
   box-sizing: border-box;
-  background-color: $theme-bg;
+  background-color: $theme-bg-alt;
   position: fixed;
   z-index: 999;
-  top:0;
-  padding:0;
+  top: 0;
+  padding: 0;
   clear: both;
   height: 64px;
+  opacity:0;
+
+  animation-delay: .3s;
+  animation-duration: 0.5s;
+  animation-name: NavbarIntro;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes NavbarIntro{
+  from{
+    opacity:0;
+    transform:translateY(-10vh)
+  }
+  to{
+    opacity:1;
+    transform:translateY(0)
+  }
 }
 
 #navbar-container {
-  color: $theme-fg;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.5rem;
   // padding-top: 20px;
   // padding-bottom: 20px;
-  color: $theme-fg;
+  // color: $theme-fg;
+
+  // color: $theme-bg-alt;
 }
 
-#navbar-header {
-  text-align: left;
+#navbar-header{
+  // color: $theme-bg-alt;
+  display:flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  color: $theme-fg-light;
+  font-size: 1.5rem;
+  #navbar-header-img-parent{
+    transition:0 !important;
+    width: 50px;
+  }
+  #navbar-header-text{
+    // left: 20px;
+    // font-weight:bold;
+    color: $theme-fg-light;
+  }
 }
 
+// #navbar-header {
+//   text-align: left;
+//   font-size: 1.5rem;
+//   color: $theme-fg-light;
+// }
+
+#navbar-link-container {
+  height: 100%;
+  box-sizing: border-box;
+  // flex-grow:1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  .navbar-link {
+    display: flex;
+    transition: all 0.2s ease-in;
+    flex-direction: column;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    color: $theme-fg;
+    font-size: 1.2rem;
+    padding: 0 20px 0 20px;
+    text-decoration: none;
+    user-select: none;
+  }
+  a , a::after, a::before {
+    text-decoration: none;
+    user-select: none;
+    color: $theme-fg;
+    user-select: none;
+	  -webkit-user-select: none;
+	  -webkit-user-drag: none;
+	  -webkit-app-region: no-drag;
+	  cursor: default;
+  }
+  .navbar-link:hover {
+    cursor: pointer;
+    background-color: $theme-bg-alt;
+    color: $theme-fg-light;
+  }
+  .navbar-link:active {
+    background-color: $theme-bg-selection;
+    transition: all 0s;
+  }
+  @media only screen and (max-width: 1000px) {
+    display: none;
+  }
+}

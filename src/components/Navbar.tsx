@@ -11,87 +11,83 @@
 // export default Navbar;
 //
 
+import { StaticImage } from "gatsby-plugin-image";
 import React, { useEffect, useState } from "react";
 import "../assets/Navbar.scss";
+// import logo from "../images/My-Logo.ico"
 
-function javascriptEnable() {
-  console.log("Javascript: Enabled");
-  console.log("Enabling Assets");
-  const assets = document.getElementsByClassName("javascript-toggle-show");
-  console.log(assets);
-}
-
-const scroll = (name: string)  => {
-  console.log(name)
-  document.getElementById(name)?.scrollIntoView()
-}
+const scroll = (name: string) => {
+  document.getElementById(name)?.scrollIntoView();
+};
 
 const Links = () => {
   const [enabled, enable] = useState(false);
   useEffect(() => {
+    console.log("Javascript: Enabled");
+    console.log("Enabling Assets");
     enable(true);
-    console.log(enabled);
   }, []);
   return (
     <>
       <a
         href={!enabled ? "#about-root" : undefined}
-        onClick={
-          enabled ? ()=>scroll("about-root") : undefined
-        }
+        onClick={enabled ? () => scroll("about-root") : undefined}
         className="navbar-link"
+        id="navbar-link-left"
       >
-       About
+        <span>About</span>
       </a>
       <a
         href={!enabled ? "#education-root" : undefined}
-        onClick={
-          enabled ? ()=>scroll("education-root") : undefined
-        }
+        onClick={enabled ? () => scroll("education-root") : undefined}
         className="navbar-link"
       >
-       Education 
+        <span>Education</span>
       </a>
       <a
         href={!enabled ? "#skills-root" : undefined}
-        onClick={
-          enabled ? ()=>scroll("skills-root") : undefined
-        }
+        onClick={enabled ? () => scroll("skills-root") : undefined}
         className="navbar-link"
       >
-       Skills 
+        <span>Skills</span>
       </a>
       <a
         href={!enabled ? "#projects-root" : undefined}
-        onClick={
-          enabled ? ()=>scroll("projects-root") : undefined
-        }
+        onClick={enabled ? () => scroll("projects-root") : undefined}
         className="navbar-link"
       >
-       Projects
+        <span>Projects</span>
       </a>
       <a
         href={!enabled ? "#contact-root" : undefined}
-        onClick={
-          enabled ? ()=>scroll("contact-root") : undefined
-        }
+        onClick={enabled ? () => scroll("contact-root") : undefined}
         className="navbar-link"
       >
-       Contact Me
+        <span>Contact Me</span>
       </a>
     </>
   );
 };
 
 const Intro: React.FC = () => {
-  useEffect(() => {
-    javascriptEnable();
-  }, []);
   return (
     <div className="section-root" id="navbar-root">
       <div id="navbar-container" className="section-container">
-        <div id="navbar-header">amazingefren</div>
-        <div id="navbar-links">
+        <div id="navbar-header">
+          <div id="navbar-header-img-parent">
+            <StaticImage
+              src="../images/My-Logo.png"
+              alt="amazingefren"
+              width={42}
+              height={42}
+              // layout="fixed"
+              id="navbar-header-img"
+            />
+          </div>
+
+          <div id="navbar-header-text">amazingefren</div>
+        </div>
+        <div id="navbar-link-container">
           <Links />
         </div>
       </div>

@@ -1,7 +1,7 @@
 @import "./_shared.scss";
 #skills-root {
   color: $theme-fg;
-  background-color: $theme-bg-alt;
+  background-color: $theme-bg-selection;
   // box-shadow: inset 0 40px 20px -10px $theme-bg, inset 0 -40px 20px -10px $theme-bg;
 }
 #skills-container {
@@ -11,7 +11,7 @@
 .skills-section {
   display: flex;
   flex-direction: column;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1200px) {
     flex-direction: column;
   }
 
@@ -40,7 +40,7 @@
       box-sizing:border-box;
       border: 1px solid $theme-comment;
       background-color: $theme-bg;
-      @media only screen and (max-width: 1000px) {
+      @media only screen and (max-width: 1200px) {
         flex-basis: 100%;
       }
 
@@ -51,7 +51,7 @@
         border-bottom:1px solid $theme-bg-selection;
         padding: 10px 40px 10px 40px;
         // background-color: $theme-bg-alt;
-        background-color: $theme-bg-selection;
+        background-color: $theme-bg-alt;
       }
       ul {
         min-width: 100%;

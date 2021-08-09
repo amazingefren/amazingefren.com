@@ -4,6 +4,7 @@ module.exports = {
     title: "amazingefren",
   },
   plugins: [
+    "gatsby-plugin-react-helmet",
     "gatsby-plugin-sass",
     "gatsby-plugin-preload-fonts",
     "gatsby-plugin-image",
@@ -12,7 +13,7 @@ module.exports = {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "images",
-        path: `${__dirname}/src/images`,
+        path: `${__dirname}/src/images/`,
       },
     },
   ],

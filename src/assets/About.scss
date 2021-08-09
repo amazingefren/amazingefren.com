@@ -1,6 +1,6 @@
 @import "../assets/_shared.scss";
 #about-root {
-  background-color: $theme-bg-alt;
+  background-color: $theme-bg;
   height:auto;
   // padding-top: 80px;
   // padding-bottom: 80px;
@@ -18,7 +18,7 @@
   color: $theme-fg;
   font-size: 1.5em;
   // height: 300px;
-  height: calc(100vh);
+  height: 100vh;
   
   @media only screen and(max-width: 550px){
     font-size: 4vw;
@@ -33,7 +33,7 @@
   flex-flow: column;
   #about-p-1{
     margin:0;
-    margin-left:75px;
+    // margin-left:75px;
     // margin-bottom: 30px;
     font-style: italic;
     @media only screen and(max-width: 750px){
@@ -56,8 +56,8 @@
 }
 
 .about-emphasis{
-  color: $theme-orange;
-  font-weight: bold;
+  color: $theme-green;
+  // font-weight: bold;
   // text-decoration: $theme-bg-alt underline dotted;
 }
 
