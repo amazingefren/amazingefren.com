@@ -1,7 +1,7 @@
 @import "./_shared.scss";
 
 #root {
-  background-color: $theme-bg;
+  background-color: $theme-bg-alt;
   display: flex;
   justify-content: center;
   min-height:100vh;
@@ -35,10 +35,17 @@
   padding-bottom: 20px;
   padding-top: 20px;
   // border: 1px solid red;
-  // background-color: $theme-bg;
+  background-color: $theme-bg-alt;
+  opacity:0;
+  animation-delay: 1s;
+  animation-name: FadeIn;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
+  animation-fill-mode: forwards;
   .section-container {
     // transition: all 0.2s;
   transition: all 0.3s !important;
+
     max-width: 1600px !important;
     width: 100%;
     @media only screen and (max-width: calc(1620px + calc(#{$navbar-width} * 2))) {
@@ -49,5 +56,20 @@
       padding-left:10px;
       padding-right:10px;
     }
+  }
+}
+
+@keyframes FadeIn {
+  from{
+    opacity: 0;
+    background-color: $theme-bg-alt;
+    transform: translateY(5vh)
+  }
+  40%{
+    opacity:0;
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0)
   }
 }
