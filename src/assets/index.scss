@@ -12,10 +12,6 @@ html{
   scroll-behavior:smooth;
 }
 
-.javascript-toggle-show{
-  display:none;
-}
-
 #container {
   // max-width: 1600px !important;
   width: 100vw !important;
@@ -45,6 +41,7 @@ html{
 .section-root {
   width: 100%;
   display: flex;
+  scroll-margin: 64px;
   // transition: all 0.2s;
   justify-content: center;
   padding-bottom: 20px;
