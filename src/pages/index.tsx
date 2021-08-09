@@ -18,10 +18,12 @@ export default function () {
       <Navbar />
       <Links />
       <div id="container">
-        <About />
-        <Education />
-        <Skills />
+          <About />
+          <Education />
+          <Skills />
       </div>
+        {/*
+      */}
     </div>
     </>
   );

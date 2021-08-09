@@ -7,7 +7,9 @@ const Skills: React.FC = () => {
       <div id="skills-container" className="section-container">
         {/* SECTION: WEBDEV */}
         <div className="skills-section">
-          <h2>Web Development</h2>
+          <div id="skills-header-parent">
+            <h2>Web Development</h2>
+          </div>
           <ul className="skills-section-list">
             <li className="skills-section-list-parent">
               <h3>Technologies</h3>
@@ -35,7 +37,9 @@ const Skills: React.FC = () => {
         </div>
         {/* SECTION: Interfaces */}
         <div className="skills-section">
-          <h2>Programming Interfaces</h2>
+          <div id="skills-header-parent">
+            <h2>Programming Interfaces</h2>
+          </div>
           <ul className="skills-section-list">
             {/* SUB: NodeJS */}
             <li className="skills-section-list-parent">
@@ -79,7 +83,9 @@ const Skills: React.FC = () => {
         </div>
         {/* SECTION: Devops */}
         <div className="skills-section">
-          <h2>DevOps</h2>
+          <div id="skills-header-parent">
+            <h2>DevOps</h2>
+          </div>
           <ul className="skills-section-list">
             {/* SUB: Infrastructure */}
             <li className="skills-section-list-parent">
@@ -129,7 +135,9 @@ const Skills: React.FC = () => {
         </div>
         {/* SECTION: */}
         <div className="skills-section">
-          <h2>Programming</h2>
+          <div id="skills-header-parent">
+            <h2>Programming</h2>
+          </div>
           <ul className="skills-section-list">
             {/* SUB: Extra */}
             <li className="skills-section-list-parent">
@@ -139,7 +147,9 @@ const Skills: React.FC = () => {
                 <li className="skills-list-like">Python</li>
                 <li className="skills-list-like">Golang</li>
                 <li className="skills-list-like">C</li>
-                <li className="skills-list-like">Shell Scripts - bash/zsh/sh (not fish tho)</li>
+                <li className="skills-list-like">
+                  Shell Scripts - bash/zsh/sh (not fish tho)
+                </li>
                 <li className="skills-list-like">Markdown</li>
                 <li className="skills-list-good">Lua</li>
                 <li className="skills-list-good">C++</li>
@@ -157,7 +167,9 @@ const Skills: React.FC = () => {
         </div>
         {/* SECTION: Linux*/}
         <div className="skills-section">
-          <h2>Linux</h2>
+          <div id="skills-header-parent">
+            <h2>Linux</h2>
+          </div>
           <ul className="skills-section-list">
             {/* SUB: Extra */}
             <li className="skills-section-list-parent">
