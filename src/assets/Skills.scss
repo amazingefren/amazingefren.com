@@ -1,7 +1,8 @@
 @import "./_shared.scss";
 #skills-root {
   color: $theme-fg;
-  background-color: $theme-bg-selection;
+  background-color: $theme-bg;
+  padding-top:60px;
   // box-shadow: inset 0 40px 20px -10px $theme-bg, inset 0 -40px 20px -10px $theme-bg;
 }
 #skills-container {
@@ -14,16 +15,23 @@
   @media only screen and (max-width: 1200px) {
     flex-direction: column;
   }
+  box-shadow: 0 0 20px black;
 
-  margin-top: 30px;
+  margin-top: 40px;
+  border: 1px solid $theme-bg-selection;
 
   h2 {
     margin: 0;
     color: $theme-fg-light;
-    // padding-left: 40px;
-    padding-bottom: 10px;
-    font-size: 2em;
-    // text-align: center;
+    font-weight: normal;
+    padding: 10px 40px 10px 40px;
+    width: auto;
+    border: 1px solid $theme-comment;
+    font-size: 1.5rem;
+    background-color: $theme-bg-alt-alt;
+    z-index: 2;
+    vertical-align: middle;
+    text-align: left;
   }
   .skills-section-list {
     display: flex;
@@ -32,30 +40,32 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-    box-shadow: 0 0 20px $theme-bg;
 
     .skills-section-list-parent {
       flex-grow: 1;
       flex-basis: 50%;
       box-sizing:border-box;
-      border: 1px solid $theme-comment;
-      background-color: $theme-bg;
+      border-left: 1px solid $theme-comment;
+      border-right: 1px solid $theme-comment;
+      border-bottom: 1px solid $theme-comment;
+      background-color: $theme-bg-shade;
       @media only screen and (max-width: 1200px) {
         flex-basis: 100%;
       }
 
       h3 {
         margin: 0;
-        font-size: 1.5em;
-        color: $theme-fg-light;
-        border-bottom:1px solid $theme-bg-selection;
+        font-size: 1.4rem;
+        font-weight: normal;
+        color: $theme-fg;
+        border-bottom:1px solid $theme-comment;
         padding: 10px 40px 10px 40px;
         // background-color: $theme-bg-alt;
         background-color: $theme-bg-alt;
       }
       ul {
         min-width: 100%;
-        font-size: 1.3em;
+        font-size: 1.2em;
         padding: 10px 40px 10px 0;
         list-style:none;
         .skills-list-like{

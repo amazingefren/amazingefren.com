@@ -30,7 +30,6 @@ const About = () => {
       <div id="about-container" className="section-container">
         {about_me()}
       </div>
-      <Links/>
     </div>
   );
 };

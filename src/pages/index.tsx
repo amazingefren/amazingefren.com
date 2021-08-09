@@ -1,6 +1,6 @@
 import React from "react";
 import {Helmet} from 'react-helmet'
-import {Navbar, Education, About, Skills} from '../components'
+import {Navbar, Education, About, Skills, Links} from '../components'
 import MyLogo from '../images/Favicon.ico'
 import "../assets/normalize.scss";
 import "../assets/index.scss";
@@ -16,6 +16,7 @@ export default function () {
     </Helmet>
     <div id="root">
       <Navbar />
+      <Links />
       <div id="container">
         <About />
         <Education />

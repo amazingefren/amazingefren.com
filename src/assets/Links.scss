@@ -1,28 +1,39 @@
 @import "../assets/shared.scss";
+
+$icon-size: 48px;
+
 #links-root {
+  position: fixed !important;
   display: flex;
+  @media only screen and (max-width: $mobile-rule){
+    display: none;
+  }
   flex-flow: column;
-  position: absolute;
   align-items: flex-end;
-  bottom: 5vh;
+  bottom:64px;
+  z-index: 998;
   right: 0;
   .intro-footer-link {
     transition: all 0.2s ease-out;
-    width: 75px;
-    height: 75px;
+    width: $icon-size;
+    height: $icon-size;
+    z-index: 10;
     svg {
-      height: 75px !important;
-      width: 75px !important;
+      height: $icon-size !important;
+      width: $icon-size !important;
     }
   }
   .intro-footer-link:hover {
     width: 100%;
+    box-shadow: 0 0 20px black;
+    z-index: 9;
     transition: all 0.1s cubic-bezier(0.76, 0, 0.24, 1) ease-in-out;
   }
 }
 
 .link-item {
   display: flex;
+  width: auto;
   flex-flow: column;
   align-items: flex-end;
   a{
@@ -39,13 +50,15 @@
     }
   }
   .svg-wrapper{
-    height:75px;
-    width:75px;
+    height:$icon-size;
+    width:$icon-size;
   }
 }
 
 .link-container {
   box-sizing: border-box;
+  // filter: drop-shadow(0 0 20px red);
+  display: table;
 }
 
 #github-container {
