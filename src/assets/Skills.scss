@@ -3,11 +3,12 @@
   color: $theme-fg;
   background-color: $theme-bg-alt;
   padding-top: 0px;
-  z-index:3;
-  position:relative;
+  z-index: 3;
+  position: relative;
   box-shadow: 0 0 20px black;
   border-top: 1px solid $theme-comment;
   border-bottom: 1px solid $theme-comment;
+  padding-top: 1px;
 }
 #skills-container {
   display: flex;
@@ -26,38 +27,63 @@
   flex-direction: column;
 
   #skills-header-parent {
-    background-color: $theme-bg-alt-alt;
+    background-color: $theme-bg-alt;
     // border: 1px solid $theme-comment;
     align-self: center;
     box-sizing: content-box;
     width: calc(100% - 44px);
-    @media only screen and (max-width: 1200px){
+    @media only screen and (max-width: 1200px) {
       width: 100%;
     }
     max-width: 1652px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     margin-left: 48px;
     margin-right: 48px;
     // padding: 10px 48px 10px 48px;
 
-
     h2 {
       // max-width: 1600px;
       // min-width:0;
-      padding: 10px 26px 10px 26px;
-    @media only screen and (max-width: $mobile-rule) {
-      padding: 10px 10px 10px 10px;
-    }
+      margin: 0;
+      margin-top: 30px; 
+      padding: 10px 75px 10px 26px;
+      position: relative;
+      // border-top: 1px solid $theme-comment;
+      // border-bottom: 1px solid $theme-comment;
+      @media only screen and (max-width: $mobile-rule) {
+        padding: 10px 75px 10px 10px;
+      }
+
       box-sizing: border-box;
-      width: 100%;
+      // width: 100%;
       color: $theme-fg-light;
       font-weight: normal;
+      background-color: $theme-bg-selection;
+      border-bottom:1px solid $theme-comment;
       font-size: 1.5rem;
       z-index: 2;
       vertical-align: middle;
       text-align: left;
+      top: 0;
     }
+
+    .skills-rect {
+      width: 100px;
+      // background-color: #003781;
+      position: relative;
+    }
+    .skills-rect::after {
+      content: "";
+      position: absolute;
+      border: 77px solid;
+      border-color: $theme-bg-alt transparent transparent transparent;
+      left:-77px;
+      z-index: 4;
+      top:0;
+      bottom:0;
+    }
+
   }
   .skills-section-list {
     justify-self: center;
@@ -76,33 +102,35 @@
     margin: 0;
     max-width: calc(1600px + 48px * 2);
 
-    background-color: $theme-bg-shade;
+    background-color: $theme-bg;
     @media only screen and (min-width: 1200px) {
       background-color: $theme-bg-alt;
-        
-      .skills-section-list-parent-left, .skills-section-list-parent-right, .skills-section-list-parent-both {
-        background-color: $theme-bg-shade;
+
+      .skills-section-list-parent-left,
+      .skills-section-list-parent-right,
+      .skills-section-list-parent-both {
+        background-color: $theme-bg;
       }
       .skills-section-list-parent-left {
         margin-left: -26px;
         padding-left: 22px;
-        border-left: 4px solid $theme-bg-alt-alt;
+        border-left: 4px solid $theme-bg-shade;
       }
       .skills-section-list-parent-right {
         margin-right: -26px;
-        border-right: 4px solid $theme-bg-alt-alt;
+        border-right: 4px solid $theme-bg-shade;
         margin-left: -4px;
         margin-left: -52px;
-        border-left: 4px solid $theme-bg-alt-alt;
+        border-left: 4px solid $theme-bg-shade;
         padding-left: 22px;
       }
       .skills-section-list-parent-both {
         margin-left: -26px;
         padding-left: 22px;
-        border-left: 4px solid $theme-bg-alt-alt;
+        border-left: 4px solid $theme-bg-shade;
         margin-right: -26px;
-        border-right: 4px solid $theme-bg-alt-alt;
-        #skills-section-header-both{
+        border-right: 4px solid $theme-bg-shade;
+        #skills-section-header-both {
           margin-left: -22px;
           margin-right: 0;
           padding-left: 22px;
@@ -118,7 +146,7 @@
       }
       .skills-section-list-parent > .skills-section-header-round-right {
         // border-bottom-right-radius: 20px;
-        border-left: 4px solid $theme-bg-alt-alt;
+        border-left: 4px solid $theme-bg-shade;
         margin-left: -25px;
         padding-left: 22px;
       }
@@ -158,7 +186,7 @@
         font-weight: normal;
         color: $theme-fg-light;
         padding: 10px 0px 10px 0px;
-        background-color: $theme-bg-alt;
+        background-color: $theme-bg-shade;
       }
 
       ul {
@@ -175,7 +203,7 @@
         .skills-list-good::before,
         .skills-list-like::before,
         .skills-list-learning::before {
-          transform: translateX(calc(-125%));
+          transform: translateX(-125%);
           position: fixed;
           display: inline-block;
           font-size: 1em;
