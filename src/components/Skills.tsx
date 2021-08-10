@@ -11,8 +11,8 @@ const Skills: React.FC = () => {
             <h2>Web Development</h2>
           </div>
           <ul className="skills-section-list">
-            <li className="skills-section-list-parent">
-              <h3>Technologies</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-left">
+              <h3 className="skills-section-header-round-left">Technologies</h3>
               <ul>
                 <li className="skills-list-like">Typescript</li>
                 <li className="skills-list-good">Javascript</li>
@@ -22,8 +22,8 @@ const Skills: React.FC = () => {
                 <li className="skills-list-learning">Web Assembly</li>
               </ul>
             </li>
-            <li className="skills-section-list-parent">
-              <h3>Frameworks</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-right">
+              <h3 className="skills-section-header-round-right">Frameworks</h3>
               <ul>
                 <li className="skills-list-like">React</li>
                 <li className="skills-list-like">GatsbyJS</li>
@@ -42,8 +42,8 @@ const Skills: React.FC = () => {
           </div>
           <ul className="skills-section-list">
             {/* SUB: NodeJS */}
-            <li className="skills-section-list-parent">
-              <h3>Node.js</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-left">
+              <h3 className="skills-section-header-round-left">Node.js</h3>
               <ul>
                 <li className="skills-list-like">Express</li>
                 <li className="skills-list-like">Fastify</li>
@@ -52,8 +52,8 @@ const Skills: React.FC = () => {
               </ul>
             </li>
             {/* SUB: Design */}
-            <li className="skills-section-list-parent">
-              <h3>Design Patterns</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-right">
+              <h3 className="skills-section-header-round-right">Design Patterns</h3>
               <ul>
                 <li className="skills-list-good">REST / CRUD</li>
                 <li className="skills-list-good">GraphQL</li>
@@ -62,8 +62,8 @@ const Skills: React.FC = () => {
               </ul>
             </li>
             {/* SUB: Database */}
-            <li className="skills-section-list-parent">
-              <h3>Database</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-left">
+              <h3 className="skills-section-header-round-left">Database</h3>
               <ul>
                 <li className="skills-list-like">PostgreSQL</li>
                 <li className="skills-list-good">MySQL</li>
@@ -71,8 +71,8 @@ const Skills: React.FC = () => {
               </ul>
             </li>
             {/* SUB: Extra */}
-            <li className="skills-section-list-parent">
-              <h3>Extra</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-right">
+              <h3 className="skills-section-header-round-right">Extra</h3>
               <ul>
                 <li className="skills-list-like">Rust - Actix Web</li>
                 <li className="skills-list-like">Golang - http</li>
@@ -87,19 +87,9 @@ const Skills: React.FC = () => {
             <h2>DevOps</h2>
           </div>
           <ul className="skills-section-list">
-            {/* SUB: Infrastructure */}
-            <li className="skills-section-list-parent">
-              <h3>Infrastructure</h3>
-              <ul>
-                <li className="skills-list-like">NGINX</li>
-                <li className="skills-list-good">Apache</li>
-                <li className="skills-list-learning">Amazon AWS (wip)</li>
-                <li className="skills-list-learning">Microsoft Azure (wip)</li>
-              </ul>
-            </li>
             {/* SUB: Automation / Virtualization */}
-            <li className="skills-section-list-parent">
-              <h3>Deployment</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-left">
+              <h3 className="skills-section-header-round-left">Deployment</h3>
               <ul>
                 <li className="skills-list-good">CI/CD</li>
                 <li className="skills-list-good">TCP/IP Fundamentals</li>
@@ -108,9 +98,19 @@ const Skills: React.FC = () => {
                 <li className="skills-list-learning">Security</li>
               </ul>
             </li>
+            {/* SUB: Infrastructure */}
+            <li className="skills-section-list-parent skills-section-list-parent-right">
+              <h3 className="skills-section-header-round-right">Infrastructure</h3>
+              <ul>
+                <li className="skills-list-like">NGINX</li>
+                <li className="skills-list-good">Apache</li>
+                <li className="skills-list-learning">Amazon AWS (wip)</li>
+                <li className="skills-list-learning">Microsoft Azure (wip)</li>
+              </ul>
+            </li>
             {/* SUB: Automation / Virtualization */}
-            <li className="skills-section-list-parent">
-              <h3>IaC Skills</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-left">
+              <h3 className="skills-section-header-round-left">IaC Skills</h3>
               <ul>
                 <li className="skills-list-good">Docker</li>
                 <li className="skills-list-learning">Kubernetes</li>
@@ -120,8 +120,8 @@ const Skills: React.FC = () => {
               </ul>
             </li>
             {/* SUB: Automation / Virtualization */}
-            <li className="skills-section-list-parent">
-              <h3>Tools</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-right">
+              <h3 className="skills-section-header-round-right">Tools</h3>
               <ul>
                 <li className="skills-list-like">Git</li>
                 <li className="skills-list-good">Jenkins</li>
@@ -140,15 +140,15 @@ const Skills: React.FC = () => {
           </div>
           <ul className="skills-section-list">
             {/* SUB: Extra */}
-            <li className="skills-section-list-parent">
-              <h3>Languages / Scripting</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-both">
+              <h3 id="skills-section-header-both" className="skills-section-header-round-left">Languages / Scripting</h3>
               <ul>
                 <li className="skills-list-like">Rust</li>
                 <li className="skills-list-like">Python</li>
                 <li className="skills-list-like">Golang</li>
                 <li className="skills-list-like">C</li>
                 <li className="skills-list-like">
-                  Shell Scripts - bash/zsh/sh (not fish tho)
+                  Shell Scripts
                 </li>
                 <li className="skills-list-like">Markdown</li>
                 <li className="skills-list-good">Lua</li>
@@ -172,8 +172,8 @@ const Skills: React.FC = () => {
           </div>
           <ul className="skills-section-list">
             {/* SUB: Extra */}
-            <li className="skills-section-list-parent">
-              <h3>Init Systems</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-left">
+              <h3 className="skills-section-header-round-left">Init Systems</h3>
               <ul>
                 <li className="skills-list-good">Systemd</li>
                 <li className="skills-list-good">OpenRC</li>
@@ -181,8 +181,8 @@ const Skills: React.FC = () => {
               </ul>
             </li>
             {/* SUB: Extra */}
-            <li className="skills-section-list-parent">
-              <h3>Terminal</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-right">
+              <h3 className="skills-section-header-round-right">Terminal</h3>
               <ul>
                 <li className="skills-list-like">Vim</li>
                 <li className="skills-list-good">Text Manipulation Tools </li>
@@ -190,8 +190,8 @@ const Skills: React.FC = () => {
               </ul>
             </li>
             {/* SUB: Extra */}
-            <li className="skills-section-list-parent">
-              <h3>Distributions</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-left">
+              <h3 className="skills-section-header-round-left">Distributions</h3>
               <ul>
                 <li className="skills-list-good">Debian</li>
                 <li className="skills-list-good">Fedora</li>
@@ -200,8 +200,8 @@ const Skills: React.FC = () => {
               </ul>
             </li>
             {/* SUB: Extra */}
-            <li className="skills-section-list-parent">
-              <h3>Extra</h3>
+            <li className="skills-section-list-parent skills-section-list-parent-right">
+              <h3 className="skills-section-header-round-right">Extra</h3>
               <ul>
                 <li className="skills-list-good">IPC</li>
                 <li className="skills-list-good">User Management</li>
