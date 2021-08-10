@@ -4,9 +4,14 @@ import {Navbar, Education, About, Skills, Links} from '../components'
 import MyLogo from '../images/Favicon.ico'
 import "../assets/normalize.scss";
 import "../assets/index.scss";
-// import Skills from "../components/skills";
+import { useEffect } from "react";
+import Animation from '../animations/root'
 
 export default function () {
+  useEffect(()=>{
+    const instance = new Animation();
+    instance.animate()
+  })
   return (
     <>
     <Helmet>
