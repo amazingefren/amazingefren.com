@@ -26,7 +26,7 @@
   // }
   // box-shadow: 0 0 20px black;
 
-  margin-top: 40px;
+  // margin-top: 40px;
   // border: 1px solid $theme-bg-selection;
 
   #skills-header-parent{
@@ -69,7 +69,8 @@
     list-style-type: none;
     // margin: 0;
     // box-sizing:border-box !important; 
-    padding: 10px 48px 10px 48px;
+    padding: 0px 48px 0px 48px;
+    margin: 0;
     max-width: calc(1600px + 48px * 2);
 
     .skills-section-list-parent {
@@ -78,6 +79,7 @@
       flex-basis: 50%;
       box-sizing: border-box;
       padding:0;
+      // padding-left: 3px;
 
       box-sizing:border-box;
       @media only screen and (max-width: 1200px) {
@@ -102,56 +104,33 @@
           // position:relative;
           // color: $theme-fg;
         // }
-        .skills-list-good::before{
-          // content: '✔';
-          content: '✓';
-          font-weight:normal; 
-          transform: translateX(-125%);
-          color: $theme-green;
+        .skills-list-good, .skills-list-like,.skills-list-learning{
+          // border-bottom:3px solid $theme-bg-alt-alt;
+          font-size: 1.2rem;
+        }
+        .skills-list-good::before, .skills-list-like::before, .skills-list-learning::before{
+          transform: translateX(calc(-125% - 6px));
           position:fixed;
           display: inline-block;
           font-size: 1em;
-          // width: 40px;
           text-align: center;
+        }
+        .skills-list-good::before{
+          content: '✓';
+          font-weight:normal; 
+          color: $theme-green;
         }
         .skills-list-like::before{
           content: '★ ';
           font-weight:normal; 
-          transform: translateX(-125%);
           color: $theme-purple;
-          font-size: 1em;
-          display: inline-block;
-          position:fixed;
-          // width: 40px;
-          text-align: center;
-          // border-left: 3px solid $theme-pink;
-          // padding-left: 5px;
         }
         .skills-list-learning::before{
           // content: '●';
           content: '▢';
           font-weight:normal; 
           color: $theme-yellow;
-          position:fixed;
-          transform: translateX(-125%);
-          font-size: 1em;
-          height:0px;
-          display: inline-block;
-          // width: 40px;
-          text-align: center;
         }
-
-        // .skills-list-like::before {
-        //   content: "━"; 
-        //   border-left: 5px solid $theme-blue;
-        //   color: $theme-blue;
-        //   font-weight: bold;
-        //   display: inline-block;
-        //   width: 1em; 
-        //   margin-left: -1em;
-        // }
-
-
       }
     }
   }
