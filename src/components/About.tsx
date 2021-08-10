@@ -1,5 +1,4 @@
 import React from "react";
-import Links from './Links'
 import "../assets/About.scss";
 
 const about_me = () => {
