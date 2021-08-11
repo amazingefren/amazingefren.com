@@ -9,12 +9,19 @@
   font-family: "Libre Franklin";
 }
 
-#root-animation {
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  z-index: 0;
-}
+// #root-animation {
+//   height: 100%;
+//   width: 100%;
+//   position: fixed;
+//   z-index: 500;
+//   // background-color:rgba(0,0,0,0);
+//   opacity:0.2;
+//   // animation-delay: 0.5s;
+//   // animation-name: FadeIn;
+//   // animation-duration: 0.5s;
+//   // animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
+//   // animation-fill-mode: forwards;
+// }
 
 body {
   background-color: $theme-bg-alt;

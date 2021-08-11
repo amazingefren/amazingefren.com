@@ -34,3 +34,22 @@ $theme-cyan: #70DBA6;
 $theme-blue: #70C9DB;
 $theme-purple: #9470DB;
 
+:export {
+  $themeBg: $theme-bg;
+  $themeBgShade: $theme-bg-shade;
+  $themeBgAlt: $theme-bg-alt;
+  $themeBgAltAlt: $theme-bg-alt-alt;
+  $themeBgSelection: $theme-bg-selection;
+  $themeBase: $theme-base;
+  $themeComment: $theme-comment;
+  $themeBgLight: $theme-bg-light;
+  $themeFg: $theme-fg;
+  $themeFgLight: $theme-fg-light;
+  $themeRed: $theme-red;
+  $themeOrange: $theme-orange;
+  $themeYellow: $theme-yellow;
+  $themeGreen: $theme-green;
+  $themeCyan: $theme-cyan;
+  $themeBlue: $theme-blue;
+  $themePurple: $theme-purple;
+}
