@@ -1,11 +1,11 @@
 @import "../assets/_shared.scss";
 #about-root {
-  background-color: rgba($theme-bg, 0.8);
+  background-color: rgba($theme-bg, 1);
   position: relative;
-  height:auto;
+  height: auto;
   // padding-top: 80px;
   // padding-bottom: 80px;
-  padding:0;
+  padding: 0;
   // margin-top: 64px;
 
   // box-shadow: inset 0 40px 20px -10px $theme-bg, inset 0 -40px 20px -10px $theme-bg;
@@ -18,47 +18,87 @@
   align-items: center;
   color: $theme-fg;
   font-size: 1.5em;
+  position: relative;
   // height: 300px;
   height: 98vh;
-  
-  @media only screen and(max-width: 550px){
+
+  @media only screen and(max-width: 550px) {
     font-size: 4vw;
+  }
+
+  #about-logo {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    transition: all 0.2s;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    transform: translateY(22%);
+    .gatsby-image-wrapper {
+      border-radius: 50%;
+      border: 2px solid $theme-comment;
+      box-shadow: 0 0 10px black;
+      width: 300px;
+      #about-logo-wrapper {
+        transform: translateY(-10px);
+        transform: scale(110%);
+      }
+    }
+    @media only screen and (max-width: $mobile-rule) {
+      justify-content: center;
+      width: auto;
+      height: auto;
+      .gatsby-image-wrapper {
+        transform: scale(50%) translateY(22%);
+        overflow: hidden;
+        #about-logo-wrapper {
+          box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      * {
+        transition: all 0.1s;
+      }
+      right: 0;
+      left: 0;
+    }
   }
 }
 
-#about-me-container{
+#about-me-container {
   // opacity: 0;
   height: 100%;
   display: flex;
-  justify-content:center;
+  justify-content: center;
   flex-flow: column;
-  #about-p-1{
-    margin:0;
+  #about-p-1 {
+    margin: 0;
     // margin-left:75px;
     // margin-bottom: 30px;
     font-style: italic;
-    @media only screen and(max-width: 750px){
+    @media only screen and(max-width: 750px) {
       margin: 10px 0 10px 0;
     }
   }
-  #about-p-2{
-    padding:0;
-    margin:0;
+  #about-p-2 {
+    padding: 0;
+    margin: 0;
     // @media only screen and(max-width: 600px){
-      // margin: 10px 0 10px 0;
+    // margin: 10px 0 10px 0;
     // }
   }
 }
 
-#about-me-hey{
+#about-me-hey {
   font-size: 2.5rem;
   color: $theme-fg;
   // font-weight: bold;
 }
 
-.about-emphasis{
+.about-emphasis {
   color: $theme-fg-light;
   font-weight: bold;
   // text-decoration: $theme-bg-alt underline dotted;
 }
-

@@ -1,4 +1,5 @@
 import React from "react";
+import {StaticImage} from 'gatsby-plugin-image'
 import "../assets/About.scss";
 
 const about_me = () => {
@@ -28,6 +29,9 @@ const About = () => {
     <div id="about-root" className="section-root">
       <div id="about-container" className="section-container">
         {about_me()}
+        <div id="about-logo">
+          <StaticImage id="about-logo-wrapper" src="../images/My-Logo.png" alt=""/>
+        </div>
       </div>
     </div>
   );
