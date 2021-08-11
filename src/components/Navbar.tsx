@@ -74,7 +74,7 @@ const Intro: React.FC = () => {
     <div className="section-root" id="navbar-root">
       <div id="navbar-container" className="section-container">
         <div id="navbar-header">
-          <div id="navbar-header-img-parent">
+          {/*<div id="navbar-header-img-parent">
             <StaticImage
               src="../images/My-Logo.png"
               alt="amazingefren"
@@ -83,9 +83,9 @@ const Intro: React.FC = () => {
               // layout="fixed"
               id="navbar-header-img"
             />
-          </div>
+          </div>*/}
 
-          <div id="navbar-header-text">amazingefren</div>
+          <div id="navbar-header-text">Efren Castro</div>
         </div>
         <div id="navbar-link-container">
           <NavbarItems />

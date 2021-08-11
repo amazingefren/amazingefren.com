@@ -35,11 +35,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // padding-top: 20px;
-  // padding-bottom: 20px;
-  // color: $theme-fg;
-
-  // color: $theme-bg-alt;
+  text-shadow: 0 0 5px $theme-bg;
 }
 
 #navbar-header{
@@ -58,6 +54,7 @@
     // left: 20px;
     // font-weight:bold;
     color: $theme-fg-light;
+    // font-style: italic;
   }
 }
 
