@@ -58,6 +58,12 @@
       background-color: $theme-bg-selection;
       border-bottom:1px solid $theme-comment;
       font-size: 1.5rem;
+      @media only screen and (max-width: 1200px){
+        font-size: 2.5vw;
+      }
+      @media only screen and (max-width: 600px){
+        font-size: 4vw;
+      }
       z-index: 2;
       vertical-align: middle;
       text-align: left;
@@ -177,6 +183,12 @@
       h3 {
         margin: 0;
         font-size: 1.4rem;
+        @media only screen and (max-width: 1200px){
+          font-size: 2.1vw;
+        }
+        @media only screen and (max-width: 600px){
+          font-size: 3vw;
+        }
         font-weight: normal;
         color: $theme-fg-light;
         padding: 10px 0px 10px 0px;
@@ -184,16 +196,21 @@
       }
 
       ul {
-        font-size: 1.2em;
         padding: 0px 0 0px 0;
         list-style: none;
         .skills-list-good,
         .skills-list-like,
         .skills-list-learning {
-          font-size: 1.2rem;
           padding-top: 8px;
           padding-bottom: 8px;
           margin-left: 26px;
+          font-size: 1em;
+          @media only screen and (max-width: 1200px){
+            font-size: 2vw;
+          }
+          @media only screen and (max-width: 600px){
+            font-size: 2.5vw;
+          }
           @media only screen and (max-width: $mobile-rule) {
             margin-left: 10px;
           }

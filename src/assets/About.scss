@@ -22,8 +22,11 @@
   // height: 300px;
   height: 98vh;
 
+  @media only screen and(max-width: 1200px) {
+    font-size: 2vw;
+  }
   @media only screen and(max-width: 550px) {
-    font-size: 4vw;
+    font-size: 3vw;
   }
 
   #about-logo {
@@ -99,9 +102,9 @@
     // margin-left:75px;
     // margin-bottom: 30px;
     font-style: italic;
-    @media only screen and(max-width: 750px) {
-      margin: 10px 0 10px 0;
-    }
+    // @media only screen and(max-width: 750px) {
+      // margin: 10px 0 10px 0;
+    // }
   }
   #about-p-2 {
     padding: 0;
@@ -113,7 +116,7 @@
 }
 
 #about-me-hey {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: $theme-fg;
   // font-weight: bold;
 }

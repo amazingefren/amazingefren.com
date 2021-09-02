@@ -1,5 +1,4 @@
 import React from "react";
-import { StaticImage } from "gatsby-plugin-image";
 import TwitterSVG from "/images/Twitter.react.svg";
 import LinkedinSVG from "/images/Linkedin.react.svg";
 import GithubSVG from "/images/Github.react.svg";
