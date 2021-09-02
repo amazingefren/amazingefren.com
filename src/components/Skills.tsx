@@ -9,7 +9,6 @@ const Skills: React.FC = () => {
         <div className="skills-section">
           <div id="skills-header-parent">
             <h2>Web Development</h2>
-            <div className="skills-rect"></div>
           </div>
           <ul className="skills-section-list">
             <li className="skills-section-list-parent skills-section-list-parent-left">
@@ -40,7 +39,6 @@ const Skills: React.FC = () => {
         <div className="skills-section">
           <div id="skills-header-parent">
             <h2>Programming Interfaces</h2>
-            <div className="skills-rect"></div>
           </div>
           <ul className="skills-section-list">
             {/* SUB: NodeJS */}
@@ -87,7 +85,6 @@ const Skills: React.FC = () => {
         <div className="skills-section">
           <div id="skills-header-parent">
             <h2>DevOps</h2>
-            <div className="skills-rect"></div>
           </div>
           <ul className="skills-section-list">
             {/* SUB: Automation / Virtualization */}
@@ -140,7 +137,6 @@ const Skills: React.FC = () => {
         <div className="skills-section">
           <div id="skills-header-parent">
             <h2>Programming</h2>
-            <div className="skills-rect"></div>
           </div>
           <ul className="skills-section-list">
             {/* SUB: Extra */}
@@ -173,7 +169,6 @@ const Skills: React.FC = () => {
         <div className="skills-section">
           <div id="skills-header-parent">
             <h2>Linux</h2>
-            <div className="skills-rect"></div>
           </div>
           <ul className="skills-section-list">
             {/* SUB: Extra */}

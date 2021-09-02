@@ -1,9 +1,13 @@
 import React from 'react'
 
 const Projects = () => {
-  <div>
-      Hello World
-  </div>
+  return (
+    <div className="section-root">
+      <div className="section-container">
+        Hello World
+      </div>
+    </div>
+  )
 
 }
 
