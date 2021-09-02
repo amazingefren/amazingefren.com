@@ -9,7 +9,7 @@ const Skills = () => {
         <ul id="education-list-root">
           <li className="education-list-item">
             <StaticImage
-              src="../images/Harvard-Logo.png"
+              src="../../images/Harvard-Logo.png"
               alt="Harvard_University_Logo"
               width={50}
               height={50}
@@ -26,7 +26,7 @@ const Skills = () => {
           </li>
           <li className="education-list-item">
             <StaticImage
-              src="../images/Denver-Logo.png"
+              src="../../images/Denver-Logo.png"
               alt="DENVER_UNIVERSITY_LOGO"
               width={50}
               height={50}
@@ -43,7 +43,7 @@ const Skills = () => {
           </li>
           <li className="education-list-item">
             <StaticImage
-              src="../images/Boulder-Logo.png"
+              src="../../images/Boulder-Logo.png"
               alt="CU_BOULDER_LOGO"
               width={50}
               height={50}
@@ -60,7 +60,7 @@ const Skills = () => {
           </li>
           <li className="education-list-item">
             <StaticImage
-              src="../images/Aurora-Logo.png"
+              src="../../images/Aurora-Logo.png"
               alt="CC_AURORA_LOGO"
               width={50}
               height={50}

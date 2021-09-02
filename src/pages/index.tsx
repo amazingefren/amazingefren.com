@@ -8,7 +8,7 @@ import {
   Links,
   Projects,
 } from "../components";
-import MyLogo from "../images/Favicon.ico";
+import MyLogo from "/images/Favicon.ico";
 import "../assets/normalize.scss";
 import "../assets/index.scss";
 // import { useEffect } from "react";

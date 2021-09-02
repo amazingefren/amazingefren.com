@@ -30,7 +30,7 @@ const About = () => {
       <div id="about-container" className="section-container">
         {about_me()}
         <div id="about-logo">
-          <StaticImage id="about-logo-wrapper" src="../images/My-Logo.png" alt=""/>
+          <StaticImage id="about-logo-wrapper" src="../../images/My-Logo.png" alt=""/>
         </div>
       </div>
     </div>

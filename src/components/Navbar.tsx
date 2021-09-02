@@ -11,7 +11,7 @@
 // export default Navbar;
 //
 
-import { StaticImage } from "gatsby-plugin-image";
+// import { StaticImage } from "gatsby-plugin-image";
 import React, { useEffect, useState } from "react";
 import "../assets/Navbar.scss";
 // import logo from "../images/My-Logo.ico"

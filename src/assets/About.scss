@@ -32,7 +32,7 @@
     position: absolute;
     transition: all 0.2s;
     bottom: 0;
-    right: 0;
+    right: 48px;
     width: 100%;
     transform: translateY(22%);
 
@@ -44,7 +44,7 @@
       animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
       animation-fill-mode: forwards;
       border-radius: 50%;
-      border: 2px solid $theme-comment;
+      // border: 2px solid $theme-comment;
       box-shadow: 0 0 10px black;
       width: 300px;
       #about-logo-wrapper {

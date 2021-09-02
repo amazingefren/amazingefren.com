@@ -1,8 +1,8 @@
 import React from "react";
 import { StaticImage } from "gatsby-plugin-image";
-import TwitterSVG from "../images/Twitter.react.svg";
-import LinkedinSVG from "../images/Linkedin.react.svg";
-import GithubSVG from "../images/Github.react.svg";
+import TwitterSVG from "/images/Twitter.react.svg";
+import LinkedinSVG from "/images/Linkedin.react.svg";
+import GithubSVG from "/images/Github.react.svg";
 import "../assets/Links.scss";
 
 const Links = () => {
@@ -16,7 +16,7 @@ const Links = () => {
           id="github-container"
         >
           <div className="svg-wrapper">
-            <GithubSVG />
+            <GithubSVG id="github-logo"/>
           </div>
           <div id="github-name" className="link-content">
             amazingefren
@@ -60,12 +60,6 @@ const Links = () => {
           href="https://linkedin.com/in/amazingefren"
           target="_blank"
         >
-          <StaticImage
-            src="../images/Email-Logo.png"
-            alt="linkedin.com"
-            width={50}
-            height={50}
-          />
         </a>
       </div>
     </div>

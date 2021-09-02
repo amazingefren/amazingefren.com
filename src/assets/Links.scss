@@ -67,6 +67,9 @@ $icon-size: 48px;
   font-weight:bold;
   text-shadow: 0 0 15px black;
   font-size: 1.2rem;
+  *{
+    background-color: red;
+  }
 }
 #twitter-container {
   background-color: #1da1f2;
