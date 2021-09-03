@@ -1,4 +1,3 @@
-
 @import "../assets/_shared.scss";
 #navbar-root {
   border-bottom: 1px solid $theme-comment;
@@ -11,23 +10,23 @@
   padding: 0;
   clear: both;
   height: 64px;
-  opacity:0;
+  opacity: 0;
 
-  animation-delay: .3s;
+  animation-delay: 0.3s;
   animation-duration: 0.5s;
   animation-name: NavbarIntro;
   animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
   animation-fill-mode: forwards;
 }
 
-@keyframes NavbarIntro{
-  from{
-    opacity:0;
-    transform:translateY(-10vh)
+@keyframes NavbarIntro {
+  from {
+    opacity: 0;
+    transform: translateY(-10vh);
   }
-  to{
-    opacity:1;
-    transform:translateY(0)
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -38,19 +37,19 @@
   text-shadow: 0 0 5px $theme-bg;
 }
 
-#navbar-header{
+#navbar-header {
   // color: $theme-bg-alt;
-  display:flex;
+  display: flex;
   flex-flow: row;
   justify-content: center;
   align-items: center;
   color: $theme-fg-light;
   font-size: 1.5rem;
-  #navbar-header-img-parent{
-    transition:0 !important;
+  #navbar-header-img-parent {
+    transition: 0 !important;
     width: 50px;
   }
-  #navbar-header-text{
+  #navbar-header-text {
     // left: 20px;
     // font-weight:bold;
     color: $theme-fg-light;
@@ -64,7 +63,7 @@
 //   color: $theme-fg-light;
 // }
 
-#navbar-link-container {
+.navbar-link-container {
   height: 100%;
   box-sizing: border-box;
   // flex-grow:1;
@@ -83,16 +82,21 @@
     padding: 0 20px 0 20px;
     text-decoration: none;
     user-select: none;
+    @media only screen and (max-width: 1000px) {
+      display: none;
+    }
   }
-  a , a::after, a::before {
+  a,
+  a::after,
+  a::before {
     text-decoration: none;
     user-select: none;
     color: $theme-fg;
     user-select: none;
-	  -webkit-user-select: none;
-	  -webkit-user-drag: none;
-	  -webkit-app-region: no-drag;
-	  cursor: default;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-app-region: no-drag;
+    cursor: default;
   }
   .navbar-link:hover {
     cursor: pointer;
@@ -103,7 +107,107 @@
     background-color: $theme-bg-selection;
     transition: all 0s;
   }
-  @media only screen and (max-width: 1000px) {
+  #navbar-hamburger {
     display: none;
+    margin: 0;
+    padding: 0;
+    @media only screen and (max-width: 1000px) {
+      display: flex;
+    }
+    #navbar-hamburger-topbun,
+    #navbar-hamburger-patty,
+    #navbar-hamburger-bottombun {
+      width: 32px;
+      height: 2px;
+      margin: 3px;
+      margin-left: 10px;
+      margin-right: 10px;
+      background-color: $theme-fg;
+      transition: 0.2s;
+    }
+  }
+}
+
+#navbar-hamburger input {
+  background-color: $theme-bg-alt;
+  border: 0;
+  display: block;
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  padding: 0;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  opacity: 0;
+  z-index: 2;
+}
+
+#navbar-hamburger input:checked ~ #navbar-hamburger-active {
+  #navbar-hamburger-topbun {
+    transform: rotate(45deg) translateY(150%);
+  }
+  #navbar-hamburger-bottombun {
+    transform: rotate(-45deg) translateY(-150%);
+  }
+  #navbar-hamburger-patty {
+    display: none;
+  }
+}
+
+#navbar-hamburger input:checked ~ #navbar-hamburger-link {
+  opacity: 0;
+  animation: 0.3s Hamburger 0.1s forwards;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
+  position: fixed;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  display: flex;
+  background-color: #{$theme-bg}EE;
+  height: calc(100vh - 64px);
+  width: 100vw;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  .navbar-link {
+    display: block;
+    opacity:0;
+    animation: 0.2s HamburgerLink 0.2s forwards;
+    animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
+    padding: 30px;
+    text-shadow: 0px 0px 10px black;
+    transition: 0.1s;
+    // background-color: black;
+    border-bottom: 1px solid $theme-bg-selection;
+    text-align:right;
+  }
+  .navbar-link:hover {
+    background-color: $theme-bg-selection;
+    color: $theme-fg-light;
+  }
+}
+
+@keyframes Hamburger {
+  from {
+    opacity: 0;
+    // max-height: 0;
+  }
+  to {
+    opacity: 1;
+    // max-height: calc(100vh - 64px);
+  }
+}
+
+@keyframes HamburgerLink {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+    width: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    width: 100%;
   }
 }

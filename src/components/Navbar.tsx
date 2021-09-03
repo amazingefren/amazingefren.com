@@ -70,25 +70,46 @@ const NavbarItems = () => {
 };
 
 const Intro: React.FC = () => {
+  const [hamburger, setHamburger] = useState<boolean>(false);
+  const [enable, setEnable] = useState<boolean>(false);
+  useEffect(()=>{
+    setEnable(true)
+  },[setEnable])
   return (
     <div className="section-root" id="navbar-root">
       <div id="navbar-container" className="section-container">
         <div id="navbar-header">
-          {/*<div id="navbar-header-img-parent">
-            <StaticImage
-              src="../images/My-Logo.png"
-              alt="amazingefren"
-              width={42}
-              height={42}
-              // layout="fixed"
-              id="navbar-header-img"
-            />
-          </div>*/}
-
           <div id="navbar-header-text">Efren Castro</div>
         </div>
-        <div id="navbar-link-container">
+        <div className="navbar-link-container">
           <NavbarItems />
+          <div className="navbar-link" id="navbar-hamburger">
+            <input
+              name="navbar-hamburger-toggle"
+              type="checkbox"
+              id="navbar-hamburger-button"
+              checked={enable ? hamburger : false}
+              onChange={() => {
+                setHamburger(!hamburger);
+              }}
+            />
+            <label
+              htmlFor="navbar-hamburger-toggle"
+              id="navbar-hamburger-active"
+            >
+              <div id="navbar-hamburger-topbun"></div>
+              <div id="navbar-hamburger-patty"></div>
+              <div id="navbar-hamburger-bottombun"></div>
+            </label>
+            <div
+              id="navbar-hamburger-link"
+              onClick={() => {
+                setHamburger(!hamburger);
+              }}
+            >
+              <NavbarItems />
+            </div>
+          </div>
         </div>
       </div>
     </div>
