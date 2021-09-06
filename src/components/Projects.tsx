@@ -1,21 +1,24 @@
 import React from "react";
 
 interface TechType {
-  name: string,
-  url: string
+  name: string;
+  url: string;
 }
 interface ProjectType {
   name: string;
   url: string;
   git: string;
-  tech: TechType[];
+  tech: Array<TechType>;
   description: string;
 }
 
-const Tech: {[key: string]: TechType} = {
+
+// https://github.com/Microsoft/TypeScript/issues/26045
+// key:string = loss of inferred types
+const Tech: { [key: string]: TechType } = {
   nextjs: {
     name: "NextJS",
-    url: 'hi'
+    url: "hi",
   },
   apollo: {
     name: "Apollo",
@@ -35,8 +38,8 @@ const Tech: {[key: string]: TechType} = {
   },
   nestjs: {
     name: "NestJS",
-    url: "IDK"
-  }
+    url: "IDK",
+  },
 };
 
 const ProjectData: ProjectType[] = [
@@ -45,8 +48,8 @@ const ProjectData: ProjectType[] = [
     url: "https://sosile.amazingefren.com/",
     git: "https://github.com/amazingefren/SOSILE-CLIENT",
     tech: [
-      Tech.nextjs,
-      Tech.apollo,
+      Tech['nextjs'],
+      Tech['apollo'],
       Tech.jwtAuthentication,
       Tech.typescript,
       Tech.node,
@@ -58,7 +61,7 @@ const ProjectData: ProjectType[] = [
     url: "https://sosile.amazingefren.com/",
     git: "https://github.com/amazingefren/SOSILE-SERVER",
     tech: [
-      Tech.nest,
+      Tech.nestjs,
       Tech.apollo,
       Tech.jwtAuthentication,
       Tech.typescript,
@@ -85,9 +88,10 @@ const Projects = () => {
   return (
     <div className="section-root" id="project-root">
       <div className="section-container" id="project-container">
-        {ProjectData.map((project: typeof ProjectData[0]) => (
-          <ProjectCard data={project} />
-        ))}
+        {ProjectData.map((project: typeof ProjectData[0]) => {
+          console.log(project)
+          return <ProjectCard key={project.name} data={project} />
+        })}
       </div>
     </div>
   );
