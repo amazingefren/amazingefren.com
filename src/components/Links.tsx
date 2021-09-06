@@ -13,9 +13,10 @@ const Links = () => {
           href="https://github.com/amazingefren"
           target="_blank"
           id="github-container"
+          rel="noopener noreferrer"
         >
           <div className="svg-wrapper">
-            <GithubSVG id="github-logo"/>
+            <GithubSVG id="github-logo" />
           </div>
           <div id="github-name" className="link-content">
             amazingefren
@@ -29,6 +30,7 @@ const Links = () => {
           href="https://linkedin.com/in/amazingefren"
           target="_blank"
           id="linkedin-container"
+          rel="noopener noreferrer"
         >
           <div className="svg-wrapper">
             <LinkedinSVG id="linkedin-logo" />
@@ -44,6 +46,7 @@ const Links = () => {
           href="https://twitter.com/amazingefren"
           target="_blank"
           id="twitter-container"
+          rel="noopener noreferrer"
         >
           <div className="svg-wrapper">
             <TwitterSVG id="twitter-logo" />
@@ -58,8 +61,7 @@ const Links = () => {
           className="intro-footer-link"
           href="https://linkedin.com/in/amazingefren"
           target="_blank"
-        >
-        </a>
+        ></a>
       </div>
     </div>
   );
