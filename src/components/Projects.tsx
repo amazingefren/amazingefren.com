@@ -79,7 +79,6 @@ const ProjectCard = ({ data: project }: { data: typeof ProjectData[0] }) => {
         {project.tech.map(({ name }) => (
           <div>{name}</div>
         ))}
-        <span>CI Test</span>
       </div>
     </div>
   );
