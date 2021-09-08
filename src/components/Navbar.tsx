@@ -38,11 +38,11 @@ const NavbarItems = () => {
         <span>About</span>
       </a>
       <a
-        href={!enabled ? "#education-root" : undefined}
-        onClick={enabled ? () => scroll("education-root") : undefined}
+        href={!enabled ? "#project-root" : undefined}
+        onClick={enabled ? () => scroll("project-root") : undefined}
         className="navbar-link"
       >
-        <span>Education</span>
+        <span>Projects</span>
       </a>
       <a
         href={!enabled ? "#skills-root" : undefined}
@@ -52,11 +52,11 @@ const NavbarItems = () => {
         <span>Skills</span>
       </a>
       <a
-        href={!enabled ? "#projects-root" : undefined}
-        onClick={enabled ? () => scroll("projects-root") : undefined}
+        href={!enabled ? "#education-root" : undefined}
+        onClick={enabled ? () => scroll("education-root") : undefined}
         className="navbar-link"
       >
-        <span>Projects</span>
+        <span>Education</span>
       </a>
       <a
         href={!enabled ? "#contact-root" : undefined}
