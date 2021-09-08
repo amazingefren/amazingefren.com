@@ -2,6 +2,13 @@
 #project-root{
   background-color: $theme-bg-shade;
   border-top: 1px solid $theme-comment;
+  z-index: 2;
+  position: relative;
+}
+
+#project-container{
+  margin-left: -26px;
+  margin-right: -26px;
 }
 
 .project-card {
@@ -10,18 +17,79 @@
   padding-top: 32px;
   padding-bottom: 32px;
 }
+.project-card-header{
+  display:flex;
+  flex-direction: column;
+  // padding-bottom: 20px;
+  position: relative;
+  .project-card-img-wrapper{
+    overflow: hidden;
+    border: 1px solid $theme-bg-selection;
+    .project-card-img{
+      // filter: blur(10px);
+      width: 100%;
+    }
+  }
+  .project-card-description{
+    // background-color: #{$theme-bg}AA;
+    background-color: #{$theme-bg};
+    border: 1px solid $theme-bg-selection;
+    padding: 26px;
+    position: absolute;
+    box-sizing: border-box;
+    bottom:0;
+    right:0;
+    left:0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+  }
+}
+.project-card-top{
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  // display:flex;
+  // flex-direction: row nowrap;
+  // justify-content: space-between;
+  border: 1px solid $theme-bg-selection;
+  h1{
+    background-color: #{$theme-bg};
+    color: $theme-fg-light;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    padding-top: 20px;
+    height: 50px;
+    padding-left: 26px;
+  }
+}
 
 .project-card-tech-wrapper {
   display: flex;
-  flex-flow: row wrap;
-  background-color: $theme-bg;
-  border: 1px solid $theme-bg-selection;
+  flex-flow: column nowrap;
+  position: absolute;
+  right:0;
+  top: 70px;
+  z-index: 3;
+  border-left: 1px solid $theme-bg-selection;
+  border-bottom: 1px solid $theme-bg-selection;
+  border-right: 1px solid $theme-bg-selection;
+  padding-top: 1px;
+  // background-color: $theme-bg;
+  background-color: #{$theme-bg};
+  // border: 1px solid $theme-bg-selection;
   .project-card-tech-img-wrapper {
     display: flex;
     height: 50px;
     width: 200px;
     padding-top: 10px;
     padding-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
     // border: 1px solid $theme-bg-selection;
     * {
       max-width: 150px;
@@ -33,19 +101,27 @@
     // max-width: 100px;
   }
 }
+.project-card-img-overlay{
+  background-color: #{$theme-bg}65;
+  position: absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+}
 
-.tech-Typescript{
-  background-color: #007ACC;
-}
-.tech-NestJS{
-  background-color: #EA2845;
-}
-.tech-Apollo{
-  background-color: #311C87;
-}
-.tech-NextJS{
-  background-color: #000000;
-}
-.tech-NodeJS{
-  background-color: #404137;
-}
+// .tech-Typescript{
+//   background-color: #007ACC;
+// }
+// .tech-NestJS{
+//   background-color: #EA2845;
+// }
+// .tech-Apollo{
+//   background-color: #311C87;
+// }
+// .tech-NextJS{
+//   background-color: #000000;
+// }
+// .tech-NodeJS{
+//   background-color: #404137;
+// }

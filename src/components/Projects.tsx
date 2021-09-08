@@ -1,5 +1,7 @@
 import React from "react";
 import "../assets/Projects.scss";
+import SOSILELOGIN from "../../images/Sosile-Login.png";
+import SOSILEPROFILE from "../../images/Sosile-Profile.png";
 
 interface TechType {
   name: string;
@@ -11,6 +13,7 @@ interface ProjectType {
   url: string;
   git: string;
   tech: Array<TechType>;
+  img: string;
   description: string;
 }
 
@@ -52,18 +55,16 @@ const ProjectData: ProjectType[] = [
     url: "https://sosile.amazingefren.com/",
     git: "https://github.com/amazingefren/SOSILE-CLIENT",
     tech: [Tech["nextjs"], Tech["apollo"], Tech.typescript],
+    img: SOSILEPROFILE,
     description: "SOSILE is the current project I am working on",
   },
   {
     name: "SOSILE SERVER",
     url: "https://sosile.amazingefren.com/",
     git: "https://github.com/amazingefren/SOSILE-SERVER",
-    tech: [
-      Tech.nestjs,
-      Tech.apollo,
-      Tech.typescript,
-      Tech.node,
-    ],
+    tech: [Tech.nestjs, Tech.apollo, Tech.typescript, Tech.node],
+    // img: "../../images/Sosile-Login.png",
+    img: SOSILELOGIN,
     description: "SOSILE is the current project I am working on",
   },
 ];
@@ -71,15 +72,27 @@ const ProjectData: ProjectType[] = [
 const ProjectCard = ({ data: project }: { data: typeof ProjectData[0] }) => {
   return (
     <div className="project-card">
-      <h1>{project.name}</h1>
-      <div className="project-card-tech-wrapper">
-        {project.tech.map(({ name, img: SVG }) => {
-          return (
-            <div className={"project-card-tech-img-wrapper " + "tech-" + name}>
+      <div className="project-card-header">
+        <div className="project-card-top">
+          <h1>{project.name}</h1>
+        </div>
+        <div className="project-card-img-wrapper">
+          <img src={project.img} className="project-card-img" />
+        </div>
+        <div className="project-card-img-overlay" />
+        <div className="project-card-description">{project.description}</div>
+        <div className="project-card-tech-wrapper">
+          {project.tech.map(({ name, img: SVG }) => {
+            return (
+              <div
+                className={"project-card-tech-img-wrapper " + "tech-" + name}
+                key={name}
+              >
                 <SVG className="project-card-tech-img" />
-            </div>
-          );
-        })}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
