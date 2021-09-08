@@ -51,7 +51,7 @@ const Tech = {
 
 const ProjectData: ProjectType[] = [
   {
-    name: "SOSILE CLIENT",
+    name: "Sosile Client",
     url: "https://sosile.amazingefren.com/",
     git: "https://github.com/amazingefren/SOSILE-CLIENT",
     tech: [Tech["nextjs"], Tech["apollo"], Tech.typescript],
@@ -59,7 +59,7 @@ const ProjectData: ProjectType[] = [
     description: "SOSILE is the current project I am working on",
   },
   {
-    name: "SOSILE SERVER",
+    name: "Sosile Server",
     url: "https://sosile.amazingefren.com/",
     git: "https://github.com/amazingefren/SOSILE-SERVER",
     tech: [Tech.nestjs, Tech.apollo, Tech.typescript, Tech.node],
@@ -74,12 +74,14 @@ const ProjectCard = ({ data: project }: { data: typeof ProjectData[0] }) => {
     <div className="project-card">
       <div className="project-card-header">
         <div className="project-card-top">
-          <h1>{project.name}</h1>
+          <h2>{project.name}</h2>
         </div>
         <div className="project-card-img-wrapper">
           <img src={project.img} className="project-card-img" />
         </div>
-        <div className="project-card-img-overlay" />
+        {/*
+          <div className="project-card-img-overlay" />
+        */}
         <div className="project-card-description">{project.description}</div>
         <div className="project-card-tech-wrapper">
           {project.tech.map(({ name, img: SVG }) => {
@@ -103,7 +105,7 @@ const Projects = () => {
     <div className="section-root" id="project-root">
       <div className="section-container" id="project-container">
         {ProjectData.map((project: typeof ProjectData[0]) => {
-          console.log(project);
+          // console.log(project);
           return <ProjectCard key={project.name} data={project} />;
         })}
       </div>
