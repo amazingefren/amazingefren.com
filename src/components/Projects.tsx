@@ -1,9 +1,10 @@
 import React from "react";
-import "../assets/Projects.scss"
+import "../assets/Projects.scss";
 
 interface TechType {
   name: string;
   url: string;
+  img: any;
 }
 interface ProjectType {
   name: string;
@@ -16,31 +17,32 @@ interface ProjectType {
 // https://github.com/Microsoft/TypeScript/issues/26045
 // key:string = loss of inferred types
 // const Tech: { [key: string]: TechType } = {
-//
+
 const Tech = {
   nextjs: {
     name: "NextJS",
     url: "hi",
+    img: require("/images/Next.react.svg"),
   },
   apollo: {
     name: "Apollo",
     url: "idk",
-  },
-  jwtAuthentication: {
-    name: "User Authentication",
-    url: "idk",
+    img: require("/images/Apollo.react.svg"),
   },
   typescript: {
     name: "Typescript",
     url: "idk",
+    img: require("/images/Typescript.react.svg"),
   },
   node: {
     name: "NodeJS",
     url: "idk",
+    img: require("/images/Node.react.svg"),
   },
   nestjs: {
     name: "NestJS",
     url: "IDK",
+    img: require("/images/Nest.react.svg"),
   },
 };
 
@@ -49,13 +51,7 @@ const ProjectData: ProjectType[] = [
     name: "SOSILE CLIENT",
     url: "https://sosile.amazingefren.com/",
     git: "https://github.com/amazingefren/SOSILE-CLIENT",
-    tech: [
-      Tech["nextjs"],
-      Tech["apollo"],
-      Tech.jwtAuthentication,
-      Tech.typescript,
-      Tech.node,
-    ],
+    tech: [Tech["nextjs"], Tech["apollo"], Tech.typescript],
     description: "SOSILE is the current project I am working on",
   },
   {
@@ -65,7 +61,6 @@ const ProjectData: ProjectType[] = [
     tech: [
       Tech.nestjs,
       Tech.apollo,
-      Tech.jwtAuthentication,
       Tech.typescript,
       Tech.node,
     ],
@@ -77,10 +72,14 @@ const ProjectCard = ({ data: project }: { data: typeof ProjectData[0] }) => {
   return (
     <div className="project-card">
       <h1>{project.name}</h1>
-      <div>
-        {project.tech.map(({ name }) => (
-          <div>{name}</div>
-        ))}
+      <div className="project-card-tech-wrapper">
+        {project.tech.map(({ name, img: SVG }) => {
+          return (
+            <div className={"project-card-tech-img-wrapper " + "tech-" + name}>
+                <SVG className="project-card-tech-img" />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

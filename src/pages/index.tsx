@@ -31,9 +31,9 @@ export default function () {
         <Links />
         <div id="container">
           <About />
-          <Education />
-          <Skills />
           <Projects />
+          <Skills />
+          <Education />
         </div>
         {/*
          */}
