@@ -1,4 +1,5 @@
 import React from "react";
+import "../assets/Projects.scss"
 
 interface TechType {
   name: string;
@@ -12,10 +13,11 @@ interface ProjectType {
   description: string;
 }
 
-
 // https://github.com/Microsoft/TypeScript/issues/26045
 // key:string = loss of inferred types
-const Tech: { [key: string]: TechType } = {
+// const Tech: { [key: string]: TechType } = {
+//
+const Tech = {
   nextjs: {
     name: "NextJS",
     url: "hi",
@@ -48,8 +50,8 @@ const ProjectData: ProjectType[] = [
     url: "https://sosile.amazingefren.com/",
     git: "https://github.com/amazingefren/SOSILE-CLIENT",
     tech: [
-      Tech['nextjs'],
-      Tech['apollo'],
+      Tech["nextjs"],
+      Tech["apollo"],
       Tech.jwtAuthentication,
       Tech.typescript,
       Tech.node,
@@ -73,8 +75,8 @@ const ProjectData: ProjectType[] = [
 
 const ProjectCard = ({ data: project }: { data: typeof ProjectData[0] }) => {
   return (
-    <div>
-      <div>{project.name}</div>
+    <div className="project-card">
+      <h1>{project.name}</h1>
       <div>
         {project.tech.map(({ name }) => (
           <div>{name}</div>
@@ -89,8 +91,8 @@ const Projects = () => {
     <div className="section-root" id="project-root">
       <div className="section-container" id="project-container">
         {ProjectData.map((project: typeof ProjectData[0]) => {
-          console.log(project)
-          return <ProjectCard key={project.name} data={project} />
+          console.log(project);
+          return <ProjectCard key={project.name} data={project} />;
         })}
       </div>
     </div>
