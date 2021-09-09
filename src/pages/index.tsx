@@ -27,8 +27,8 @@ export default function () {
         <title>Efren Castro</title>
         <meta property='og:title' content='Efren Castro Portfolio'/>
         <meta property='og:description' content='Check Me Out! oh and hire me :)'/>
-        <meta property='og:url' content='https//amazingefren.com'/>
-        <meta property="og:image" content={MyImage}/>
+        <meta property='og:url' content='https://amazingefren.com'/>
+        <meta property="og:image" content={"https://amazingefren.com"+MyImage}/>
         <link rel="icon" href={MyLogo} />
       </Helmet>
       <div id="root">
