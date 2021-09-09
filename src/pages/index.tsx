@@ -9,6 +9,7 @@ import {
   Projects,
 } from "../components";
 import MyLogo from "/images/Favicon.ico";
+import MyImage from "../../images/SEO.png";
 import "../assets/normalize.scss";
 import "../assets/index.scss";
 // import { useEffect } from "react";
@@ -24,10 +25,10 @@ export default function () {
       <Helmet>
         <meta charSet="utf-8" />
         <title>Efren Castro</title>
-        <meta property="og:image" content="/images/My-Logo.png"/>
         <meta property='og:title' content='Efren Castro Portfolio'/>
         <meta property='og:description' content='Check Me Out! oh and hire me :)'/>
         <meta property='og:url' content='https//amazingefren.com'/>
+        <meta property="og:image" content={MyImage}/>
         <link rel="icon" href={MyLogo} />
       </Helmet>
       <div id="root">
