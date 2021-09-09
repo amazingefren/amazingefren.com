@@ -24,6 +24,7 @@ export default function () {
       <Helmet>
         <meta charSet="utf-8" />
         <title>Efren Castro</title>
+        <meta property="og:image" content="../../images/My-Logo.png"/>
         <link rel="icon" href={MyLogo} />
       </Helmet>
       <div id="root">
