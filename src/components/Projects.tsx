@@ -14,7 +14,7 @@ interface ProjectType {
   git: string;
   tech: Array<TechType>;
   img: string;
-  description: string;
+  description: string[];
   features: string[];
 }
 
@@ -58,6 +58,12 @@ const Tech = {
     url: "https://www.fastify.io/",
     img: require("/images/Fastify.react.svg"),
   },
+  postgresql: {
+    name: "PostgreSQL",
+    url: "https://www.postgresql.org/",
+    img: require("/images/Postgres.react.svg"),
+
+  }
 };
 
 const ProjectData: ProjectType[] = [
@@ -67,22 +73,30 @@ const ProjectData: ProjectType[] = [
     git: "https://github.com/amazingefren/SOSILE-CLIENT",
     tech: [Tech["nextjs"], Tech["apollo"], Tech["typescript"]],
     img: SOSILEPROFILE,
-    description: "Hello World",
-    features: ["HI"]
+    description: [
+      "Client for Sosile, my currently solo developed social media demo site",
+      "I started this project as a way to improve my skills as a frontend developer",
+    ],
+    features: ["Session Management", "GraphQL", "HTTP2"],
   },
   {
     name: "Sosile Server",
     url: "https://sosile.amazingefren.com/",
     git: "https://github.com/amazingefren/SOSILE-SERVER",
-    tech: [Tech["nestjs"], Tech["prisma"], Tech["typescript"], Tech["fastify"]],
+    tech: [
+      Tech["nestjs"],
+      Tech["prisma"],
+      Tech["typescript"],
+      Tech["fastify"],
+      Tech["postgresql"],
+    ],
     // img: "../../images/Sosile-Login.png",
     img: SOSILELOGIN,
-    description: "SOSILE is the current project I am working on",
-    features: [
-      "User Authentication",
-      "Bcrypt",
-      "GraphQL"
-    ]
+    description: [
+      "Server for Sosile, my currently solo developed social media demo site",
+      "A semi-lightweight and performant* GraphQL API",
+    ],
+    features: ["User Authentication", "Bcrypt", "GraphQL", "OAuth 2"],
   },
 ];
 
@@ -94,12 +108,33 @@ const ProjectCard = ({ data: project }: { data: typeof ProjectData[0] }) => {
           <h2>{project.name}</h2>
         </div>
         <div className="project-card-img-wrapper">
-          <div className="project-card-description">{project.description}</div>
-          <img src={project.img} className="project-card-img" />
+          <div className="project-card-left-flex">
+            <div className="project-card-description">
+              {project.description.map((desc) => (
+                <p key={desc}>{desc}</p>
+              ))}
+            </div>
+            <ul className="project-card-features">
+              <h2>Features</h2>
+              {project.features.map((feature) => (
+                <li key={feature}>{feature}</li>
+              ))}
+            </ul>
+            <div className="project-card-links">
+              <a href={project.git} rel="noopener noreferrer">
+                Source Code
+              </a>
+              <a href={project.url} rel="noopener noreferrer">
+                Visit Live
+              </a>
+            </div>
+          </div>
+          <img
+            src={project.img}
+            className="project-card-img"
+            alt={project.name}
+          />
         </div>
-        {/*
-          <div className="project-card-img-overlay" />
-        */}
         <div className="project-card-tech-wrapper">
           {project.tech.map(({ name, img: SVG, url }) => {
             return (
