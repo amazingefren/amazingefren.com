@@ -24,7 +24,7 @@ export default function () {
       <Helmet>
         <meta charSet="utf-8" />
         <title>Efren Castro</title>
-        <meta property="og:image" content="https://amazingefren.com/static/4712f77581c59b252522365d5220430c/b5c5b/My-Logo.webp"/>
+        <meta property="og:image" content="/images/My-Logo.png"/>
         <meta property='og:title' content='Efren Castro Portfolio'/>
         <meta property='og:description' content='Check Me Out! oh and hire me :)'/>
         <meta property='og:url' content='https//amazingefren.com'/>
