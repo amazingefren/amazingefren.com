@@ -2,11 +2,28 @@ import React from "react";
 import TwitterSVG from "/images/Twitter.react.svg";
 import LinkedinSVG from "/images/Linkedin.react.svg";
 import GithubSVG from "/images/Github.react.svg";
+import EmailSVG from "/images/Email.react.svg";
 import "../assets/Links.scss";
 
 const Links = () => {
   return (
     <div id="links-root">
+      <div className="link-item">
+        <a
+          className="intro-footer-link"
+          href="mailto:efrencastro.dev@gmail.com"
+          target="_blank"
+          id="email-container"
+          rel="noopener noreferrer"
+        >
+          <div className="svg-wrapper">
+            <EmailSVG id="email-logo" />
+          </div>
+          <div id="email-name" className="link-content">
+            efrencastro.dev@gmail.com
+          </div>
+        </a>
+      </div>
       <div className="link-item">
         <a
           className="intro-footer-link"

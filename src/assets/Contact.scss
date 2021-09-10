@@ -1,0 +1,130 @@
+@import "./_shared.scss";
+#contact-root {
+  background-color: $theme-bg;
+  color: $theme-fg;
+  // height: calc(100vh - 64px);
+  position: relative;
+  z-index: 999;
+  // padding-bottom:0;
+}
+#contact-container {
+  margin-left: -26px;
+  margin-right: -26px;
+  position: relative;
+  padding-top: 26px;
+  padding-bottom: 26px;
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column;
+  }
+  // margin-bottom: 00px;
+  // z-index: 9999;
+}
+
+#contact-item-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  // @media only screen and (max-width: 1000px){
+  // }
+  position: relative;
+  // z-index: 9999;
+  a {
+    text-decoration: none;
+    color: unset;
+    // text-shadow: none;
+  }
+}
+
+.contact-item {
+  // background-color: $theme-bg-alt-alt;
+  // border: 1px solid black;
+  // box-sizing: border-box;
+  // width: calc(50% - 10px);
+  button {
+    cursor: pointer;
+  }
+  // width: 50%;
+  @media only screen and (max-width: 1000px) {
+    width: 100%;
+  }
+  // margin: 5px;
+  height: auto;
+  * {
+    height: 75px;
+  }
+  svg {
+    @media only screen and (max-width: 1000px) {
+      width: 75px;
+    }
+  }
+  h3 {
+    height: auto;
+    margin: 0;
+  }
+  color: $theme-fg-light;
+}
+
+.contact-item-copy,
+.contact-item-copied {
+  background-color: unset;
+  margin-left: 6px;
+  color: $theme-base;
+  font-weight: bold;
+  border: 0;
+}
+.contact-item-flex {
+  display: flex;
+  align-items: center;
+}
+
+#contact-email-flex {
+  display: flex;
+  align-items: center;
+}
+
+#contact-email {
+  // background-color: $theme-bg-alt-alt;
+  svg {
+    * {
+      fill: white;
+    }
+  }
+}
+
+#contact-twitter {
+  // background-color: #1da1f2;
+  // text-shadow: 0 0 3px black;
+  :hover {
+    #override-twitter {
+      fill: $theme-bg-selection !important;
+    }
+  }
+  #override-twitter {
+    fill: $theme-bg !important;
+  }
+}
+#contact-linkedin {
+  // background-color: #0e76a8;
+  :hover {
+    #override-linkedin {
+      fill: $theme-bg-selection !important;
+    }
+  }
+  #override-linkedin {
+    fill: $theme-bg !important;
+  }
+}
+#contact-github:hover,
+#contact-twitter:hover,
+#contact-linkedin:hover,
+#contact-email:hover {
+  background-color: $theme-bg-selection;
+}
+
+// #contact-email{
+// color: $theme-green;
+
+// }
+// #contact-github{
+// background-color: #211F1F;
+// }

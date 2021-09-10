@@ -3,21 +3,22 @@
 $icon-size: 48px;
 
 #links-root {
-  position: fixed !important;
+  position: fixed;
   display: flex;
-  @media only screen and (max-width: $mobile-rule){
+  @media only screen and (max-width: $mobile-rule) {
     display: none;
   }
   flex-flow: column;
   align-items: flex-end;
-  bottom:64px;
-  z-index: 998;
+  top: 64px;
+  // bottom: 50%;
+  z-index: 1000;
   right: 0;
   .intro-footer-link {
     transition: all 0.2s ease-out;
     width: $icon-size;
     height: $icon-size;
-    z-index: 10;
+    // z-index: 10;
     svg {
       height: $icon-size !important;
       width: $icon-size !important;
@@ -26,7 +27,7 @@ $icon-size: 48px;
   .intro-footer-link:hover {
     width: 100%;
     box-shadow: 0 0 20px black;
-    z-index: 9;
+    // z-index: 9;
     transition: all 0.1s cubic-bezier(0.76, 0, 0.24, 1) ease-in-out;
   }
 }
@@ -36,22 +37,22 @@ $icon-size: 48px;
   width: auto;
   flex-flow: column;
   align-items: flex-end;
-  a{
-    text-decoration:none;
+  a {
+    text-decoration: none;
   }
   .intro-footer-link {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    .link-content{
+    .link-content {
       text-decoration: none;
       padding-left: 10px;
       padding-right: 15px;
     }
   }
-  .svg-wrapper{
-    height:$icon-size;
-    width:$icon-size;
+  .svg-wrapper {
+    height: $icon-size;
+    width: $icon-size;
   }
 }
 
@@ -60,25 +61,32 @@ $icon-size: 48px;
   // filter: drop-shadow(0 0 20px red);
   display: table;
 }
+#email-container {
+  background-color: #191919;
+  color: #ffffff;
+  font-weight: bold;
+  text-shadow: 0 0 5px black;
+  font-size: 1.2rem;
+}
 
 #github-container {
   background-color: #211f1f;
   color: #ffffff;
-  font-weight:bold;
-  text-shadow: 0 0 15px black;
+  font-weight: bold;
+  text-shadow: 0 0 5px black;
   font-size: 1.2rem;
 }
 #twitter-container {
   background-color: #1da1f2;
   color: #ffffff;
-  font-weight:bold;
-  text-shadow: 0 0 15px $theme-bg;
+  font-weight: bold;
+  text-shadow: 0 0 5px $theme-bg;
   font-size: 1.2rem;
 }
 #linkedin-container {
   background-color: #0e76a8;
   color: #ffffff;
-  font-weight:bold;
-  text-shadow: 0 0 15px $theme-bg;
+  font-weight: bold;
+  text-shadow: 0 0 5px $theme-bg;
   font-size: 1.2rem;
 }
