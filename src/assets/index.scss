@@ -1,7 +1,7 @@
 @import "./_shared.scss";
 
 #root {
-  background-color: $theme-bg-alt;
+  background-color: $theme-bg;
   display: flex;
   justify-content: center;
   min-height: 100vh;
@@ -24,7 +24,7 @@
 // }
 
 body {
-  background-color: $theme-bg-alt;
+  background-color: $theme-bg;
 }
 html {
   scroll-behavior: smooth;
