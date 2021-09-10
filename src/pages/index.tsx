@@ -7,6 +7,7 @@ import {
   Skills,
   Links,
   Projects,
+  Contact,
 } from "../components";
 import MyLogo from "/images/Favicon.ico";
 import MyImage from "../../images/SEO.png";
@@ -25,21 +26,28 @@ export default function () {
       <Helmet>
         <meta charSet="utf-8" />
         <title>Efren Castro</title>
-        <meta property='og:title' content='Efren Castro Portfolio'/>
-        <meta property='og:description' content='Check Me Out! oh and hire me :)'/>
-        <meta property='og:url' content='https://amazingefren.com'/>
-        <meta property="og:image" content={"https://amazingefren.com"+MyImage}/>
+        <meta property="og:title" content="Efren Castro Portfolio" />
+        <meta
+          property="og:description"
+          content="Check Me Out! oh and hire me :)"
+        />
+        <meta property="og:url" content="https://amazingefren.com" />
+        <meta
+          property="og:image"
+          content={"https://amazingefren.com" + MyImage}
+        />
         <link rel="icon" href={MyLogo} />
       </Helmet>
       <div id="root">
         <Navbar />
-        <Links />
         <div id="container">
           <About />
           <Projects />
           <Skills />
           <Education />
+          <Contact />
         </div>
+        <Links />
         {/*
          */}
       </div>
