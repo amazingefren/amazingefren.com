@@ -13,6 +13,7 @@ import MyLogo from "/images/Favicon.ico";
 import MyImage from "../../images/SEO.png";
 import "../assets/normalize.scss";
 import "../assets/index.scss";
+import End from "../components/End";
 // import { useEffect } from "react";
 // import Animation from '../animations/root'
 
@@ -46,6 +47,7 @@ export default function () {
           <Skills />
           <Education />
           <Contact />
+          <End />
         </div>
         <Links />
         {/*
