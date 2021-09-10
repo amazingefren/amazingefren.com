@@ -1,6 +1,19 @@
 @import "../assets/shared.scss";
 
 $icon-size: 48px;
+@keyframes SlideLeft {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  25%{
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
 #links-root {
   position: fixed;
@@ -8,6 +21,7 @@ $icon-size: 48px;
   @media only screen and (max-width: $mobile-rule) {
     display: none;
   }
+  // opacity: 0;
   flex-flow: column;
   align-items: flex-end;
   top: 64px;
@@ -67,6 +81,12 @@ $icon-size: 48px;
   font-weight: bold;
   text-shadow: 0 0 5px black;
   font-size: 1.2rem;
+  opacity: 0;
+  animation-delay: 0.5s;
+  animation-name: SlideLeft;
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
+  animation-fill-mode: forwards;
 }
 
 #github-container {
@@ -75,13 +95,12 @@ $icon-size: 48px;
   font-weight: bold;
   text-shadow: 0 0 5px black;
   font-size: 1.2rem;
-}
-#twitter-container {
-  background-color: #1da1f2;
-  color: #ffffff;
-  font-weight: bold;
-  text-shadow: 0 0 5px $theme-bg;
-  font-size: 1.2rem;
+  opacity: 0;
+  animation-delay: 0.6s;
+  animation-name: SlideLeft;
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
+  animation-fill-mode: forwards;
 }
 #linkedin-container {
   background-color: #0e76a8;
@@ -89,4 +108,23 @@ $icon-size: 48px;
   font-weight: bold;
   text-shadow: 0 0 5px $theme-bg;
   font-size: 1.2rem;
+  opacity: 0;
+  animation-delay: 0.7s;
+  animation-name: SlideLeft;
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
+  animation-fill-mode: forwards;
+}
+#twitter-container {
+  background-color: #1da1f2;
+  color: #ffffff;
+  font-weight: bold;
+  text-shadow: 0 0 5px $theme-bg;
+  font-size: 1.2rem;
+  opacity: 0;
+  animation-delay: 0.8s;
+  animation-name: SlideLeft;
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
+  animation-fill-mode: forwards;
 }
