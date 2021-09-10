@@ -45,11 +45,11 @@ html {
   width: 100% !important;
   height: auto;
   overflow: hidden;
-  transform: translateY(30vh);
+  transform: translateY(150px);
   opacity: 0;
-  animation-delay: 0.5s;
+  // animation-delay: 0.5s;
   animation-name: FadeIn;
-  animation-duration: 0.5s;
+  animation-duration: 0.3s;
   animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1) ease-out;
   animation-fill-mode: forwards;
 }
@@ -85,9 +85,9 @@ html {
   from {
     opacity: 0;
     background-color: $theme-bg-alt;
-    transform: translateY(5vh);
+    // transform: translateY(2px);
   }
-  40% {
+  50% {
     opacity: 0;
   }
   to {
