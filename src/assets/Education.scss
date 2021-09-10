@@ -2,12 +2,12 @@
 
 #education-root {
   box-sizing: border-box;
-  background-color: $theme-bg-shade;
+  background-color: $theme-bg-alt-alt;
   // border: 5px solid $theme-bg;
   box-shadow: 0 0 20px black;
   box-sizing: border-box;
-  border-top: 1px solid $theme-bg-selection;
-  border-bottom: 1px solid $theme-bg-selection;
+  border-top: 1px solid $theme-comment;
+  border-bottom: 1px solid $theme-comment;
   position: relative;
   // z-index: 2;
   display: flex;
