@@ -65,6 +65,12 @@ const NavbarItems = () => {
       >
         <span>Contact Me</span>
       </a>
+      <a
+        href={"https://amazingefren.com/resume"}
+        className="navbar-link"
+      >
+        <span>Resume</span>
+      </a>
     </>
   );
 };
