@@ -6,7 +6,7 @@ import {
   About,
   Skills,
   Links,
-  Projects,
+  // Projects,
   Contact,
 } from "../components";
 import MyLogo from "/images/Favicon.ico";

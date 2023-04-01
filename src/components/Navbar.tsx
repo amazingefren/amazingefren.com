@@ -37,13 +37,13 @@ const NavbarItems = () => {
       >
         <span>About</span>
       </a>
-      <a
+      {/* <a
         href={!enabled ? "#project-root" : undefined}
         onClick={enabled ? () => scroll("project-root") : undefined}
         className="navbar-link"
       >
         <span>Projects</span>
-      </a>
+      </a> */}
       <a
         href={!enabled ? "#skills-root" : undefined}
         onClick={enabled ? () => scroll("skills-root") : undefined}
