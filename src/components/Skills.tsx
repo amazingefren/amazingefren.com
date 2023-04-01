@@ -29,7 +29,7 @@ const Skills: React.FC = () => {
                 <li className="skills-list-like">GatsbyJS</li>
                 <li className="skills-list-good">Next.js</li>
                 <li className="skills-list-good">jQuery</li>
-                <li className="skills-list-learning">Vue.js</li>
+                <li className="skills-list-good">Vue.js</li>
                 <li className="skills-list-learning">AngularJS</li>
               </ul>
             </li>
@@ -66,7 +66,7 @@ const Skills: React.FC = () => {
               <h3 className="skills-section-header-round-left">Database</h3>
               <ul>
                 <li className="skills-list-like">PostgreSQL</li>
-                <li className="skills-list-good">MySQL</li>
+                <li className="skills-list-like">MySQL</li>
                 <li className="skills-list-good">MongoDB</li>
               </ul>
             </li>
@@ -103,19 +103,19 @@ const Skills: React.FC = () => {
               <h3 className="skills-section-header-round-right">Infrastructure</h3>
               <ul>
                 <li className="skills-list-like">NGINX</li>
-                <li className="skills-list-good">Apache</li>
-                <li className="skills-list-learning">Amazon AWS (wip)</li>
-                <li className="skills-list-learning">Microsoft Azure (wip)</li>
+                <li className="skills-list-like">Apache</li>
+                <li className="skills-list-good">Amazon AWS</li>
+                <li className="skills-list-learning">Microsoft Azure</li>
               </ul>
             </li>
             {/* SUB: Automation / Virtualization */}
             <li className="skills-section-list-parent skills-section-list-parent-left">
               <h3 className="skills-section-header-round-left">IaC Skills</h3>
               <ul>
-                <li className="skills-list-good">Docker</li>
-                <li className="skills-list-learning">Kubernetes</li>
-                <li className="skills-list-learning">Ansible</li>
+                <li className="skills-list-like">Docker</li>
+                <li className="skills-list-like">Ansible</li>
                 <li className="skills-list-learning">Jenkins</li>
+                <li className="skills-list-learning">Kubernetes</li>
                 <li className="skills-list-learning">Vagrant</li>
               </ul>
             </li>
@@ -124,9 +124,9 @@ const Skills: React.FC = () => {
               <h3 className="skills-section-header-round-right">Tools</h3>
               <ul>
                 <li className="skills-list-like">Git</li>
+                <li className="skills-list-good">Zabbix</li>
                 <li className="skills-list-good">Jenkins</li>
                 <li className="skills-list-good">Travis CI</li>
-                <li className="skills-list-learning">Zabbix</li>
                 <li className="skills-list-learning">Elk</li>
               </ul>
             </li>
@@ -154,8 +154,8 @@ const Skills: React.FC = () => {
                 <li className="skills-list-good">Lua</li>
                 <li className="skills-list-good">C++</li>
                 <li className="skills-list-good">LaTeX</li>
-                <li className="skills-list-learning">Java</li>
-                <li className="skills-list-learning">Mobile Development</li>
+                <li className="skills-list-good">Java</li>
+                <li className="skills-list-good">Mobile Development</li>
               </ul>
             </li>
             {/* SUB: Extra */}
@@ -184,8 +184,8 @@ const Skills: React.FC = () => {
             <li className="skills-section-list-parent skills-section-list-parent-right">
               <h3 className="skills-section-header-round-right">Terminal</h3>
               <ul>
-                <li className="skills-list-like">Vim</li>
-                <li className="skills-list-good">Text Manipulation Tools </li>
+                <li className="skills-list-like">Vim / Neovim</li>
+                <li className="skills-list-good">Text Manipulation Tools</li>
                 <li className="skills-list-good">Package Management</li>
               </ul>
             </li>

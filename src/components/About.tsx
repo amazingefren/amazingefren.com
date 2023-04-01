@@ -9,7 +9,7 @@ const about_me = () => {
         Hey! I'm <span className="about-emphasis">Efren Castro</span>,
       </div>
       <p id="about-p-1">
-        a 22 year-old <span className="about-emphasis">coder</span> currently
+        a 24 year-old <span className="about-emphasis">coder</span> currently
         residing in <span className="about-emphasis">Denver</span>,
         <span className="about-emphasis" id="about-colorado">
           {" "}
@@ -17,8 +17,9 @@ const about_me = () => {
         </span>.
       </p>
       <p id="about-p-2">
-        I am currently seeking new job opportunities as a{" "}
-        <span className="about-emphasis">web developer</span>.
+        <s>I am currently seeking new job opportunities as a{" "}
+        <span className="about-emphasis">software engineer</span>.
+        </s>
       </p>
     </div>
   );

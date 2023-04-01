@@ -43,7 +43,7 @@ export default function () {
         <Navbar />
         <div id="container">
           <About />
-          <Projects />
+          {/* <Projects /> */}
           <Skills />
           <Education />
           <Contact />
