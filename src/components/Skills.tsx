@@ -74,7 +74,7 @@ const Skills: React.FC = () => {
             <li className="skills-section-list-parent skills-section-list-parent-right">
               <h3 className="skills-section-header-round-right">Extra</h3>
               <ul>
-                <li className="skills-list-like">Rust - Actix Web</li>
+                <li className="skills-list-like">Rust - Actix Web (The Server)</li>
                 <li className="skills-list-like">Golang - http</li>
                 <li className="skills-list-good">Python - Flask</li>
               </ul>
@@ -143,7 +143,7 @@ const Skills: React.FC = () => {
             <li className="skills-section-list-parent skills-section-list-parent-both">
               <h3 id="skills-section-header-both" className="skills-section-header-round-left">Languages / Scripting</h3>
               <ul>
-                <li className="skills-list-like">Rust</li>
+                <li className="skills-list-like">Rust (The Game)</li>
                 <li className="skills-list-dislike">I'm not affiliated with the rust foundation, any references to rust, the rust language or ferris the crab have not been approved by the foundation</li>
                 <li className="skills-list-like">Python</li>
                 <li className="skills-list-like">Golang</li>
