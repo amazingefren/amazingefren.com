@@ -144,6 +144,7 @@ const Skills: React.FC = () => {
               <h3 id="skills-section-header-both" className="skills-section-header-round-left">Languages / Scripting</h3>
               <ul>
                 <li className="skills-list-like">Rust</li>
+                <li className="skills-list-dislike">I'm not affiliated with the rust foundation, any references to rust, the rust language or ferris the crab have not been approved by the foundation</li>
                 <li className="skills-list-like">Python</li>
                 <li className="skills-list-like">Golang</li>
                 <li className="skills-list-like">C</li>

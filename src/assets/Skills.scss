@@ -191,6 +191,7 @@
         list-style: none;
         .skills-list-good,
         .skills-list-like,
+        .skills-list-dislike,
         .skills-list-learning {
           padding-top: 8px;
           padding-bottom: 8px;
@@ -208,6 +209,7 @@
         }
         .skills-list-good::before,
         .skills-list-like::before,
+        .skills-list-dislike::before,
         .skills-list-learning::before {
           transform: translateX(-125%);
           position: fixed;
@@ -239,6 +241,10 @@
           content: "▢";
           font-weight: normal;
           color: $theme-yellow;
+        }
+        .skills-list-dislike::before {
+          content: "💩";
+          font-weight: normal;
         }
       }
     }
