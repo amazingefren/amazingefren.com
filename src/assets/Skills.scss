@@ -245,6 +245,8 @@
         .skills-list-dislike::before {
           content: "💩";
           font-weight: normal;
+          display: flex;
+          justify-content: center;
         }
       }
     }
