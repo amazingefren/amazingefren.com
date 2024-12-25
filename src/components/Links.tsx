@@ -11,7 +11,7 @@ const Links = () => {
       <div className="link-item">
         <a
           className="intro-footer-link"
-          href="mailto:efrencastro.dev@gmail.com"
+          href="mailto:contact@amazingefren.com"
           target="_blank"
           id="email-container"
           rel="noopener noreferrer"
@@ -20,7 +20,7 @@ const Links = () => {
             <EmailSVG id="email-logo" />
           </div>
           <div id="email-name" className="link-content">
-            efrencastro.dev@gmail.com
+            contact@amazingefren.com
           </div>
         </a>
       </div>
