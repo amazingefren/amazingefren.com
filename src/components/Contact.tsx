@@ -22,12 +22,12 @@ const Contact = () => {
           <div className="contact-item" id="contact-email">
             <div id="contact-email-flex">
               <a
-                href="mailto:efrencastro.dev@gmail.com"
+                href="mailto:contact@amazingefren.com"
                 id="contact-email"
                 className="contact-item-flex"
               >
                 <EmailSVG />
-                <h3>efrencastro.dev@gmail.com</h3>
+                <h3>contact@amazingefren.com</h3>
               </a>
               {enabled && (
                 <button
@@ -36,7 +36,7 @@ const Contact = () => {
                       ? "contact-item-copied"
                       : "contact-item-copy"
                   }
-                  onClick={() => copy("efrencastro.dev@gmail.com")}
+                  onClick={() => copy("contact@amazingefren.com")}
                 >
                   {emailCopy}
                 </button>
