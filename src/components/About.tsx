@@ -18,7 +18,7 @@ const about_me = () => {
         Hey! I'm <span className="about-emphasis">Efren Castro</span>,
       </div>
       <p id="about-p-1">
-        a {age()} year-old <span className="about-emphasis">coder</span> currently
+        a {age()} year-old <span className="about-emphasis">cyber janitor</span> currently
         residing in <span className="about-emphasis">Denver</span>,
         <span className="about-emphasis" id="about-colorado">
           {" "}
