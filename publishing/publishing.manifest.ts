@@ -52,7 +52,7 @@ export default {
     "auth",
     "studio"
   ],
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "contracts": [
     "contracts/api/content-list.schema.json",
     "contracts/api/content.schema.json",

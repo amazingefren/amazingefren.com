@@ -12,6 +12,7 @@ const bindingIds = new Set();
 let obligationCount = 0;
 let missingTests = 0;
 const riskIds = new Set();
+const viewPaths = new Set();
 
 async function checkPath(path) {
   const url = new URL(path, root);
@@ -68,7 +69,7 @@ await checkRisks(platform.risks, platform.id, riskIds, checkPath);
 for (const system of systems) {
   await checkRisks(system.risks, system.id, riskIds, checkPath);
   assert.equal(system.kind, 'system');
-  assert.equal(system.schemaVersion, 4);
+  assert.equal(system.schemaVersion, 5);
   assert.equal(system.visibility, 'public');
   assert(['declared', 'prototype', 'implemented'].includes(system.status));
   for (const page of system.pages ?? []) {
@@ -82,6 +83,56 @@ for (const system of systems) {
     if (file.status === 'placeholder') assert.equal(metadata.size, 0, `Placeholder has content: ${file.source}`);
   }
   for (const dependency of system.dependencies) assert(ids.has(dependency), `Unknown dependency: ${dependency}`);
+  const views = system.views ?? [];
+  assert.equal(new Set(views.map(view => view.id)).size, views.length, `Duplicate view ID: ${system.id}`);
+  for (const view of views) {
+    assert(typeof view.id === 'string' && view.id.trim(), 'Missing view ID');
+    await checkDirectory(view.directory, system.id);
+    await checkDirectory(view.testsDirectory, system.id);
+    await checkImplementationLocation({ ...view, tests: view.verification.flatMap(item => item.tests) });
+    assert(['owner', 'public', 'guest'].includes(view.audience), `Unknown view audience: ${view.id}`);
+    assert(['declared', 'implemented'].includes(view.status), `Unknown view status: ${view.id}`);
+    assert(typeof view.path === 'string' && view.path.startsWith('/'), `Invalid view path: ${view.id}`);
+    assert(!viewPaths.has(view.path), `Duplicate view path: ${view.path}`);
+    viewPaths.add(view.path);
+    assert.equal(new Set(view.operations).size, view.operations.length, `Duplicate view operation: ${view.id}`);
+    if (view.audience === 'owner') {
+      assert.equal(view.data, 'owner', 'Owner view requires owner data');
+      assert.equal(view.access.kind, 'authenticated', 'Owner view must authenticate');
+      assert.equal(view.access.ownership, 'caller', 'Owner view must enforce ownership');
+      assert(view.access.permissions.length > 0, 'Owner view requires permission');
+      for (const permission of view.access.permissions) assert(systems.some(item => item.governance.permissionsDefined.includes(permission)), `Unknown view permission: ${permission}`);
+    } else {
+      assert.equal(view.access.kind, 'public', 'Public and guest views must use public entry access');
+      assert.equal(view.data, view.audience === 'guest' ? 'synthetic' : 'published', 'View data scope mismatch');
+    }
+    if (view.audience === 'guest') {
+      assert(views.some(other => other.id === view.replicaOf && other.audience === 'owner'), 'Guest replica requires an owner view');
+      assert.equal(view.isolation, 'session', 'Guest data must be session-isolated');
+      assert.equal(view.sideEffects, 'sandbox-only', 'Guest side effects must be sandbox-only');
+      assert.equal(view.productionAccess, 'denied', 'Guest production access must be denied');
+      assert.equal(view.fallback, 'fail-closed', 'Guest fallback must fail closed');
+    }
+    for (const id of view.operations) {
+      const operation = system.operations.find(item => item.id === id);
+      assert(operation, `Unknown view operation: ${id}`);
+      assert.equal(operation.dataScope, view.data, `View operation data scope mismatch: ${id}`);
+      assert.equal(operation.access.kind, view.access.kind, `View operation access mismatch: ${id}`);
+    }
+    assert(view.verification.length > 0, `View obligations missing: ${view.id}`);
+    for (const obligation of view.verification) {
+      assert(obligation.expectation.trim(), `Empty view obligation: ${view.id}`);
+      obligationCount += 1;
+      if (obligation.tests.length === 0) missingTests += 1;
+      for (const path of obligation.tests) await checkPath(path);
+      if (view.status === 'implemented') assert(obligation.tests.length > 0, `View tests missing: ${view.id}`);
+    }
+    if (view.status === 'implemented') {
+      assert(view.implementation, `View implementation missing: ${view.id}`);
+      assert(view.operations.length > 0, `Implemented view has no operations: ${view.id}`);
+      for (const id of view.operations) assert.equal(system.operations.find(item => item.id === id).status, 'implemented', `View operation unfinished: ${id}`);
+    }
+  }
   for (const path of [...system.entrypoints, ...system.contracts]) await checkPath(path);
   assert.deepEqual(Object.keys(system.capabilityPaths).sort(), [...system.capabilities].sort(), `Capability paths mismatch: ${system.id}`);
   for (const path of [...Object.values(system.structure), ...Object.values(system.capabilityPaths)]) await checkDirectory(path, system.id);
@@ -92,6 +143,11 @@ for (const system of systems) {
   }
   assert.equal(system.scope, 'required');
   for (const operation of system.operations) {
+    if (operation.dataScope !== undefined) assert(['owner', 'published', 'synthetic'].includes(operation.dataScope), `Invalid operation data scope: ${operation.id}`);
+    if (operation.dataScope === 'owner') {
+      assert.equal(operation.access.kind, 'authenticated', 'Owner operation must authenticate');
+      assert.equal(operation.access.ownership, 'caller', 'Owner operation must enforce ownership');
+    }
     assert(!operationIds.has(operation.id), `Duplicate operation: ${operation.id}`);
     operationIds.add(operation.id);
     assert(['public', 'authenticated'].includes(operation.access.kind));

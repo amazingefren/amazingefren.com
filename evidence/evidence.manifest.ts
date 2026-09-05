@@ -34,7 +34,7 @@ export default {
   "dependencies": [
     "manifests"
   ],
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "contracts": [],
   "operations": [],
   "events": [],

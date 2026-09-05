@@ -20,4 +20,5 @@
 - Suggest case studies when work reveals a testable claim. Track agent failures, interventions, and improvements privately. Define metrics and denominators before runs; keep failed runs. No success percentages without evidence. Do not launch experiments or extra agents just to collect data.
 - If a private submodule is missing, report it. Never recreate private notes in public Git.
 - Keep private code in private engines and private data outside public Git. Public checks must work without private engines.
+- For prototype work, read `manifests/prototypes/prototype.manifest.ts` and the private workbench's selected brief.
 - Prototype approval precedes application implementation. Run `mise run check` after changes. Do not push without user instruction.

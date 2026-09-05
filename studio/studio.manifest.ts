@@ -11,6 +11,10 @@ export default {
   "visibility": "public",
   "context": {
     "decisions": [
+      "Personal workspace is the owner product. Preserve the Commonplace sidebar; replace Overview with Dashboard owned by dashboard.",
+      "Guest workspace mirrors the navigation and workflows with synthetic records only. Never fetch owner records and redact them in the UI.",
+      "Guest writes, publish previews, exports, tasks, and experiments remain session-isolated simulations with no production side effects.",
+      "Server adapters select the data store and enforce operation access before reads. Client route, role switch, or record ID never grants owner access.",
       "Start with Markdown, metadata, and adjacent assets.",
       "Vim bindings and Neovim integration are separate options.",
       "Private drafts stay outside public Git.",
@@ -25,6 +29,7 @@ export default {
       "Apply privacy/policy.json; never expose private material through analytics."
     ],
     "openQuestions": [
+      "Guest mutation operations and their HTTP/MCP/CLI contracts must be declared before enabling guest commands.",
       "Task model, experiment workflow, search, and synchronization contracts.",
       "Database migration ownership, workbench import mapping, and restore checks."
     ]
@@ -48,9 +53,14 @@ export default {
   "risks": [],
   "dependencies": [
     "auth",
-    "privacy"
+    "privacy",
+    "dashboard"
   ],
-  "schemaVersion": 4,
+  "schemaVersion": 5,
+  views: [
+    { id: "owner", directory: "studio/ui/owner", testsDirectory: "studio/tests/views/owner", implementation: null, path: "/workspace", status: "declared", audience: "owner", access: { kind: "authenticated", permissions: ["studio.read"], ownership: "caller" }, data: "owner", operations: ["studio.create-document", "studio.list-documents", "studio.read-document", "studio.save-document"], verification: [{ expectation: "Deny unauthenticated and cross-owner access before any private read or write.", tests: [] }] },
+    { id: "guest", directory: "studio/ui/guest", testsDirectory: "studio/tests/views/guest", implementation: null, path: "/guest", status: "declared", audience: "guest", access: { kind: "public" }, data: "synthetic", replicaOf: "owner", isolation: "session", sideEffects: "sandbox-only", productionAccess: "denied", fallback: "fail-closed", operations: [], verification: [{ expectation: "Guest sessions cannot read owner data or each other, invoke owner APIs, publish live content, or send external requests. Missing fixtures fail closed.", tests: [] }] }
+  ],
   "contracts": [
     "contracts/api/errors.schema.json",
     "contracts/api/list-input.schema.json",
@@ -63,6 +73,7 @@ export default {
   "operations": [
     {
       "id": "studio.create-document",
+      dataScope: "owner",
       "access": {
         "kind": "authenticated",
         "permissions": [
@@ -151,6 +162,7 @@ export default {
     },
     {
       "id": "studio.list-documents",
+      dataScope: "owner",
       "access": {
         "kind": "authenticated",
         "permissions": [
@@ -239,6 +251,7 @@ export default {
     },
     {
       "id": "studio.read-document",
+      dataScope: "owner",
       "access": {
         "kind": "authenticated",
         "permissions": [
@@ -327,6 +340,7 @@ export default {
     },
     {
       "id": "studio.save-document",
+      dataScope: "owner",
       "access": {
         "kind": "authenticated",
         "permissions": [

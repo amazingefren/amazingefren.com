@@ -2,6 +2,7 @@ import type { AccessRule } from './access.schema.ts';
 import type { Risk } from './risk.schema.ts';
 import type { KeyboardProfile } from './keyboard.schema.ts';
 import type { Operation } from './operation.schema.ts';
+import type { SystemView } from './view.schema.ts';
 
 export interface SystemManifest {
   kind: "system";
@@ -23,7 +24,8 @@ export interface SystemManifest {
   };
   risks: readonly Risk[];
   dependencies: readonly string[];
-  schemaVersion: 4;
+  schemaVersion: 5;
+  views?: readonly SystemView[];
   contracts: readonly string[];
   operations: readonly Operation[];
   events: readonly {

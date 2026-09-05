@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "dataScope": {
+      "enum": [
+        "owner",
+        "synthetic"
+      ]
+    },
+    "from": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "to": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "page-views",
+              "honeypot-triggers",
+              "honeypot-trigger-rate"
+            ]
+          },
+          "value": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "unit": {
+            "enum": [
+              "count",
+              "ratio"
+            ]
+          },
+          "status": {
+            "enum": [
+              "available",
+              "unavailable",
+              "stale",
+              "suppressed"
+            ]
+          },
+          "numerator": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "denominator": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "value",
+          "unit",
+          "status",
+          "numerator",
+          "denominator",
+          "source"
+        ]
+      }
+    }
+  },
+  "required": [
+    "dataScope",
+    "from",
+    "to",
+    "generatedAt",
+    "metrics"
+  ]
+}

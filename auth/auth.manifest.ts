@@ -12,6 +12,8 @@ export default {
   "context": {
     "decisions": [
       "Shared access evaluation for human and machine identities.",
+      "Guest replica sessions never acquire owner permissions. Derive identity, tenant, and data scope server-side before protected reads or writes.",
+      "Deny owner API access from guest routes, forged role headers, guessed IDs, shared caches, exports, and alternative delivery bindings.",
       "Reusable public ae-auth-engine is proposed, not created."
     ],
     "openQuestions": [
@@ -195,7 +197,7 @@ export default {
     }
   ],
   "dependencies": [],
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "contracts": [],
   "operations": [],
   "events": [],

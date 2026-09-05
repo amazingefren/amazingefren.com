@@ -40,7 +40,7 @@ export default {
     "publishing",
     "privacy"
   ],
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "contracts": [],
   "operations": [],
   "events": [],

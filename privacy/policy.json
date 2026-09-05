@@ -51,6 +51,20 @@
         "Shared browsers and non-consent cause undercounting.",
         "Daily counts cannot be summed into monthly unique people."
       ]
+    },
+    "pageViews": {
+      "meaning": "Accepted opted-in public page-view events, not unique people or all traffic.",
+      "fields": [
+        "public-page-id",
+        "coarse-time-bucket"
+      ],
+      "exclude": [
+        "private routes",
+        "guest fixture events",
+        "raw URLs",
+        "referrers",
+        "identity"
+      ]
     }
   },
   "forbiddenAnalytics": [
@@ -103,5 +117,11 @@
     "Retention durations, heartbeat expiry, and public aggregation thresholds.",
     "Consent enforcement protocol and abuse resistance without analytics fingerprinting.",
     "Processor configuration, jurisdictions, and scoped legal review."
-  ]
+  ],
+  "dashboard": {
+    "owner": "Authorized aggregate summaries only.",
+    "guest": "Synthetic metrics only; no owner telemetry query or fallback.",
+    "securitySignals": "Separate operational purpose and source from voluntary audience analytics. No reuse for visitor identity profiling.",
+    "activation": "No collection enabled; declare collector contracts, consent or operational basis, allowed fields, retention, and verification first."
+  }
 }

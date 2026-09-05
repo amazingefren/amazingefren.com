@@ -2,13 +2,18 @@ import type { Risk } from './manifests/schema/risk.schema.ts';
 
 export default {
   id: "ae",
-  purpose: "My site, writing tools, experiments, and integrations.",
+  purpose: "My personal workspace, with a public site for sharing work and methods.",
   status: "prototype",
   design: {
     sdk: "Generate clients from versioned contracts.",
     infrastructure: "Cloudflare; service ownership, Workers/Pages, D1, and R2 design pending.",
     deployment: "External CI proposed for selective submodule checkout; not configured.",
-    prototypes: ["writing-studio", "system-explorer"],
+    prototypes: ["public-landing", "writing-studio", "dashboard", "guest-workspace", "system-explorer"],
+    prototypeConvention: "manifests/prototypes/prototype.manifest.ts",
+    direction: "Commonplace workspace; public hero entrance inspired by prototype 05. Minimal UI wording.",
+    landing: "WebGL visual experience with immediate HTML navigation. GPT-6 Astra landing is an aesthetic reference; final art direction remains open.",
+    entry: "Public site first. Separate public navigation and workspace sidebar. Owner workspace opens on Dashboard.",
+    guest: "A synthetic guest replica demonstrates the workspace; APIs deny all owner data access.",
   },
   risks: [
   {

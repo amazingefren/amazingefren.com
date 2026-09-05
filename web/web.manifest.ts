@@ -11,6 +11,15 @@ export default {
   "visibility": "public",
   "context": {
     "decisions": [
+      "Public / is the entry even for a workspace-shaped product. Use a hero-led page inspired by prototype 05 with minimal wording.",
+      "The landing requires a WebGL visual experience. User aesthetic reference: https://openai.com/index/gpt-6-astra/. Use it as inspiration; no asset or branding reuse is approved.",
+      "Keep hero text and destination links in semantic HTML outside the canvas, usable immediately without JavaScript. The visual must not delay navigation or require a scroll sequence.",
+      "Provide a composed static fallback for reduced motion, unavailable WebGL, load failure, and context loss. Keep text contrast and keyboard focus clear in every visual state.",
+      "Suspend rendering when hidden; release GPU resources on navigation. Validate mobile performance before accepting the scene. Animation library, visual motif, and performance budgets remain undecided.",
+      "Primary destinations: Readings (/readings), About + Resume (/about), AE Guest Workspace (/guest). Resume stays accessible from About and the guest workspace.",
+      "Public navigation is separate from the workspace sidebar. Never redirect an unknown visitor into the owner workspace.",
+      "Owner /workspace opens on Dashboard. Guest /guest uses the same workspace design with a persistent Guest label and synthetic data.",
+      "Short labels and useful content; no prototype implementation explanations in visitor flows. Mark synthetic data with concise labels.",
       "Public builds need no private engines.",
       "Articles and navigation remain usable without JavaScript.",
       "Make shortcuts discoverable; never trap focus.",
@@ -23,14 +32,15 @@ export default {
       "RedwoodSDK server rendering on Cloudflare Workers; React for interactive views.",
       "Use native HTML and scoped CSS or CSS Modules with shared design tokens.",
       "RedwoodSDK mounts manifest pages. Private pages need an authorization adapter.",
-      "The SDK requires an empty client build entry. No hydration bundle or RSC payload is sent; an inline SDK bootstrap remains.",
+      "The current Hello World uses an empty client entry and no RSC payload. Interactive prototypes may add client code; domain rules stay outside UI.",
       "Only Hello World runs. No analytics, application data, or private engines.",
       "Cloudflare observability stays disabled until its collection and retention scope is approved."
     ],
-    "openQuestions": []
+    "openQuestions": ["Choose the WebGL motif, motion, and interaction through prototype review. Define measurable mobile loading and frame-time budgets before implementation."]
   },
   "capabilities": [
     "portfolio",
+    "webgl-landing",
     "reading",
     "keyboard-navigation",
     "no-javascript-reading"
@@ -44,9 +54,11 @@ export default {
     "publishing",
     "resume",
     "system-explorer",
-    "privacy"
+    "privacy",
+    "studio",
+    "dashboard"
   ],
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "contracts": [],
   "operations": [],
   "events": [],
@@ -167,6 +179,7 @@ export default {
   ],
   "capabilityPaths": {
     "portfolio": "web/ui/portfolio",
+    "webgl-landing": "web/ui/landing",
     "reading": "web/ui/reading",
     "keyboard-navigation": "web/ui/keyboard",
     "no-javascript-reading": "web/ui/reading"

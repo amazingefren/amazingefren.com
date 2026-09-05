@@ -4,6 +4,7 @@ import type { DeliveryBinding } from './binding.schema.ts';
 export interface Operation {
     id: string;
     access: AccessRule;
+    dataScope?: "owner" | "published" | "synthetic";
     bindings: readonly DeliveryBinding[];
     status: "declared" | "implemented";
     input: string;
