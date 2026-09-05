@@ -11,7 +11,7 @@
 - Govern capabilities, operations, routes, events, dependencies, and access through colocated manifests and referenced contracts. Extend the schema when needed. Deny undeclared operations. Generate repetitive bindings in `ae-system-engine` when implemented.
 - Manifest order: purpose, decisions, capabilities, governance, risks; then contracts, bindings, and paths.
 - Nest bindings beside operation access. Inherit permissions; do not duplicate them or operation IDs.
-- When drafting manifest-related commits, use `manifests/commits/commits.manifest.ts`. Keep facts tied to the diff and causes tied to evidence. This does not authorize committing or rewriting history.
+- For commit messages, read `manifests/commits/commits.manifest.ts`. This does not authorize committing or rewriting history.
 - Give each capability and binding a manifest-linked directory. Use `.gitkeep` for empty scaffolds. Never fake implementation or passing tests.
 - Declare HTTP, MCP tools/resources, feeds, exports, CLI, and mirrors as typed bindings on owning operations. Ship applicable bindings together. Use Vim-based, remappable keyboard profiles.
 - Implement first. Test manifest obligations, behavior, access, and failures with independent expectations. No TDD or coverage target. Report missing tests; declarations are not proof.

@@ -11,7 +11,7 @@ export default {
   "syntax": {
     "subject": "<type>(<optional scope>)[!]: <description>",
     "records": [
-      "One record per line. Keys are case-sensitive. Repeat keys for multiple changes. No empty fields or continuation lines.\n\n`Manifest-Commit: 0` identifies this version. `Manifest: path` names each affected manifest once, relative to its repository. All other extension records use `Key: target | detail`; split on the first ` | ` only. Targets are stable operation, system, event, or risk IDs; contract-only targets can be repository-relative paths. No whitespace or pipes in targets.",
+      "One record per line, with one blank line between records for Markdown rendering. Blank lines separate records; they are not records. Keys are case-sensitive. Repeat keys for multiple changes. No empty fields or continuation lines.\n\n`Manifest-Commit: 0` identifies this version. `Manifest: path` names each affected manifest once, relative to its repository. All other extension records use `Key: target | detail`; split on the first ` | ` only. Targets are stable operation, system, event, or risk IDs; contract-only targets can be repository-relative paths. No whitespace or pipes in targets.",
       "For binding changes, detail starts with `http METHOD path`, `mcp-tool name`, `mcp-resource uri`, `cli command`, `feed format path`, `export format path`, or `mirror network`. Event changes use `event ID`; contract changes name their path. Emit separate records for separate bindings. Changed bindings include old -> new."
     ]
   },
@@ -48,7 +48,7 @@ export default {
     "No commit parser or generator exists yet."
   ],
   "examples": [
-    "<type>(<scope>): <description>\n\nManifest-Commit: 0\nManifest: <repository-relative-manifest-path>\n<change-key>: <stable-target-id> | <observed-change>"
+    "<type>(<scope>): <description>\n\nManifest-Commit: 0\n\nManifest: <repository-relative-manifest-path>\n\n<change-key>: <stable-target-id> | <observed-change>"
   ],
   "sources": [
     "https://www.conventionalcommits.org/en/v1.0.0/"
