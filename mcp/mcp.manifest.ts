@@ -41,7 +41,7 @@ export default {
     "system-explorer",
     "studio"
   ],
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "contracts": [],
   "operations": [],
   "events": [],
