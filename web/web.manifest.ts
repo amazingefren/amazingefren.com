@@ -20,9 +20,10 @@ export default {
       "Apply privacy/policy.json; never expose private material through analytics.",
       "Discovery files are empty placeholders, not active policies.",
       "llms.txt is a discovery proposal. agents.txt is reserved pending a defined consumer; repository AGENTS.md remains separate.",
-      "Astro server rendering on Cloudflare Workers; React islands for interactive views.",
+      "RedwoodSDK server rendering on Cloudflare Workers; React for interactive views.",
       "Use native HTML and scoped CSS or CSS Modules with shared design tokens.",
-      "Astro mounts manifest pages. Private pages need an authorization adapter.",
+      "RedwoodSDK mounts manifest pages. Private pages need an authorization adapter.",
+      "The SDK requires an empty client build entry. No hydration bundle or RSC payload is sent; an inline SDK bootstrap remains.",
       "Only Hello World runs. No analytics, application data, or private engines.",
       "Cloudflare observability stays disabled until its collection and retention scope is approved."
     ],
@@ -125,7 +126,7 @@ export default {
   "pages": [
     {
       "path": "/",
-      "entrypoint": "web/adapters/http/home.astro",
+      "entrypoint": "web/adapters/http/home.tsx",
       "access": {
         "kind": "public"
       },
@@ -180,7 +181,10 @@ export default {
     "public": "web/public"
   },
   "entrypoints": [
-    "web/astro.config.mjs",
+    "web/vite.config.ts",
+    "web/src/client.tsx",
+    "web/composition/worker.tsx",
+    "web/adapters/http/document.tsx",
     "web/package.json",
     "web/wrangler.jsonc"
   ]

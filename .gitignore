@@ -15,5 +15,6 @@ __pycache__/
 .context/
 
 web/dist/
+web/.rwsdk/
 web/.astro/
 web/worker-configuration.d.ts

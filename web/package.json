@@ -3,23 +3,25 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "WRANGLER_LOG_PATH=.wrangler/logs WRANGLER_SEND_METRICS=false ASTRO_TELEMETRY_DISABLED=1 astro dev --host 127.0.0.1",
-    "build": "WRANGLER_LOG_PATH=.wrangler/logs WRANGLER_SEND_METRICS=false ASTRO_TELEMETRY_DISABLED=1 astro build",
-    "preview": "WRANGLER_LOG_PATH=.wrangler/logs WRANGLER_SEND_METRICS=false ASTRO_TELEMETRY_DISABLED=1 astro preview --host 127.0.0.1",
-    "check": "WRANGLER_LOG_PATH=.wrangler/logs WRANGLER_SEND_METRICS=false ASTRO_TELEMETRY_DISABLED=1 astro check"
+    "dev": "WRANGLER_LOG_PATH=.wrangler/logs WRANGLER_SEND_METRICS=false vite --host 127.0.0.1",
+    "build": "WRANGLER_LOG_PATH=.wrangler/logs WRANGLER_SEND_METRICS=false vite build",
+    "preview": "WRANGLER_LOG_PATH=.wrangler/logs WRANGLER_SEND_METRICS=false vite preview --host 127.0.0.1",
+    "check": "tsc --noEmit"
   },
   "dependencies": {
-    "astro": "7.3.1",
-    "@astrojs/cloudflare": "14.3.0",
-    "@astrojs/react": "6.0.5",
+    "capnweb": "0.10.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "react-server-dom-webpack": "19.2.8",
+    "rwsdk": "1.7.3"
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.10",
-    "typescript": "6.0.3",
-    "wrangler": "4.129.0",
+    "@cloudflare/vite-plugin": "1.54.4",
     "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.7"
+    "@types/react-dom": "19.2.7",
+    "esbuild": "0.28.2",
+    "typescript": "6.0.3",
+    "vite": "8.2.2",
+    "wrangler": "4.129.0"
   }
 }

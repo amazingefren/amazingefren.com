@@ -77,7 +77,7 @@ export default {
     "reviewTrigger": "Before auth or data goes live; on design, provider, recovery, or incident changes."
   }
 ] satisfies readonly Risk[],
-  frontend: { public: "Astro SSR", interactive: "React", language: "TypeScript", styling: "scoped CSS and CSS Modules", runtime: "Cloudflare Workers", workspace: "npm" },
+  frontend: { public: "RedwoodSDK SSR", interactive: "React", language: "TypeScript", styling: "scoped CSS and CSS Modules", runtime: "Cloudflare Workers", workspace: "npm" },
   authoring: { system: "studio", runtime: "ae-studio-engine", publication: "publishing" },
   contentStorage: { sourceOfTruth: "D1", files: "R2", gitContent: "fixtures-and-approved-exports-only", publishingRequiresDeployment: false },
   access: {
