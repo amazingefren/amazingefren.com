@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "markdown": {
+      "type": "string"
+    },
+    "privateNotes": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "note",
+        "article",
+        "publication"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ownerId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "active",
+        "archived"
+      ]
+    }
+  },
+  "required": [
+    "title",
+    "markdown",
+    "privateNotes",
+    "kind",
+    "id",
+    "ownerId",
+    "revision",
+    "state"
+  ]
+}

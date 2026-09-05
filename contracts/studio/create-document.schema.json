@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "markdown": {
+      "type": "string"
+    },
+    "privateNotes": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "note",
+        "article",
+        "publication"
+      ]
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "title",
+    "markdown",
+    "privateNotes",
+    "kind",
+    "idempotencyKey"
+  ]
+}

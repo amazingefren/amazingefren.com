@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "enum": [
+        "not_found",
+        "invalid_input",
+        "unavailable",
+        "forbidden",
+        "unauthenticated",
+        "conflict"
+      ]
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "message"
+  ]
+}

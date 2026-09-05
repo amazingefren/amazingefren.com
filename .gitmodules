@@ -1,0 +1,15 @@
+[submodule "ae-resume-engine"]
+	path = ae-resume-engine
+	url = git@github.com:amazingefren/ae-resume-engine.git
+[submodule "ae-publishing-engine"]
+	path = ae-publishing-engine
+	url = git@github.com:amazingefren/ae-publishing-engine.git
+[submodule "ae-system-engine"]
+	path = ae-system-engine
+	url = git@github.com:amazingefren/ae-system-engine.git
+[submodule "ae-workbench"]
+	path = ae-workbench
+	url = git@github.com:amazingefren/ae-workbench.git
+[submodule "ae-studio-engine"]
+	path = ae-studio-engine
+	url = git@github.com:amazingefren/ae-studio-engine.git

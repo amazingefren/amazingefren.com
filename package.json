@@ -1,0 +1,18 @@
+{
+  "name": "ae",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "web"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @ae/web",
+    "build": "npm run build --workspace @ae/web",
+    "preview": "npm run preview --workspace @ae/web",
+    "check": "node scripts/check-manifests.mjs && npm run check --workspace @ae/web",
+    "test": "node --test scripts/check-manifests.test.mjs manifests/risks/check.test.mjs"
+  },
+  "engines": {
+    "node": ">=26.3.1"
+  }
+}

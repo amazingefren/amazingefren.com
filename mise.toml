@@ -1,0 +1,22 @@
+[tools]
+node = "26.3.1"
+
+[tasks.check]
+description = "Check the public manifest scaffold without private engines"
+run = "node scripts/check-manifests.mjs"
+
+[tasks.dev]
+description = "Start the local frontend"
+run = "npm run dev"
+
+[tasks.build]
+description = "Build the Cloudflare frontend"
+run = "npm run build"
+
+[tasks.preview]
+description = "Preview the production build locally"
+run = "npm run preview"
+
+[tasks.frontend-check]
+description = "Check frontend types"
+run = "npm run check --workspace @ae/web"

@@ -1,0 +1,107 @@
+{
+  "status": "design-not-enforced",
+  "purpose": "Measure voluntary engagement without identity profiling.",
+  "channels": {
+    "https": "analytics-off-until-opt-in",
+    "onion": "analytics-disabled",
+    "ipfs": "analytics-disabled",
+    "offline": "analytics-disabled",
+    "feeds": "no-tracking-pixels",
+    "mcp-cli-api": "no-behavioral-analytics"
+  },
+  "consent": {
+    "default": "off",
+    "choice": [
+      "allow",
+      "decline"
+    ],
+    "withdrawal": "as-easy-as-opt-in",
+    "readingRequiresConsent": false,
+    "beforeConsent": "No analytics script, identifier, event, or queued history.",
+    "afterWithdrawal": "Stop collection, remove analytics tokens, and request deletion of token-linked records; completed aggregates cannot identify the participant.",
+    "preferenceStorage": "Store only the minimum choice record; no identifier required for decline."
+  },
+  "metrics": {
+    "clicks": {
+      "meaning": "Consented clicks on allowlisted controls.",
+      "fields": [
+        "articleId",
+        "controlId",
+        "coarse-time-bucket"
+      ],
+      "exclude": [
+        "typed-text",
+        "link-query",
+        "full-url",
+        "referrer"
+      ]
+    },
+    "activeReaders": {
+      "meaning": "Approximate opted-in active sessions, not people.",
+      "identity": "In-memory random presence token.",
+      "expiry": "Short heartbeat timeout; exact duration requires design.",
+      "publicDisplay": "Delay or suppress small counts; never expose individual presence."
+    },
+    "articleDailyBrowsers": {
+      "meaning": "Distinct opted-in browser tokens for one article and one day.",
+      "identity": "Independent random article/day token; no stable parent ID.",
+      "classification": "Pseudonymous until token-linked records expire; not anonymous people.",
+      "limits": [
+        "Different browsers, cleared storage, and token resets cause overcounting.",
+        "Shared browsers and non-consent cause undercounting.",
+        "Daily counts cannot be summed into monthly unique people."
+      ]
+    }
+  },
+  "forbiddenAnalytics": [
+    "IP addresses including hashes",
+    "fingerprints",
+    "account identifiers",
+    "cross-site identifiers",
+    "cross-article identifiers",
+    "session replay",
+    "private content",
+    "raw request headers"
+  ],
+  "collection": "First-party allowlisted endpoint; enforce consent before dispatch and again at ingestion where verifiable. Discard unrecognized fields.",
+  "operationalData": "Transport and hosting providers can process IPs and request metadata. Essential auth/security records are separate, restricted, and disclosed; never reuse them for audience analytics.",
+  "retention": {
+    "rawEvents": "Prefer aggregate-on-ingest; no event trail by default.",
+    "deduplicationTokens": "Delete when article/day deduplication window ends.",
+    "aggregates": "Set and disclose a bounded duration before implementation.",
+    "providerLogs": "Inventory actual edge, Worker, WAF, and log-export settings before promising retention."
+  },
+  "governance": {
+    "public": [
+      "purpose",
+      "field-list",
+      "processors",
+      "retention",
+      "consent-version",
+      "controls",
+      "verification-results",
+      "known-limitations"
+    ],
+    "private": [
+      "security-log-contents",
+      "credentials",
+      "incident-details"
+    ],
+    "compliance": "Publish scope and evidence. Do not claim certification or universal compliance from a manifest."
+  },
+  "verification": [
+    "No analytics network requests or identifier storage before consent.",
+    "Declining does not reduce reading features.",
+    "Withdrawal stops requests and removes analytics identifiers.",
+    "No identifiers persist across article/day boundaries.",
+    "Mirrors omit analytics assets, pixels, scripts, and external embeds.",
+    "Collector rejects forbidden fields; infrastructure logs do not capture analytics bodies.",
+    "Public metrics exclude private documents and suppress small groups.",
+    "Expiry removes token-linked records and respects declared retention."
+  ],
+  "open": [
+    "Retention durations, heartbeat expiry, and public aggregation thresholds.",
+    "Consent enforcement protocol and abuse resistance without analytics fingerprinting.",
+    "Processor configuration, jurisdictions, and scoped legal review."
+  ]
+}
