@@ -20,3 +20,17 @@ run = "npm run preview"
 [tasks.frontend-check]
 description = "Check frontend types"
 run = "npm run check --workspace @ae/web"
+
+[tasks.push]
+description = "Push required submodule commits, then the current branch"
+run = "node scripts/push.mjs"
+
+[tasks.pull]
+description = "Fast-forward the current branch and restore its submodule revisions"
+run = '''
+set -eu
+branch=$(git symbolic-ref --quiet --short HEAD)
+git pull --ff-only --no-recurse-submodules origin "$branch"
+git submodule sync --recursive
+git submodule update --init --recursive --checkout
+'''
