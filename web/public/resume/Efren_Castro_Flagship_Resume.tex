@@ -1,0 +1,104 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[letterpaper,top=0.52in,bottom=0.55in,left=0.62in,right=0.62in]{geometry}
+\usepackage{fontspec}
+\setmainfont{Arial}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\definecolor{navy}{HTML}{111936}
+\definecolor{ink}{HTML}{20242B}
+\definecolor{muted}{HTML}{596170}
+
+\hypersetup{colorlinks=true,urlcolor=navy,pdfauthor={Efren Castro},pdftitle={Efren Castro Solutions Architect Resume}}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3.1pt}
+\color{ink}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=2em
+
+\newcommand{\resumeSection}[1]{%
+  \vspace{6pt}%
+  {\color{navy}\bfseries\fontsize{11.5}{13}\selectfont\MakeUppercase{#1}}\par
+  \vspace{1pt}{\color{navy}\rule{\textwidth}{0.7pt}}\vspace{1.5pt}
+}
+
+\newcommand{\roleLine}[3]{%
+  {\bfseries\fontsize{11.2}{13}\selectfont #1}\hfill{\bfseries #3}\par
+  {\color{muted}\itshape #2}\par
+}
+
+\newenvironment{resumeItems}{%
+  \begin{itemize}[leftmargin=0.20in,label={\color{navy}\raisebox{0.25ex}{\rule{0.55ex}{0.55ex}}},itemsep=4pt,topsep=2pt,parsep=0pt,partopsep=0pt]
+}{\end{itemize}}
+
+\begin{document}
+\raggedright
+\fontsize{10.7}{13}\selectfont
+
+{\color{navy}\bfseries\fontsize{30}{32}\selectfont Efren Castro}\par
+\vspace{2pt}{\fontsize{15}{17}\selectfont Solutions Architect}\par
+\vspace{3pt}{\color{muted}\fontsize{10.2}{12}\selectfont Applied AI \textbar{} Product Architecture \textbar{} Cloud, Security \& SRE}\par
+\vspace{7pt}{\small Denver, Colorado \textbar{} \href{mailto:efren@amazingefren.com}{efren@amazingefren.com} \textbar{} +1 720 539 6101 \textbar{} \href{https://github.com/amazingefren}{github.com/amazingefren}}\par
+\vspace{2pt}{\color{navy}\rule{\textwidth}{1.1pt}}
+
+\resumeSection{Profile}
+Hands-on solutions architect who sets technical direction and builds production systems at MeasuringU. Advises the CEO and CTO on AI, software, cloud, security, internal technology, and the business decisions around them. Leads work across engineering, research, and operations from early discovery through production support.
+
+\resumeSection{Experience}
+\roleLine{Solutions Architect}{MeasuringU, Denver, Colorado \textbar{} Promoted from Developer}{Dec 2021 to Present}
+\begin{resumeItems}
+  \item Lead technical discovery for new research methods and internal products. Work with researchers and operations to understand the need, test unfamiliar approaches in code, and choose a practical path to production.
+  \item Led the company-wide rollout of a managed AI platform after finding that staff were relying on personal accounts across several providers. Selected the platform, wrote the policies and training, and introduced an operating model aligned with ISO/IEC 42001.
+  \item Created a production internal operations platform that brings AI, security, and compliance work into one place. It connects staff, assets, access requests, policies, audit evidence, DDQs, and project-specific data rules.
+  \item Extended the platform with an MCP layer so staff can use approved company knowledge and internal tools from AI. The service checks identity, permissions, data classification, company policy, and client terms before a tool can run.
+  \item Introduced a lightweight review and ownership process as staff began creating AI tools faster. Teams have a clear path to launch, while confidential research systems receive separate architecture and data-use review.
+  \item Created a shared authentication service on Cloudflare using Google Workspace. Internal applications now inherit the same session and access rules without maintaining their own directory sync.
+  \item Led the move from a high-maintenance VPS environment to AWS, reducing routine server work and strengthening the security baseline. Defined how AWS, Cloudflare, and GCP are used across the stack.
+  \item Build production software across the stack, including research tools, internal platforms, automations, integrations, and AI systems. Earlier work modernized video infrastructure with FFmpeg, MP4Box, LiveKit, Zoom Video SDK, and managed cloud services.
+  \item Own SRE and on-call operations, including monitoring, incident response, and production reliability. Also manage internal networks, physical access, and camera security.
+  \item Coordinate the ISMS and write the company's security and data-handling policies and training. Lead technical responses for enterprise DDQs and audits, and have served as Data Protection Officer.
+\end{resumeItems}
+
+\newpage
+
+{\color{navy}\bfseries\fontsize{13}{15}\selectfont Efren Castro}\hfill{\color{muted}\small Solutions Architect}\par
+
+\resumeSection{Operating Model}
+\begin{resumeItems}
+  \item Assess the technology, staffing needs, business constraints, and daily operations together. Fix the gaps that create the most risk or slow delivery first.
+  \item Set a long-term technical plan, define ownership, and identify the roles or skills needed to carry it.
+  \item Put missing operating foundations in place, including documentation, security procedures, access management, incident response, disaster recovery, and service ownership.
+  \item Use product, system, and team performance data to surface problems early and give leadership a clearer basis for difficult decisions.
+  \item Stay hands-on when the path is uncertain. Prototype the hard parts, set the architecture, and delegate implementation once the direction is clear.
+\end{resumeItems}
+
+\resumeSection{Earlier Experience}
+\roleLine{Technical Consultant}{Various clients}{2020 to 2021}
+\begin{resumeItems}
+  \item Built a mobile ordering solution that integrated Square Orders APIs with delivery services during the COVID-19 pandemic.
+  \item Deployed and operated Jitsi Meet with Nginx, Docker, and deployment automation written in Bash and Python.
+\end{resumeItems}
+
+\resumeSection{Technical Foundation}
+\textbf{Applied AI:} Claude, OpenAI, Gemini, Amazon Bedrock, Google Vertex AI, OpenRouter, Vellum, LiveKit, model routing, agents, tool calling, MCP, vector search, human approval flows, AI governance
+
+\textbf{Cloud and platform:} Cloudflare Workers, Durable Objects, D1, R2, KV, Queues, Access, Vectorize, AI Gateway, Pages, AWS, GCP, DigitalOcean, VPCs, Linux, Docker, APIs, event-driven systems
+
+\textbf{Engineering and operations:} Python, JavaScript, TypeScript, Go, Rust, C, C++, Java, Bash, Terraform, Pulumi, Ansible, CI/CD, SRE, observability, Zabbix, Grafana, Wazuh, incident response
+
+\textbf{Security and assurance:} ISO/IEC 42001, ISO/IEC 27001, HIPAA, GDPR, CCPA, Colorado Privacy Act, ISMS, IAM, GRC, data protection, security reviews, audit support
+
+\resumeSection{Background}
+Started using Linux and building for the web in 2007. Since then, self-directed work has included programming languages, operating systems, game servers, networks, cloud platforms, design, automation, and security. Technical decisions now draw on years of seeing how different systems behave, fail, and fit together.
+
+Studied computer science at the University of Colorado Boulder. Completed the University of Denver full-stack development program and Harvard's CS50x online. Fluent in English and Spanish.
+
+\resumeSection{Interests}
+Powerlifting, hands-on projects around the house, personal servers, and learning new systems for the fun of it. Home life is intentionally low tech.
+
+\end{document}

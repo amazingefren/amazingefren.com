@@ -1,3 +1,1 @@
-export default function Home() {
-  return <main>hello world!</main>;
-}
+export { Home as default } from './public.tsx';

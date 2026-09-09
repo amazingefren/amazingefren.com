@@ -15,6 +15,7 @@ export default {
       "Show page views, honeypot trigger counts and rates, time windows, trend charts, source freshness, and unavailable states. Definitions live in metrics.manifest.ts.",
       "Owner dashboard reads authorized aggregates. Guest dashboard has the same layout with labeled synthetic data.",
       "Dashboard consumes typed telemetry ports; it does not silently enable analytics, deploy traps, or collect visitor data.",
+      "Summary operations require valid calendar timestamps with explicit time zones and reject undeclared fields. Adapters normalize minute-precision form input to UTC; repeated window parameters are rejected. npm test runs dashboard tests.",
       "Audience analytics follows privacy/policy.json and opt-in consent. Operational security signals stay separate from audience analytics.",
       "A honeypot trigger is an observed signal, not proof of AI identity or hostile intent. Keep false positives and unknown classification visible.",
       "No invented live values: null for missing data, zero only for a measured zero. Rate denominators are eligible evaluated requests, not all visitors.",
@@ -74,7 +75,7 @@ export default {
       "id": "guest",
       "directory": "dashboard/ui/guest",
       "testsDirectory": "dashboard/tests/views/guest",
-      "implementation": null,
+      "implementation": "dashboard/ui/guest/index.tsx",
       "path": "/guest/dashboard",
       "status": "declared",
       "audience": "guest",
@@ -93,7 +94,7 @@ export default {
       "verification": [
         {
           "expectation": "Guest charts are labeled synthetic and cannot reveal owner counts, logs, sessions, or content.",
-          "tests": []
+          "tests": ["dashboard/tests/views/guest/guest-dashboard.test.ts"]
         }
       ]
     }
@@ -124,8 +125,8 @@ export default {
           },
           "scope": "required",
           "status": "declared",
-          "implementation": null,
-          "tests": [],
+          "implementation": "dashboard/adapters/http/summary.ts",
+          "tests": ["dashboard/tests/adapters/http/summary.test.ts"],
           "directory": "dashboard/adapters/http",
           "testsDirectory": "dashboard/tests/adapters/http"
         },
@@ -139,8 +140,8 @@ export default {
           },
           "scope": "required",
           "status": "declared",
-          "implementation": null,
-          "tests": [],
+          "implementation": "dashboard/adapters/mcp/summary.ts",
+          "tests": ["dashboard/tests/adapters/mcp/summary.test.ts"],
           "directory": "dashboard/adapters/mcp",
           "testsDirectory": "dashboard/tests/adapters/mcp"
         },
@@ -153,8 +154,8 @@ export default {
           },
           "scope": "required",
           "status": "declared",
-          "implementation": null,
-          "tests": [],
+          "implementation": "dashboard/adapters/cli/summary.ts",
+          "tests": ["dashboard/tests/adapters/cli/summary.test.ts"],
           "directory": "dashboard/adapters/cli",
           "testsDirectory": "dashboard/tests/adapters/cli"
         }
@@ -163,31 +164,31 @@ export default {
       "input": "dashboard/contracts/summary-input.schema.json",
       "output": "dashboard/contracts/summary.schema.json",
       "errors": "contracts/api/errors.schema.json",
-      "implementation": null,
+      "implementation": "dashboard/operations/read-summary/index.ts",
       "verification": [
         {
           "id": "dashboard.read-summary.contract",
           "category": "contract",
           "expectation": "Return the time window, data scope, source, freshness, and typed metrics. Reject reversed or excessive windows.",
-          "tests": []
+          "tests": ["dashboard/tests/operations/read-summary/read-summary.test.ts"]
         },
         {
           "id": "dashboard.read-summary.access",
           "category": "access",
           "expectation": "Authorize owner and dashboard.read before any telemetry read; deny guest credentials and foreign owner IDs.",
-          "tests": []
+          "tests": ["dashboard/tests/operations/read-summary/read-summary.test.ts"]
         },
         {
           "id": "dashboard.read-summary.behavior",
           "category": "behavior",
           "expectation": "Missing or suppressed data uses null, not zero. A trigger is a signal, not verified agent identity. Ratios include their numerator and denominator.",
-          "tests": []
+          "tests": ["dashboard/tests/operations/read-summary/read-summary.test.ts"]
         },
         {
           "id": "dashboard.read-summary.failure",
           "category": "failure",
           "expectation": "Collector gaps and failures remain unavailable or stale; no invented metrics or production fallback.",
-          "tests": []
+          "tests": ["dashboard/tests/operations/read-summary/read-summary.test.ts"]
         }
       ],
       "directory": "dashboard/operations/read-summary",
@@ -209,8 +210,8 @@ export default {
           },
           "scope": "required",
           "status": "declared",
-          "implementation": null,
-          "tests": [],
+          "implementation": "dashboard/adapters/http/summary.ts",
+          "tests": ["dashboard/tests/adapters/http/summary.test.ts"],
           "directory": "dashboard/adapters/http",
           "testsDirectory": "dashboard/tests/adapters/http"
         },
@@ -224,8 +225,8 @@ export default {
           },
           "scope": "required",
           "status": "declared",
-          "implementation": null,
-          "tests": [],
+          "implementation": "dashboard/adapters/mcp/summary.ts",
+          "tests": ["dashboard/tests/adapters/mcp/summary.test.ts"],
           "directory": "dashboard/adapters/mcp",
           "testsDirectory": "dashboard/tests/adapters/mcp"
         },
@@ -238,8 +239,8 @@ export default {
           },
           "scope": "required",
           "status": "declared",
-          "implementation": null,
-          "tests": [],
+          "implementation": "dashboard/adapters/cli/summary.ts",
+          "tests": ["dashboard/tests/adapters/cli/summary.test.ts"],
           "directory": "dashboard/adapters/cli",
           "testsDirectory": "dashboard/tests/adapters/cli"
         }
@@ -248,31 +249,31 @@ export default {
       "input": "dashboard/contracts/summary-input.schema.json",
       "output": "dashboard/contracts/summary.schema.json",
       "errors": "contracts/api/errors.schema.json",
-      "implementation": null,
+      "implementation": "dashboard/operations/read-guest-summary/index.ts",
       "verification": [
         {
           "id": "dashboard.read-guest-summary.contract",
           "category": "contract",
           "expectation": "Return the time window, data scope, source, freshness, and typed metrics. Reject reversed or excessive windows.",
-          "tests": []
+          "tests": ["dashboard/tests/operations/read-guest-summary/read-guest-summary.test.ts"]
         },
         {
           "id": "dashboard.read-guest-summary.access",
           "category": "access",
           "expectation": "Read only synthetic fixtures through isolated guest adapters; never query owner telemetry, including on fixture failure.",
-          "tests": []
+          "tests": ["dashboard/tests/operations/read-guest-summary/read-guest-summary.test.ts"]
         },
         {
           "id": "dashboard.read-guest-summary.behavior",
           "category": "behavior",
           "expectation": "Missing or suppressed data uses null, not zero. A trigger is a signal, not verified agent identity. Ratios include their numerator and denominator.",
-          "tests": []
+          "tests": ["dashboard/tests/operations/read-guest-summary/read-guest-summary.test.ts"]
         },
         {
           "id": "dashboard.read-guest-summary.failure",
           "category": "failure",
           "expectation": "Collector gaps and failures remain unavailable or stale; no invented metrics or production fallback.",
-          "tests": []
+          "tests": ["dashboard/tests/operations/read-guest-summary/read-guest-summary.test.ts"]
         }
       ],
       "directory": "dashboard/operations/read-guest-summary",

@@ -21,6 +21,13 @@
       "type": "string",
       "format": "date-time"
     },
+    "freshness": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
     "metrics": {
       "type": "array",
       "items": {
@@ -91,6 +98,7 @@
     "from",
     "to",
     "generatedAt",
+    "freshness",
     "metrics"
   ]
 }

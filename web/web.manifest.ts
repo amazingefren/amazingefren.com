@@ -6,41 +6,46 @@ export default {
   "name": "AE Web",
   "purpose": "My portfolio and a place to read.",
   "owner": "amazingefren",
-  "status": "prototype",
+  "status": "declared",
   "scope": "required",
   "visibility": "public",
   "context": {
     "decisions": [
-      "Public / is the entry even for a workspace-shaped product. Use a hero-led page inspired by prototype 05 with minimal wording.",
-      "The landing requires a WebGL visual experience. User aesthetic reference: https://openai.com/index/gpt-6-astra/. Use it as inspiration; no asset or branding reuse is approved.",
-      "Keep hero text and destination links in semantic HTML outside the canvas, usable immediately without JavaScript. The visual must not delay navigation or require a scroll sequence.",
-      "Provide a composed static fallback for reduced motion, unavailable WebGL, load failure, and context loss. Keep text contrast and keyboard focus clear in every visual state.",
-      "Suspend rendering when hidden; release GPU resources on navigation. Validate mobile performance before accepting the scene. Animation library, visual motif, and performance budgets remain undecided.",
-      "Primary destinations: Readings (/readings), About + Resume (/about), AE Guest Workspace (/guest). Resume stays accessible from About and the guest workspace.",
+      "Public / is the entry even for a workspace-shaped product. Use a hero-led page with immediate paths into readings and About me.",
+      "The landing uses a large rounded SVG research field, without an eye outline or text labels. Theme-specific inner shadows and edge highlights place the scene behind the page. Static CRT scanlines, phosphor texture, and edge shading cover the artwork only; no flicker. Dark mode shows an illustrative bird lab on warm light-mode paper, with tracking paths and no clouds; light mode shows an approved atlas-style illustrated galaxy with faint coordinate guides. These are visual studies, not measured results. CSS follows explicit and system themes.",
+      "Keep hero text and destination links in semantic HTML, usable immediately without JavaScript. The home fits one viewport when space allows; short screens and text zoom can scroll without clipping.",
+      "Render the research field as static inline SVG with the declared local galaxy image. It needs no JavaScript, animation, GPU context, or third-party runtime assets. Keep text contrast and keyboard focus clear in both themes.",
+      "The hero introduces a workbench for research and ideas. Invite exploration and observation without claiming that writing is already published.",
+      "Approved Shared circles AE mark. Public pages share the artwork blue radial background; light mode uses pale blue and warm paper. Theme choices stay local.",
+      "Shared dark artwork tokens preserve the amber, orange, red, and plum gradient for reuse beyond the landing.",
+      "Primary destinations: Readings (/readings), About me (/about), and Workbench (/guest/dashboard). Workbench opens the synthetic guest dashboard. Resume stays accessible from About me.",
       "Public navigation is separate from the workspace sidebar. Never redirect an unknown visitor into the owner workspace.",
-      "Owner /workspace opens on Dashboard. Guest /guest uses the same workspace design with a persistent Guest label and synthetic data.",
+      "Owner workspace routes are not linked from the public site. The public Workbench link opens the declared guest dashboard.",
+      "Light-mode window depth uses a page-colored recessed lip outside the dark galaxy; the inner shadow alone cannot define the edge against dark artwork.",
       "Short labels and useful content; no prototype implementation explanations in visitor flows. Mark synthetic data with concise labels.",
       "Public builds need no private engines.",
       "Articles and navigation remain usable without JavaScript.",
       "Make shortcuts discoverable; never trap focus.",
       "Public content must be readable without this website.",
       "UI commands grant no server permissions. Allow shortcut remapping and disabling; never capture unrelated text inputs.",
-      "Load the current publication list; no Git commit or build per article.",
+      "Show an honest empty reading state until approved writing is available. A clearly labeled demonstration route documents the reading layout.",
       "Apply privacy/policy.json; never expose private material through analytics.",
       "Discovery files are empty placeholders, not active policies.",
       "llms.txt is a discovery proposal. agents.txt is reserved pending a defined consumer; repository AGENTS.md remains separate.",
-      "RedwoodSDK server rendering on Cloudflare Workers; React for interactive views.",
+      "RedwoodSDK server rendering on Cloudflare Workers; React for optional local theme controls.",
+      "Keep authoring portable and dependency-light with server-rendered TSX while no approved articles exist; defer MDX compilation until publishing needs trusted source files.",
       "Use native HTML and scoped CSS or CSS Modules with shared design tokens.",
       "RedwoodSDK mounts manifest pages. Private pages need an authorization adapter.",
-      "The current Hello World uses an empty client entry and no RSC payload. Interactive prototypes may add client code; domain rules stay outside UI.",
-      "Only Hello World runs. No analytics, application data, or private engines.",
+      "The public pages use server-rendered HTML with an RSC payload for optional theme controls. Domain rules stay outside UI.",
+      "Only public presentation runs. No analytics, application data, or private engines.",
+      "Theme selection is an optional local display preference. It is not sent to the server and does not enable analytics.",
       "Cloudflare observability stays disabled until its collection and retention scope is approved."
     ],
-    "openQuestions": ["Choose the WebGL motif, motion, and interaction through prototype review. Define measurable mobile loading and frame-time budgets before implementation."]
+    "openQuestions": ["Define measurable mobile loading and frame-time budgets before a production release."]
   },
   "capabilities": [
     "portfolio",
-    "webgl-landing",
+    "observation-landing",
     "reading",
     "keyboard-navigation",
     "no-javascript-reading"
@@ -138,14 +143,57 @@ export default {
   "pages": [
     {
       "path": "/",
-      "entrypoint": "web/adapters/http/home.tsx",
+      "entrypoint": "web/adapters/http/public.tsx",
       "access": {
         "kind": "public"
       },
-      "status": "prototype"
+      "status": "implemented"
+    },
+    {
+      "path": "/readings",
+      "entrypoint": "web/adapters/http/public.tsx",
+      "access": {
+        "kind": "public"
+      },
+      "status": "implemented"
+    },
+    {
+      "path": "/readings/demo",
+      "entrypoint": "web/adapters/http/public.tsx",
+      "access": {
+        "kind": "public"
+      },
+      "status": "implemented"
+    },
+    {
+      "path": "/about",
+      "entrypoint": "web/adapters/http/public.tsx",
+      "access": {
+        "kind": "public"
+      },
+      "status": "implemented"
+    },
+    {
+      "path": "*",
+      "entrypoint": "web/adapters/http/public.tsx",
+      "access": {
+        "kind": "public"
+      },
+      "status": "implemented"
     }
   ],
   "staticFiles": [
+    { "path": "/assets/galaxy-illustrated.png", "source": "web/public/assets/galaxy-illustrated.png", "status": "ready" },
+    {
+      "path": "/assets/continuum-color.svg",
+      "source": "web/public/assets/continuum-color.svg",
+      "status": "ready"
+    },
+    {
+      "path": "/assets/continuum-mono.svg",
+      "source": "web/public/assets/continuum-mono.svg",
+      "status": "ready"
+    },
     {
       "path": "/robots.txt",
       "source": "web/public/robots.txt",
@@ -175,11 +223,26 @@ export default {
       "path": "/.well-known/security.txt",
       "source": "web/public/.well-known/security.txt",
       "status": "placeholder"
+    },
+    {
+      "path": "/resume/Efren_Castro_Flagship_Resume.pdf",
+      "source": "web/public/resume/Efren_Castro_Flagship_Resume.pdf",
+      "status": "ready"
+    },
+    {
+      "path": "/resume/Efren_Castro_Flagship_Resume.docx",
+      "source": "web/public/resume/Efren_Castro_Flagship_Resume.docx",
+      "status": "ready"
+    },
+    {
+      "path": "/resume/Efren_Castro_Flagship_Resume.tex",
+      "source": "web/public/resume/Efren_Castro_Flagship_Resume.tex",
+      "status": "ready"
     }
   ],
   "capabilityPaths": {
     "portfolio": "web/ui/portfolio",
-    "webgl-landing": "web/ui/landing",
+    "observation-landing": "web/ui/landing",
     "reading": "web/ui/reading",
     "keyboard-navigation": "web/ui/keyboard",
     "no-javascript-reading": "web/ui/reading"
