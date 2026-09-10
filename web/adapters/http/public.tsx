@@ -1,3 +1,4 @@
+import { PrivacySummary } from '../../../privacy/ui/transparency/PrivacySummary.tsx';
 import { ActionLink } from '../../../design/ui/ActionLink.tsx';
 import { AboutProfile } from '../../ui/portfolio/AboutProfile.tsx';
 import { ObservationField } from '../../ui/landing/ObservationField.tsx';
@@ -7,7 +8,7 @@ import type { ReactNode } from 'react';
 import type { RequestInfo } from 'rwsdk/worker';
 import './public.css';
 
-type Page = 'home' | 'about' | 'readings' | 'reading' | 'not-found';
+type Page = 'home' | 'about' | 'readings' | 'reading' | 'privacy' | 'not-found';
 
 const navigation = (page: Page) => (
   <nav className="site-nav" aria-label="Primary navigation">
@@ -34,11 +35,11 @@ export function Home() {
 }
 
 export function Readings() {
-  return <Shell page="readings"><section className="page-heading"><p className="eyebrow">PUBLIC NOTES <span>/</span> 2026</p><h1>Readings.</h1><p className="page-lede">A place for longer thoughts on software, applied AI, and the work around them.</p></section><section className="reading-empty" aria-labelledby="empty-title"><div className="empty-symbol" aria-hidden="true">◎</div><div><p className="eyebrow">THE READING ROOM</p><h2 id="empty-title">Nothing published yet.</h2><p>Original essays and stable copies will appear here as they are ready.</p><ActionLink href="/readings/demo">View the layout demo</ActionLink></div></section><div className="page-back"><a href="/">← Back home</a><span>No published readings yet</span></div></Shell>;
+  return <Shell page="readings"><section className="page-heading"><h1>Readings.</h1></section><section className="reading-empty" aria-labelledby="empty-title"><div className="empty-symbol" aria-hidden="true">◎</div><div><h2 id="empty-title">Nothing published yet.</h2><ActionLink href="/readings/demo">View the layout demo</ActionLink></div></section></Shell>;
 }
 
 export function ReadingDemo() {
-  return <Shell page="reading"><div className="reader-layout"><aside className="reader-aside"><a href="/readings">← Readings</a><span className="eyebrow">DEMONSTRATION TEXT</span><span>Layout preview</span></aside><article className="reader"><header><p className="eyebrow">DEMONSTRATION READING <span>/</span> 00</p><h1>A reading room needs room to think.</h1><p className="reader-deck">A small preview of the article format. This page is layout content, not a published essay.</p></header><div className="prose"><p>Good notes make the path between a question and a decision easier to follow. They hold the loose parts long enough for a useful shape to emerge.</p><p>The public reading room is where those notes will live. Each piece will carry its own context, sources, and revision history, with a plain HTML version available to keep.</p><p>Until the first article is ready, this demonstration keeps the promise visible without pretending the work is finished.</p></div><footer><span>Demo only · no publication revision</span><a href="/readings">Back to all readings <span aria-hidden="true">↗</span></a></footer></article></div></Shell>;
+  return <Shell page="reading"><div className="reader-layout"><aside className="reader-aside"><a href="/readings">← Readings</a></aside><article className="reader"><header><p className="eyebrow">LAYOUT DEMO</p><h1>A reading room needs room to think.</h1></header><div className="prose"><p>Good notes make the path between a question and a decision easier to follow. They hold the loose parts long enough for a useful shape to emerge.</p><p>The public reading room is where those notes will live. Each piece will carry its own context, sources, and revision history, with a plain HTML version available to keep.</p><p>Until the first article is ready, this demonstration keeps the promise visible without pretending the work is finished.</p></div><footer><span>Layout demo</span><a href="/readings">Back to all readings <span aria-hidden="true">↗</span></a></footer></article></div></Shell>;
 }
 
 export function About() {
@@ -46,7 +47,7 @@ export function About() {
 }
 
 export function NotFound() {
-  return <Shell page="not-found"><section className="not-found"><div><p className="eyebrow">PUBLIC SITE <span>/</span> 404</p><h1>That page<br /><em>is elsewhere.</em></h1><p>The address does not point to a published page. Try the readings or head back to the beginning.</p><div className="not-found-actions"><ActionLink variant="primary" href="/">Back home</ActionLink><ActionLink href="/readings">Browse readings</ActionLink></div></div><div className="not-found-number" aria-hidden="true">404</div></section></Shell>;
+  return <Shell page="not-found"><section className="not-found"><div><h1>Page not found.</h1><div className="not-found-actions"><ActionLink variant="primary" href="/">Back home</ActionLink><ActionLink href="/readings">Browse readings</ActionLink></div></div><div className="not-found-number" aria-hidden="true">404</div></section></Shell>;
 }
 
 export function PublicRoute({ request, response }: RequestInfo) {
@@ -55,6 +56,7 @@ export function PublicRoute({ request, response }: RequestInfo) {
   if (path === '/readings') return <Readings />;
   if (path === '/readings/demo') return <ReadingDemo />;
   if (path === '/about') return <About />;
+  if (path === '/privacy') return <Shell page="privacy"><PrivacySummary /></Shell>;
   response.status = 404;
   return <NotFound />;
 }

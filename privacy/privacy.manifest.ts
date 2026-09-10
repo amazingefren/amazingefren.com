@@ -12,6 +12,7 @@ export default {
   "context": {
     "decisions": [
       "HTTPS reading works without analytics consent. Mirrors never enable analytics.",
+      "The public /privacy summary describes current browser theme storage, tab-local guest data, inactive analytics, and the hosting boundary. It is not a claim that the proposed collection policy is enforced.",
       "Public theme selection is stored locally in the browser only; it is not an analytics signal or server field.",
       "Metric labels describe participating browsers or sessions, not unique people.",
       "Policy is a design contract; it still needs implementation and independent verification."
@@ -49,6 +50,7 @@ export default {
     "tests": "privacy/tests"
   },
   "entrypoints": [
-    "privacy/policy.json"
+    "privacy/policy.json",
+    "privacy/ui/transparency/PrivacySummary.tsx"
   ]
 } as const satisfies SystemManifest;

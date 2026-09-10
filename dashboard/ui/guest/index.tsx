@@ -1,5 +1,5 @@
 import type { DashboardSummary } from "../../contracts/summary.ts";
-import { ContinuumMark } from "../../../web/ui/shared/ContinuumMark.tsx";
+import { BrandMark, ThemeControl } from "../../../design/ui/index.ts";
 import { DASHBOARD_METRIC_IDS } from "../../contracts/summary.ts";
 import { DashboardChart } from "../charts/index.tsx";
 import {
@@ -25,23 +25,23 @@ export function GuestDashboard({ summary = null }: GuestDashboardProps) {
     <div className="dashboard-shell">
       <a className="dashboard-skip" href="#dashboard-main">Skip to dashboard</a>
       <header className="dashboard-header">
-        <a className="dashboard-brand" href="/" aria-label="amazingefren home"><ContinuumMark className="dashboard-brand-mark" /><span>amazingefren</span></a>
-        <div className="dashboard-header-context"><span>GUEST WORKSPACE</span><span className="dashboard-divider" aria-hidden="true" /><span>READ ONLY</span></div>
+        <a className="dashboard-brand" href="/" aria-label="amazingefren home"><BrandMark variant="theme" className="dashboard-brand-mark" /><span>amazingefren</span></a>
+        <div className="dashboard-header-context"><ThemeControl /></div>
         <a className="dashboard-return" href="/">Return to site <span aria-hidden="true">↗</span></a>
       </header>
       <main id="dashboard-main" className="dashboard-main" tabIndex={-1}>
         <section className="dashboard-intro" aria-labelledby="dashboard-title">
           <div>
-            <p className="dashboard-kicker">AE DASHBOARD <span>/</span> PUBLIC REPLICA</p>
-            <h1 id="dashboard-title">Dashboard</h1>
-            <p className="dashboard-lede">A synthetic, read-only view of workspace signals.</p>
+
+            <h1 id="dashboard-title">Telemetry</h1>
+
           </div>
-          <div className="dashboard-intro-index" aria-hidden="true"><span>01</span><span>GUEST<br />VIEW</span></div>
+
         </section>
 
         <section className="dashboard-window" aria-labelledby="dashboard-window-title">
-          <div className="dashboard-window-heading"><div><p className="dashboard-kicker">01 / TIME WINDOW</p><h2 id="dashboard-window-title">Choose a window.</h2></div><p>UTC · up to 31 days</p></div>
-          <form className="dashboard-window-form" method="get" action="/guest/dashboard">
+          <div className="dashboard-window-heading"><div><h2 id="dashboard-window-title">Time window</h2></div><p>UTC · up to 31 days</p></div>
+          <form className="dashboard-window-form" method="get" action="/guest/telemetry">
             <label><span>From (UTC)</span><input type="datetime-local" name="from" value={windowFrom} step="3600" required /></label>
             <span className="dashboard-window-arrow" aria-hidden="true">→</span>
             <label><span>To (UTC)</span><input type="datetime-local" name="to" value={windowTo} step="3600" required /></label>
@@ -50,7 +50,7 @@ export function GuestDashboard({ summary = null }: GuestDashboardProps) {
         </section>
 
         <section className="dashboard-summary" aria-labelledby="dashboard-summary-title">
-          <div className="dashboard-section-heading"><div><p className="dashboard-kicker">02 / SUMMARY</p><h2 id="dashboard-summary-title">Summary</h2></div><SummaryMeta summary={summary} /></div>
+          <div className="dashboard-section-heading"><div><h2 id="dashboard-summary-title">Summary</h2></div><SummaryMeta summary={summary} /></div>
           <div className="dashboard-metric-grid">
             {DASHBOARD_METRIC_IDS.map((id) => <MetricCard id={id} metric={metricById.get(id)} key={id} />)}
           </div>
@@ -58,7 +58,7 @@ export function GuestDashboard({ summary = null }: GuestDashboardProps) {
 
         <DashboardChart metrics={summary?.metrics ?? []} />
 
-        <footer className="dashboard-footer"><span>Guest data is synthetic.</span><span className="dashboard-footer-rule" aria-hidden="true" /><span>Owner telemetry is never queried by this view.</span></footer>
+
       </main>
     </div>
   );

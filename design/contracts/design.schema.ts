@@ -10,6 +10,8 @@ export interface DesignPattern {
 
 export interface DesignManifest extends SystemManifest {
   languageVersion: number;
+  copy: { rules: readonly string[]; forbiddenUiPhrases: readonly string[] };
+  interaction: { rules: readonly string[]; forbiddenHoverTokens: readonly string[]; contrastPairs: readonly { foreground: string; background: string; minimum: number }[] };
   foundations: { source: string; stylesheet: string; rules: readonly string[] };
   brand: { contract: string; component: string; rules: readonly string[] };
   behaviors: readonly DesignPattern[];

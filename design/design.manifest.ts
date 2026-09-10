@@ -16,17 +16,44 @@ export default {
       'Use sans serif for interfaces and body copy, serif for editorial emphasis and reading, and monospace for short metadata. Do not add font downloads.',
       'Keep content direct. Reuse approved personal text. Synthetic data and unavailable states must be explicit.',
       'Tokens compile into checked-in CSS so pages remain usable without JavaScript or private engines. Compiled CSS and served logo copies are not editing entrypoints.',
-      'The existing guest dashboard palette is retained as legacy tokens. It is not the approved specification for the next workbench.',
+      'Legacy dashboard palette tokens remain for compatibility. The served telemetry page adopts the shared sun/moon shell and interaction states.',
       'Public design checks are small drift checks, not a replacement for the future private system engine or visual review.'
     ],
-    openQuestions: ['Dialogs, menus, and editor layout still need complete interaction review. Dashboard and Systems visual direction is approved; this is not application implementation approval.']
+    openQuestions: ['Application implementation was authorized on 2026-09-09. User accepted the revised workspace as a starting point on 2026-09-09; owner identity and storage need live configuration.']
   },
   capabilities: ['foundations', 'brand', 'behaviors', 'components', 'design-validation'],
   governance: { permissionsDefined: [], dataClassification: 'public' },
   risks: [],
   dependencies: [],
   schemaVersion: 5,
-  languageVersion: 2,
+  languageVersion: 3,
+  copy: {
+    rules: [
+      'Keep text only when it names content, identifies a necessary state, explains a consequence, or helps recover from a failure.',
+      'Do not add taglines, introductory filler, repeated headings, obvious instructions, or implementation explanations to application pages.',
+      'Show sample-data scope once in the shared shell. Repeat it only where a distinct export or measurement could otherwise be mistaken for real data.',
+      'Use one state label per record. Do not repeat the same state in a sentence, badge, and subtitle.',
+      'Feature manifests own page content and composition; AE Design owns these copy rules. Preserve approved personal writing.',
+      'Review all rendered page text before handoff. Static checks detect known filler, not editorial quality.'
+    ],
+    forbiddenUiPhrases: ['A place for longer thoughts on software, applied AI, and the work around them.', 'Original essays and stable copies will appear here as they are ready.', 'A little bit of everything.', 'All in one place.', 'A look inside the tools, projects, and processes', 'Each agent has a task, an owned area, and a handoff.', 'Select a system to look inside', 'frozen workspace contract', 'What active would mean', 'Role control', 'Server supplied only', 'Approved catalog', 'Allowlisted data', 'External boundaries', 'Session boundary', 'Saving never publishes.', 'These are manifest metadata.']
+  },
+  interaction: {
+    rules: [
+      'Use action-primary, action-primary-hover, and action-primary-ink together for filled actions. Keep icons the same color as their label.',
+      'Hover stays within the current palette: deeper orange in light mode, lighter blue in dark mode. Accent-soft is for emphasis, never a primary hover background.',
+      'Neutral controls use hover-surface and hover-line. Preserve their text color. Selected navigation keeps its theme fill.',
+      'Text links use an underline on hover. Do not fill a text link or a tab like a button.',
+      'Disabled controls do not react to hover. Use low-specificity defaults so generic selectors cannot override selected, primary, or status controls.',
+      'Review base, hover, focus, selected, and disabled states in both themes. Token membership alone does not verify their use.'
+    ],
+    forbiddenHoverTokens: ['--ae-accent', '--ae-accent-soft', '--ae-ambient', '--ae-theme-accent-soft', '--ae-theme-ambient'],
+    contrastPairs: [
+      { foreground: '--ae-action-primary-ink', background: '--ae-action-primary', minimum: 4.5 },
+      { foreground: '--ae-action-primary-ink', background: '--ae-action-primary-hover', minimum: 4.5 },
+      { foreground: '--ae-ink', background: '--ae-hover-surface', minimum: 4.5 }
+    ]
+  },
   foundations: {
     source: 'design/foundations/tokens.ts',
     stylesheet: 'design/foundations/tokens.css',
@@ -34,7 +61,7 @@ export default {
       'Use --ae-* semantic colors; never introduce local hex, RGB, HSL, or named palette values. The artwork exception is limited to the declared illustration file.',
       'Use the shared font families, text sizes, space scale, focus tokens, and control radii. Local grid geometry and responsive composition belong to the owning page.',
       'Do not override a canonical token in feature CSS. Add a justified token or an approved pattern in AE Design.',
-      'Use flat panels and fine borders. Gradients belong to the dark public background and approved artwork; no new gradients, shadows, decorative badges, or animation without a reviewed pattern.',
+      'Use flat panels and fine borders. The public and workspace shells share --ae-page-background: warm paper in light mode and the approved radial navy gradient in dark mode. The featured progress card uses its separate status gradient. No new decorative gradients or badges.',
       'The existing text scale includes editorial sizes. Small metadata sizes are not a license to shrink body copy or controls.'
     ]
   },
@@ -52,7 +79,7 @@ export default {
   behaviors: [
     { id: 'design.theme', status: 'approved', purpose: 'Select a local display preference.', implementation: 'design/behaviors/theme.ts', rules: ['System, light, and dark are the only choices.', 'Use ae-theme storage and data-theme on the document root. System removes the explicit override.', 'Apply before paint; storage failure must not block the page.', 'Use the shared bootstrap and ThemeControl. Theme changes grant no permissions and send no analytics.'] },
     { id: 'design.navigation', status: 'approved', purpose: 'Keep navigation and commands distinct.', implementation: null, rules: ['Links navigate or download; buttons perform actions.', 'Set aria-current on the current destination. Never mark a disabled destination as a working link.', 'Keep public navigation separate from the workbench sidebar.', 'Icon-only controls need accessible names. Decorative arrows are hidden from assistive technology.'] },
-    { id: 'design.focus', status: 'approved', purpose: 'Support keyboard and pointer access.', implementation: 'design/ui/primitives.css', rules: ['Keep a visible focus ring. Do not remove outlines without the shared replacement.', 'Preserve browser shortcuts and editable input behavior.', 'Workbench shortcuts use manifest-declared remappable Vim profiles with a disable option. No shortcut engine is implemented by AE Design.', 'Native controls are the baseline. Custom focus traps, menus, and dialogs need a reviewed pattern.'] },
+    { id: 'design.focus', status: 'approved', purpose: 'Support keyboard and pointer access.', implementation: 'design/ui/primitives.css', rules: ['Keep a visible focus ring on interactive controls. Noninteractive route focus targets use ae-focus-target with tabindex=-1 to receive focus without outlining the content region.', 'Preserve browser shortcuts and editable input behavior.', 'Workbench shortcuts use manifest-declared remappable Vim profiles with a disable option. No shortcut engine is implemented by AE Design.', 'Native selects keep their semantics and use the shared select-indicator token for the dropdown mark. Native controls are the baseline. Custom focus traps, menus, and dialogs need a reviewed pattern.'] },
     { id: 'design.states', status: 'approved', purpose: 'Make state and failures visible.', implementation: null, rules: ['Specify loading, empty, error, unavailable, disabled, and success behavior for each operation-backed control.', 'Use text with status styling; never rely on color alone.', 'Keep unknown values distinct from measured zero. Do not invent progress or live data.', 'Prevent duplicate submissions while pending. Preserve user input after a failed request.', 'Disabled controls must explain their limitation. UI state never substitutes for server authorization.'] },
     { id: 'design.motion', status: 'approved', purpose: 'Keep motion optional.', implementation: 'design/ui/primitives.css', rules: ['Respect prefers-reduced-motion.', 'No new autoplay motion, flicker, or attention loops.', 'Static CRT texture belongs only to the approved research artwork.'] }
   ],
@@ -64,17 +91,18 @@ export default {
     { id: 'design.download-group', status: 'approved', purpose: 'Present equivalent document downloads together.', implementation: 'design/ui/DownloadGroup.tsx', rules: ['Each link names its format and downloads a real file. Collapse vertically on narrow screens.'] }
   ],
   patterns: [
+    { id: 'design.observation-window-study', status: 'proposed', purpose: 'Explore a dominant public observation window.', implementation: null, rules: ['Private prototype: ae-workbench/observation-window/prototype.manifest.ts. Compare a full-width window below editorial type with an immersive introduction inside the window.', 'Reuse AE Design assets, theme behavior, and public copy. Preserve Readings as the primary action. Static artwork only; no simulated live measurements.', 'Review both themes, narrow layouts, keyboard access, and text legibility before application adoption.'] },
     { id: 'design.public-shell', status: 'approved', purpose: 'Frame the public pages.', implementation: 'web/adapters/http/public.tsx', rules: ['Use the existing brand, public navigation, theme selector, skip link, and footer. Feature content goes inside the shell.'] },
     { id: 'design.about', status: 'approved', purpose: 'Present the owner profile.', implementation: 'web/ui/portfolio/AboutProfile.tsx', rules: ['Compact identity beside the approved bio; resume downloads and contact align below it. Stack at narrow widths.'] },
-    { id: 'design.research-field', status: 'approved', purpose: 'Illustrate the public home.', implementation: 'web/ui/landing/ObservationField.tsx', rules: ['Static recessed window; birds on light paper in dark mode, illustrated galaxy in light mode.', 'This artwork is illustrative, not measured telemetry. Do not reuse its texture as workbench chrome.'] },
+    { id: 'design.research-field', status: 'approved', purpose: 'Preserve the earlier research-window artwork for prototype references.', implementation: 'web/ui/landing/ObservationField.tsx', rules: ['Static recessed window; birds on light paper in dark mode, illustrated galaxy in light mode.', 'This artwork is illustrative, not measured telemetry. Do not reuse its texture as workbench chrome.'] },
     { id: 'design.reading', status: 'approved', purpose: 'Present readable articles.', implementation: 'web/adapters/http/public.tsx', rules: ['Use the existing serif reading column and semantic article structure. Keep published content usable without JavaScript.'] },
-    { id: 'design.guest-dashboard', status: 'legacy', purpose: 'Preserve the existing public synthetic dashboard.', implementation: 'dashboard/ui/guest/index.tsx', rules: ['Keep current rendering during migration. Do not copy this palette into new workbench features.'] },
+    { id: 'design.guest-dashboard', status: 'approved', purpose: 'Present the synthetic telemetry summary in the shared visual language.', implementation: 'dashboard/ui/guest/index.tsx', rules: ['Use the shared page background, theme logo, action states, and control radii. Preserve metric sources, units, and numerator/denominator evidence.'] },
     { id: 'design.workbench-status', status: 'approved', purpose: 'Distinguish work states and soften workspace controls.', implementation: null, rules: ['Owner accepted sun/moon workspace colors, distinct review states, and rounded controls on 2026-09-09.', 'Use status-progress for active work, status-ready for reviewable work, and status-attention for unresolved decisions. Always show a text label.', 'Use workbench radius tokens for cards, controls, and dialogs. Existing public radii remain unchanged.', 'Workspace accents are orange in light mode and blue in dark mode: sun and moon, as requested by the owner. The workbench active-surface gradient is limited to the featured in-progress card: warm orange in light mode, deep blue in dark mode. Navigation selection uses the workspace theme accent. The workbench shadow token provides restrained card elevation. Other panels stay flat.', 'Use neutral semantic theme tokens for shared palette adoption. Review each new consumer in both themes and mobile; the accepted visual direction does not prove accessibility or runtime behavior.'] },
-    { id: 'design.workbench-shell', status: 'approved', purpose: 'Frame the accepted dashboard and Systems workspace.', implementation: null, rules: ['Owner accepted the workspace visual direction on 2026-09-09, with the sidebar stripe removed.', 'Group Dashboard, Documents, Tasks, Experiments, Relationships, Publishing, Systems, Connections, and Access under Personal workspace; keep Public side separate.', 'Current navigation uses a rounded soft fill, theme-colored icon and label, and medium text weight. No edge stripe, inset stripe shadow, or decorative side marker. Use design.navigation-selection.', 'Open the dashboard on counts and work. Preserve the module-first Systems explorer with search, dependencies, contracts, bindings, and local console.', 'Remove taglines, generic introductions, obvious interaction instructions, and redundant labels. Keep useful status, data source, and failure information.', 'Keep 14px controls and at least 12px metadata. Workspace cards use 14px corners and controls use 8px corners.', 'The visual direction is approved; production routes, authorization, adapters, and behavior still require implementation and verification.'] },
+    { id: 'design.workbench-shell', status: 'approved', purpose: 'Frame the accepted dashboard and Systems workspace.', implementation: null, rules: ['Owner accepted the workspace visual direction on 2026-09-09, with the sidebar stripe removed.', 'Group Dashboard, Documents, Tasks, Experiments, Relationships, Publishing, Systems, Connections, and Access under Personal workspace; keep Public side separate.', 'Current navigation uses a rounded soft fill, theme-colored icon and label, and medium text weight. No edge stripe, inset stripe shadow, or decorative side marker. Use design.navigation-selection.', 'Use the public dark background gradient across the workspace. Keep panels solid and the sidebar distinct. Owner requested this on 2026-09-09.', 'Open the dashboard on counts and work. Preserve the module-first Systems explorer with search, dependencies, contracts, bindings, and local console.', 'Remove taglines, generic introductions, obvious interaction instructions, and redundant labels. Keep useful status, data source, and failure information.', 'Use one page gutter and a 32px heading across workspace sections. Do not add a second page padding inside feature components. Keep forms compact and hide secondary creation or history panels behind native disclosures.', 'Keep 14px controls and at least 12px metadata. Workspace cards use 14px corners and controls use 8px corners.', 'The visual direction is approved; production routes, authorization, adapters, and behavior still require implementation and verification.'] },
     { id: 'design.overlays', status: 'proposed', purpose: 'Standardize dialogs, menus, and command palettes.', implementation: null, rules: ['Review dismissal, focus restoration, keyboard behavior, and mobile layout before implementation.'] }
   ],
   adoption: {
-    consumers: ['web', 'dashboard', 'studio', 'system-explorer'],
+    consumers: ['web', 'dashboard', 'studio', 'system-explorer', 'workspace'],
     stylesheet: 'design/ui/index.css',
     componentEntrypoint: 'design/ui/index.ts',
     themeBootstrap: 'design/behaviors/theme.ts',
@@ -93,7 +121,7 @@ export default {
   verification: {
     command: 'mise run check',
     tests: ['design/tests/design.test.ts', 'design/tests/theme.test.ts'],
-    limits: ['Static checks catch token drift, missing references, and raw style values; they do not prove accessibility or visual quality.', 'Focus order, browser theme behavior, and layout still need browser review.', 'Private prototypes and engines are not scanned by public checks.']
+    limits: ['Static checks catch token drift, prohibited hover-token use, known filler text, and declared contrast pairs. They do not prove rendered accessibility or visual quality.', 'Focus order, browser theme behavior, and layout still need browser review.', 'Private prototypes and engines are not scanned by public checks.']
   },
   contracts: ['design/contracts/design.schema.ts', 'design/foundations/tokens.ts', 'design/brand/brand.ts', 'design/behaviors/theme.ts'],
   operations: [],

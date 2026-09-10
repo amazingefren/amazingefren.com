@@ -11,7 +11,8 @@ export default {
   "visibility": "public",
   "context": {
     "decisions": [
-      "Dashboard replaces Overview in workspace navigation; it is a system, not a renamed document list.",
+      "Telemetry shares AE Design sun/moon themes, hover states, and copy rules. Keep evidence and remove repeated introductory labels.",
+      "Dashboard telemetry remains available at /guest/telemetry and /workspace/telemetry. The workspace system owns the main dashboard routes.",
       "Show page views, honeypot trigger counts and rates, time windows, trend charts, source freshness, and unavailable states. Definitions live in metrics.manifest.ts.",
       "Owner dashboard reads authorized aggregates. Guest dashboard has the same layout with labeled synthetic data.",
       "Dashboard consumes typed telemetry ports; it does not silently enable analytics, deploy traps, or collect visitor data.",
@@ -51,7 +52,7 @@ export default {
       "directory": "dashboard/ui/owner",
       "testsDirectory": "dashboard/tests/views/owner",
       "implementation": null,
-      "path": "/workspace/dashboard",
+      "path": "/workspace/telemetry",
       "status": "declared",
       "audience": "owner",
       "access": {
@@ -77,7 +78,7 @@ export default {
       "directory": "dashboard/ui/guest",
       "testsDirectory": "dashboard/tests/views/guest",
       "implementation": "dashboard/ui/guest/index.tsx",
-      "path": "/guest/dashboard",
+      "path": "/guest/telemetry",
       "status": "declared",
       "audience": "guest",
       "access": {

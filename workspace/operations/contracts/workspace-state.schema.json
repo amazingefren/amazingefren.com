@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "synthetic", "documents", "tasks", "experiments", "relationships", "publications", "activity"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "synthetic": { "type": "boolean" },
+    "documents": { "type": "array", "maxItems": 64 },
+    "tasks": { "type": "array", "maxItems": 128 },
+    "experiments": { "type": "array", "maxItems": 64 },
+    "relationships": { "type": "array", "maxItems": 128 },
+    "publications": { "type": "array", "maxItems": 64 },
+    "activity": { "type": "array", "maxItems": 128 }
+  }
+}

@@ -92,6 +92,13 @@ export const foundations = {
 } as const;
 
 export const lightTheme = {
+  "--ae-action-primary": "#bd4529",
+  "--ae-action-primary-hover": "#a83b23",
+  "--ae-action-primary-ink": "#fffaf3",
+  "--ae-select-indicator": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m3 4 3 3 3-3' fill='none' stroke='%2366717b' stroke-width='1.5'/%3E%3C/svg%3E\")",
+  "--ae-hover-surface": "#ece4d9",
+  "--ae-hover-line": "#b3a797",
+  "--ae-focus-ring": "#a83b23",
   "--ae-theme-accent": "var(--ae-accent)",
   "--ae-theme-accent-soft": "var(--ae-accent-soft)",
   "--ae-theme-accent-contrast": "var(--ae-accent-contrast)",
@@ -135,6 +142,13 @@ export const lightTheme = {
 } as const;
 
 export const darkTheme = {
+  "--ae-action-primary": "#9ebdff",
+  "--ae-action-primary-hover": "#bfd2ff",
+  "--ae-action-primary-ink": "#101a2d",
+  "--ae-select-indicator": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m3 4 3 3 3-3' fill='none' stroke='%23bcc5d2' stroke-width='1.5'/%3E%3C/svg%3E\")",
+  "--ae-hover-surface": "#1b2636",
+  "--ae-hover-line": "#566780",
+  "--ae-focus-ring": "#9ebdff",
   "--ae-theme-accent": "#9ebdff",
   "--ae-theme-accent-soft": "#bfd2ff",
   "--ae-theme-accent-contrast": "#101a2d",

@@ -22,6 +22,7 @@ export default {
       "Public navigation is separate from the workspace sidebar. Never redirect an unknown visitor into the owner workspace.",
       "Owner workspace routes are not linked from the public site. The public Workbench link opens the declared guest dashboard.",
       "Light-mode window depth uses a page-colored recessed lip outside the dark galaxy; the inner shadow alone cannot define the edge against dark artwork.",
+      "Use AE Design copy and interaction rules. Readings needs one empty state, and the article demo needs one demo label. Keep approved personal text. Review every public route in both themes and narrow layouts.",
       "Short labels and useful content; no prototype implementation explanations in visitor flows. Mark synthetic data with concise labels.",
       "Public builds need no private engines.",
       "Articles and navigation remain usable without JavaScript.",
@@ -142,6 +143,7 @@ export default {
     "testsDirectory": "web/tests/keyboard"
   },
   "pages": [
+    { "path": "/privacy", "entrypoint": "web/adapters/http/public.tsx", "access": { "kind": "public" }, "status": "implemented" },
     {
       "path": "/",
       "entrypoint": "web/adapters/http/public.tsx",

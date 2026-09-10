@@ -7,6 +7,9 @@ import { createSyntheticGuestTelemetry } from '../../dashboard/ports/telemetry/s
 import { PublicRoute } from '../adapters/http/public.tsx';
 import { Document } from '../adapters/http/document.tsx';
 import { GuestDashboardRoute } from './dashboard.tsx';
+import { GuestWorkspaceRoute, createOwnerWorkspaceRoute, WorkspaceDocument } from './workspace.tsx';
+import { workspacePages } from '../../workspace/contracts/index.ts';
+import { createOwnerWorkspaceGateway, OWNER_WORKSPACE_OPERATION_PATH, type OwnerWorkspaceService } from './owner-workspace.ts';
 
 const pages = { 'web/adapters/http/public.tsx': PublicRoute } as const;
 const guestDashboard = dashboard.views.find((view) => view.id === 'guest');
@@ -36,13 +39,27 @@ function httpPath(operationId: string) {
   return binding.surface.path;
 }
 
-export default defineApp([
+type PublicWorkerEnv = Env & { WORKSPACE_OWNER_SERVICE?: OwnerWorkspaceService };
+
+function createApplication(ownerService: OwnerWorkspaceService | undefined) {
+  const ownerGateway = createOwnerWorkspaceGateway(ownerService);
+  const OwnerWorkspaceRoute = createOwnerWorkspaceRoute(ownerGateway);
+  return defineApp([
+  route(OWNER_WORKSPACE_OPERATION_PATH, { post: ({ request }) => ownerGateway.operation(request) }),
   route(guestDashboardSummaryPath, { get: ({ request }) => guestSummaryHandler(request) }),
   route(dashboardSummaryPath, { get: ({ request }) => ownerSummaryHandler(request) }),
+  render(WorkspaceDocument, [route('/guest', GuestWorkspaceRoute), ...workspacePages.map(page => route(`/guest/${page}`, GuestWorkspaceRoute)), route('/workspace', OwnerWorkspaceRoute), ...workspacePages.map(page => route(`/workspace/${page}`, OwnerWorkspaceRoute))], { rscPayload: true }),
   render(Document, [...publicPages.map((page) => {
     if (page.access.kind !== 'public') throw new Error('Private pages require an authorization adapter');
     const handler = pages[page.entrypoint as keyof typeof pages];
     if (!handler) throw new Error(`No public handler for ${page.entrypoint}`);
     return route(page.path, handler);
-  }), route(guestDashboard.path, GuestDashboardRoute), route('*', PublicRoute)], { rscPayload: true }),
+  }), route(guestDashboard!.path, GuestDashboardRoute), route('*', PublicRoute)], { rscPayload: true }),
 ]);
+}
+
+export default {
+  fetch(request: Request, env: PublicWorkerEnv, context: Parameters<ReturnType<typeof defineApp>["fetch"]>[2]) {
+    return createApplication(env.WORKSPACE_OWNER_SERVICE).fetch(request, env, context);
+  }
+};

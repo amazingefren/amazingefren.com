@@ -21,7 +21,7 @@ export function DashboardChart({ metrics }: DashboardChartProps) {
     <section className="dashboard-panel dashboard-signals" aria-labelledby="dashboard-signals-title">
       <div className="dashboard-panel-heading">
         <div>
-          <p className="dashboard-kicker">03 / SIGNALS</p>
+
           <h2 id="dashboard-signals-title">Signals</h2>
         </div>
         <p className="dashboard-panel-note">Bar lengths use each metric&apos;s own unit. The table carries exact values.</p>
@@ -39,7 +39,7 @@ export function DashboardChart({ metrics }: DashboardChartProps) {
             );
           })}
         </div>
-        <figcaption className="dashboard-chart-caption">This view shows the selected window only. It does not identify people or verify agent identity.</figcaption>
+
       </figure>
       <div className="dashboard-table-wrap">
         <table className="dashboard-table">

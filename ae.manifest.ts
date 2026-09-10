@@ -11,7 +11,7 @@ export default {
     deployment: "External CI proposed for selective submodule checkout; not configured.",
     prototypes: ["public-landing", "writing-studio", "dashboard", "guest-workspace", "system-explorer"],
     prototypeConvention: "manifests/prototypes/prototype.manifest.ts",
-    direction: "Commonplace workspace; public hero entrance inspired by prototype 05. Minimal UI wording.",
+    direction: "Approved workspace composition and sun/moon themes follow AE Design. Public page composition stays in web/web.manifest.ts.",
     landing: "Public composition belongs to web/web.manifest.ts. Visual language, brand, tokens, and shared behavior belong to design/design.manifest.ts.",
     entry: "Public site first. Separate public navigation and workspace sidebar. Owner workspace opens on Dashboard.",
     guest: "A synthetic guest replica demonstrates the workspace; APIs deny all owner data access.",
