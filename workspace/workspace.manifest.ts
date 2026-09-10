@@ -141,6 +141,7 @@ export default {
   visibility: "public",
   context: {
     decisions: [
+      "AE Work application build authorized on 2026-09-09. Work routes, operations and storage contracts belong to work/work.manifest.ts; the workspace shell links Work alongside existing sections.",
       "AE Design owns copy and interaction rules. Keep a single 32px page gutter, compact forms, one status label, and no implementation prose. Dark workspace background uses the shared public radial gradient.",
       "Route navigation focuses the main region through the shared ae-focus-target behavior without a content outline. Interactive controls retain visible keyboard focus.",
       "Guest workspace data is synthetic, bounded, stored in sessionStorage, and never falls back to owner records.",

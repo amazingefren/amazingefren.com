@@ -10,6 +10,7 @@ import { GuestDashboardRoute } from './dashboard.tsx';
 import { GuestWorkspaceRoute, createOwnerWorkspaceRoute, WorkspaceDocument } from './workspace.tsx';
 import { workspacePages } from '../../workspace/contracts/index.ts';
 import { createOwnerWorkspaceGateway, OWNER_WORKSPACE_OPERATION_PATH, type OwnerWorkspaceService } from './owner-workspace.ts';
+import { createWorkGateway } from '../../work/adapters/owner.ts';
 import { createWritingGateway } from './writing.ts';
 import { createPublicationRoutes } from '../adapters/http/publications.tsx';
 
@@ -46,9 +47,11 @@ type PublicWorkerEnv = Env & { WORKSPACE_OWNER_SERVICE?: OwnerWorkspaceService }
 function createApplication(ownerService: OwnerWorkspaceService | undefined) {
   const ownerGateway = createOwnerWorkspaceGateway(ownerService);
   const OwnerWorkspaceRoute = createOwnerWorkspaceRoute(ownerGateway);
+  const work = createWorkGateway(ownerService);
   const writing = createWritingGateway(ownerService);
   const publications = createPublicationRoutes(writing, !!ownerService);
   return defineApp([
+  route('/api/work/operations/:operation', { post: ({ request }) => work.operation(request) }),
   route('/api/writing/operations/:operation', { post: ({ request }) => writing.operation(request) }),
   route('/api/writing/assets/:id', { get: ({ request }) => writing.privateAsset(request) }),
   route('/api/publications/assets/:releaseId/:assetId', { get: ({ request }) => writing.publicAsset(request) }),

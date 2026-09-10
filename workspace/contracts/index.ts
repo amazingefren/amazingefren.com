@@ -1,5 +1,5 @@
 export type WorkspaceAudience = 'guest' | 'owner';
-export type WorkspacePage = 'dashboard' | 'documents' | 'tasks' | 'experiments' | 'relationships' | 'publishing' | 'systems' | 'connections' | 'access';
+export type WorkspacePage = 'dashboard' | 'work' | 'documents' | 'tasks' | 'experiments' | 'relationships' | 'publishing' | 'systems' | 'connections' | 'access';
 export type DocumentRevision = { revision: number; title: string; body: string; savedAt: string };
 export type WorkspaceDocument = { id: string; title: string; body: string; revision: number; updatedAt: string; revisions: DocumentRevision[] };
 export type WorkspaceTask = { id: string; title: string; done: boolean; documentId: string | null };
@@ -27,4 +27,4 @@ export type WorkspaceCommand =
 export type WorkspacePort = { execute(command: WorkspaceCommand): Promise<WorkspaceResult<WorkspaceState>> };
 export type WorkspacePageProps = { state: WorkspaceState; audience: WorkspaceAudience; execute: WorkspacePort['execute']; busy: boolean; navigate(page: WorkspacePage, recordId?: string): void; recordId?: string; onDirtyChange?(dirty: boolean): void };
 export type CatalogEntry = { id: string; name: string; purpose: string; status: string; capabilities: string[]; dependencies: string[]; contracts: string[]; operations: { id: string; access: string; permissions: string[]; bindings: { kind: string; label: string }[] }[] };
-export const workspacePages: readonly WorkspacePage[] = ['dashboard', 'documents', 'tasks', 'experiments', 'relationships', 'publishing', 'systems', 'connections', 'access'];
+export const workspacePages: readonly WorkspacePage[] = ['dashboard', 'work', 'documents', 'tasks', 'experiments', 'relationships', 'publishing', 'systems', 'connections', 'access'];

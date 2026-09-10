@@ -123,7 +123,7 @@ export default {
   rules: "AGENTS.md",
   privacy: "privacy/privacy.manifest.ts",
   evidence: "evidence/evidence.manifest.ts",
-  contracts: { api: "contracts/api", events: "contracts/events", content: "contracts/content", studio: "contracts/studio" },
+  contracts: { work: "contracts/work", api: "contracts/api", events: "contracts/events", content: "contracts/content", studio: "contracts/studio" },
   structure: {
     "sdk": "sdk",
     "cli": "cli/commands",
