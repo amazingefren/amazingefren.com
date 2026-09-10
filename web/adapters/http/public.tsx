@@ -1,3 +1,4 @@
+import { ActionLink } from '../../../design/ui/ActionLink.tsx';
 import { AboutProfile } from '../../ui/portfolio/AboutProfile.tsx';
 import { ObservationField } from '../../ui/landing/ObservationField.tsx';
 import { ContinuumMark } from '../../ui/shared/ContinuumMark.tsx';
@@ -29,11 +30,11 @@ function Shell({ page, children }: { page: Page; children: ReactNode }) {
 }
 
 export function Home() {
-  return <Shell page="home"><section className="hero"><div className="hero-copy"><p className="eyebrow">EFREN CASTRO <span>/</span> A PUBLIC NOTEBOOK</p><h1><span>My workbench</span><br /><em>for observability</em><br /><span>in the AI era.</span></h1><p className="hero-lede">A place to explore, experiment,<br />and share what I notice.</p><div className="hero-actions"><a className="button button-primary" href="/readings">Explore the readings <span aria-hidden="true">↗</span></a><a className="text-link" href="/about">About me <span aria-hidden="true">↗</span></a></div></div><div className="hero-art"><ObservationField /></div><div className="hero-meta"><span>01 — OBSERVATIONS</span><span>ALWAYS CURIOUS.</span></div></section></Shell>;
+  return <Shell page="home"><section className="hero"><div className="hero-copy"><p className="eyebrow">EFREN CASTRO <span>/</span> A PUBLIC NOTEBOOK</p><h1><span>My workbench</span><br /><em>for observability</em><br /><span>in the AI era.</span></h1><p className="hero-lede">A place to explore, experiment,<br />and share what I notice.</p><div className="hero-actions"><ActionLink variant="primary" href="/readings">Explore the readings</ActionLink><ActionLink href="/about">About me</ActionLink></div></div><div className="hero-art"><ObservationField /></div><div className="hero-meta"><span>01 — OBSERVATIONS</span><span>ALWAYS CURIOUS.</span></div></section></Shell>;
 }
 
 export function Readings() {
-  return <Shell page="readings"><section className="page-heading"><p className="eyebrow">PUBLIC NOTES <span>/</span> 2026</p><h1>Readings.</h1><p className="page-lede">A place for longer thoughts on software, applied AI, and the work around them.</p></section><section className="reading-empty" aria-labelledby="empty-title"><div className="empty-symbol" aria-hidden="true">◎</div><div><p className="eyebrow">THE READING ROOM</p><h2 id="empty-title">Nothing published yet.</h2><p>Original essays and stable copies will appear here as they are ready.</p><a className="text-link" href="/readings/demo">View the layout demo <span aria-hidden="true">↗</span></a></div></section><div className="page-back"><a href="/">← Back home</a><span>No published readings yet</span></div></Shell>;
+  return <Shell page="readings"><section className="page-heading"><p className="eyebrow">PUBLIC NOTES <span>/</span> 2026</p><h1>Readings.</h1><p className="page-lede">A place for longer thoughts on software, applied AI, and the work around them.</p></section><section className="reading-empty" aria-labelledby="empty-title"><div className="empty-symbol" aria-hidden="true">◎</div><div><p className="eyebrow">THE READING ROOM</p><h2 id="empty-title">Nothing published yet.</h2><p>Original essays and stable copies will appear here as they are ready.</p><ActionLink href="/readings/demo">View the layout demo</ActionLink></div></section><div className="page-back"><a href="/">← Back home</a><span>No published readings yet</span></div></Shell>;
 }
 
 export function ReadingDemo() {
@@ -45,7 +46,7 @@ export function About() {
 }
 
 export function NotFound() {
-  return <Shell page="not-found"><section className="not-found"><div><p className="eyebrow">PUBLIC SITE <span>/</span> 404</p><h1>That page<br /><em>is elsewhere.</em></h1><p>The address does not point to a published page. Try the readings or head back to the beginning.</p><div className="not-found-actions"><a className="button button-primary" href="/">Back home <span aria-hidden="true">↗</span></a><a className="text-link" href="/readings">Browse readings <span aria-hidden="true">↗</span></a></div></div><div className="not-found-number" aria-hidden="true">404</div></section></Shell>;
+  return <Shell page="not-found"><section className="not-found"><div><p className="eyebrow">PUBLIC SITE <span>/</span> 404</p><h1>That page<br /><em>is elsewhere.</em></h1><p>The address does not point to a published page. Try the readings or head back to the beginning.</p><div className="not-found-actions"><ActionLink variant="primary" href="/">Back home</ActionLink><ActionLink href="/readings">Browse readings</ActionLink></div></div><div className="not-found-number" aria-hidden="true">404</div></section></Shell>;
 }
 
 export function PublicRoute({ request, response }: RequestInfo) {

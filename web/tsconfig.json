@@ -19,7 +19,9 @@
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "../design/**/*.ts",
+    "../design/**/*.tsx"
   ],
   "exclude": [
     "dist",

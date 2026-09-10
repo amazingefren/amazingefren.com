@@ -40,6 +40,7 @@ export default {
   },
   "risks": [],
   "dependencies": [
+    "design",
     "auth",
     "privacy"
   ],

@@ -16,8 +16,7 @@ export default {
       "Keep hero text and destination links in semantic HTML, usable immediately without JavaScript. The home fits one viewport when space allows; short screens and text zoom can scroll without clipping.",
       "Render the research field as static inline SVG with the declared local galaxy image. It needs no JavaScript, animation, GPU context, or third-party runtime assets. Keep text contrast and keyboard focus clear in both themes.",
       "The hero introduces a workbench for research and ideas. Invite exploration and observation without claiming that writing is already published.",
-      "Approved Shared circles AE mark. Public pages use a blue radial background in dark mode and flat warm paper in light mode. Orange stays in the logo, links, and headings. Theme choices stay local.",
-      "Shared dark artwork tokens preserve the amber, orange, red, and plum gradient for reuse beyond the landing.",
+      "Use design/design.manifest.ts for the visual language, brand, themes, tokens, shared controls, and interaction rules. Keep route content and public composition here.",
       "Primary destinations: Readings (/readings), About me (/about), and Workbench (/guest/dashboard). Workbench opens the synthetic guest dashboard. Resume stays accessible from About me.",
       "About uses a compact two-column profile: name and role beside the approved bio, with aligned resume downloads and contact details. Keep existing personal claims. Its component and styles live in web/ui/portfolio to limit shared-file edits.",
       "Public navigation is separate from the workspace sidebar. Never redirect an unknown visitor into the owner workspace.",
@@ -57,6 +56,7 @@ export default {
   },
   "risks": [],
   "dependencies": [
+    "design",
     "publishing",
     "resume",
     "system-explorer",

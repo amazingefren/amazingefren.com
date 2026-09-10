@@ -22,13 +22,13 @@ export function ObservationField() {
         <pattern id="field-phosphor" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M.5 0V3" stroke="#ff816d" strokeOpacity=".045" /><path d="M1.5 0V3" stroke="#b0ebd0" strokeOpacity=".035" /><path d="M2.5 0V3" stroke="#8baaff" strokeOpacity=".05" /></pattern>
         <radialGradient id="field-glass" cx="43%" cy="36%" r="75%"><stop stopColor="#e1edff" stopOpacity=".035" /><stop offset=".6" stopColor="#030813" stopOpacity="0" /><stop offset="1" stopColor="#030813" stopOpacity=".2" /></radialGradient>
         <filter id="field-recess" x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur stdDeviation="9" /></filter>
-        <linearGradient id="field-edge" x1="0" y1="0" x2="0" y2="1"><stop stopColor="var(--field-edge-top)" /><stop offset=".55" stopColor="var(--field-edge-side)" /><stop offset="1" stopColor="var(--field-edge-bottom)" /></linearGradient>
+        <linearGradient id="field-edge" x1="0" y1="0" x2="0" y2="1"><stop stopColor="var(--ae-field-edge-top)" /><stop offset=".55" stopColor="var(--ae-field-edge-side)" /><stop offset="1" stopColor="var(--ae-field-edge-bottom)" /></linearGradient>
         <linearGradient id="eye-lid" x1="110" y1="140" x2="570" y2="424" gradientUnits="userSpaceOnUse">
-          <stop stopColor="var(--palette-dark-amber)" /><stop offset=".36" stopColor="var(--palette-dark-orange)" /><stop offset=".7" stopColor="var(--palette-dark-red)" /><stop offset="1" stopColor="var(--palette-dark-plum)" />
+          <stop stopColor="var(--ae-palette-dark-amber)" /><stop offset=".36" stopColor="var(--ae-palette-dark-orange)" /><stop offset=".7" stopColor="var(--ae-palette-dark-red)" /><stop offset="1" stopColor="var(--ae-palette-dark-plum)" />
         </linearGradient>
         <clipPath id="eye-window"><rect x="22" y="52" width="676" height="456" rx="160" /></clipPath>
       </defs>
-      <rect x="20.5" y="50.5" width="679" height="459" rx="161.5" fill="none" stroke="url(#field-edge)" strokeWidth="var(--field-lip-width)" />
+      <rect x="20.5" y="50.5" width="679" height="459" rx="161.5" fill="none" stroke="url(#field-edge)" strokeWidth="var(--ae-field-lip-width)" />
       <g clipPath="url(#eye-window)">
         <g className="eye-sky">
           <rect x="0" y="0" width="720" height="560" fill="#f5f0e8" />
@@ -62,8 +62,8 @@ export function ObservationField() {
         <rect x="22" y="52" width="676" height="456" fill="url(#field-glass)" />
       </g>
       <g clipPath="url(#eye-window)" fill="none">
-        <rect x="22" y="45" width="676" height="463" rx="160" stroke="var(--field-recess)" strokeWidth="24" filter="url(#field-recess)" />
-        <rect x="23" y="53" width="674" height="454" rx="159" stroke="var(--field-cut)" strokeWidth="2" />
+        <rect x="22" y="45" width="676" height="463" rx="160" stroke="var(--ae-field-recess)" strokeWidth="24" filter="url(#field-recess)" />
+        <rect x="23" y="53" width="674" height="454" rx="159" stroke="var(--ae-field-cut)" strokeWidth="2" />
       </g>
       <rect x="20.5" y="50.5" width="679" height="459" rx="161.5" fill="none" stroke="url(#field-edge)" strokeWidth="2" />
     </svg>

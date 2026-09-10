@@ -32,6 +32,7 @@ export default {
   },
   "risks": [],
   "dependencies": [
+    "design",
     "manifests"
   ],
   "schemaVersion": 5,

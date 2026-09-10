@@ -1,8 +1,1 @@
-:root {
-  --palette-dark-amber: #ffce6d;
-  --palette-dark-orange: #f47a4f;
-  --palette-dark-red: #d73d3d;
-  --palette-dark-plum: #6e2743;
-  --palette-dark-accent: #ff7650;
-  --palette-dark-accent-soft: #ffbd69;
-}
+@import '../../../design/foundations/tokens.css';

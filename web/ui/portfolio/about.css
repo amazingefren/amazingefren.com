@@ -3,49 +3,33 @@
 .about-profile { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(48px, 7vw, 110px); padding: 88px 0 100px; }
 .about-identity > .eyebrow { margin: 0 0 30px; }
 .about-identity h1 { margin: 0; font-size: clamp(64px, 6.8vw, 94px); line-height: 1; letter-spacing: -.065em; }
-.about-identity h1 em { display: block; color: var(--accent-soft); }
-.about-role { max-width: 260px; margin: 26px 0 0; color: var(--body-copy); font-size: 19px; line-height: 1.5; letter-spacing: -.02em; }
+.about-identity h1 em { display: block; color: var(--ae-accent-soft); }
+.about-role { max-width: 260px; margin: 26px 0 0; color: var(--ae-body-copy); font-size: var(--ae-text-19); line-height: 1.5; letter-spacing: -.02em; }
 .about-details { display: grid; gap: 22px; margin: 44px 0 0; }
-.about-details dt { margin-bottom: 7px; color: var(--muted); font: 9px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .06em; text-transform: uppercase; }
-.about-details dd { margin: 0; color: var(--body-copy); font-size: 13px; }
+.about-details dt { margin-bottom: 7px; color: var(--ae-muted); font: var(--ae-text-9) var(--ae-font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.about-details dd { margin: 0; color: var(--ae-body-copy); font-size: var(--ae-text-13); }
 .about-body { padding-top: 43px; min-width: 0; }
-.about-bio { max-width: 560px; margin: 0; color: var(--body-copy); font-size: clamp(18px, 1.7vw, 23px); line-height: 1.65; letter-spacing: -.025em; text-wrap: pretty; }
-.about-resume { margin-top: 44px; padding-top: 23px; border-top: 1px solid var(--line); }
+.about-bio { max-width: 560px; margin: 0; color: var(--ae-body-copy); font-size: clamp(18px, 1.7vw, 23px); line-height: 1.65; letter-spacing: -.025em; text-wrap: pretty; }
+.about-resume { margin-top: 44px; padding-top: 23px; border-top: 1px solid var(--ae-line); }
 .about-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
-.about-section-heading h2, .about-contact h2 { margin: 0; font-size: 14px; font-weight: 500; letter-spacing: -.02em; }
-.about-section-heading .eyebrow { font-size: 8px; }
-.about-downloads { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
-.about-downloads a { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 20px 16px; text-decoration: none; }
-.about-downloads a + a { border-left: 1px solid var(--line); }
-.about-downloads a:hover { background: var(--ambient-warm); }
-.about-downloads a:first-child { border-radius: 7px 0 0 7px; }
-.about-downloads a:last-child { border-radius: 0 7px 7px 0; }
-.about-downloads strong { display: block; font-size: 14px; font-weight: 500; }
-.about-downloads small { display: block; margin-top: 8px; color: var(--muted); font: 9px ui-monospace, SFMono-Regular, Consolas, monospace; }
-.about-downloads a > span:last-child { color: var(--accent-soft); }
+.about-section-heading h2, .about-contact h2 { margin: 0; font-size: var(--ae-text-14); font-weight: 500; letter-spacing: -.02em; }
+.about-section-heading .eyebrow { font-size: var(--ae-text-8); }
 .about-contact { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 14px 24px; margin-top: 30px; }
-.about-contact a { color: var(--body-copy); font-size: 13px; text-decoration: none; overflow-wrap: anywhere; }
-.about-contact a:hover { color: var(--ink); }
-.about-contact a span { margin-left: 8px; color: var(--accent-soft); }
+.about-contact a { color: var(--ae-body-copy); font-size: var(--ae-text-13); text-decoration: none; overflow-wrap: anywhere; }
+.about-contact a:hover { color: var(--ae-ink); }
+.about-contact a span { margin-left: 8px; color: var(--ae-accent-soft); }
 @media (max-width: 700px) {
   .about-profile { grid-template-columns: minmax(0, 1fr); gap: 36px; padding: 44px 0 60px; }
   .about-identity > .eyebrow { margin-bottom: 22px; }
   .about-identity h1 { font-size: clamp(56px, 10vw, 76px); }
   .about-identity h1 em { display: inline; }
-  .about-role { max-width: none; margin-top: 18px; font-size: 17px; }
+  .about-role { max-width: none; margin-top: 18px; font-size: var(--ae-text-17); }
   .about-details { grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
   .about-body { padding-top: 0; }
-  .about-bio { font-size: 18px; }
+  .about-bio { font-size: var(--ae-text-18); }
   .about-resume { margin-top: 30px; }
-  .about-downloads a { padding: 17px 12px; }
-  .about-downloads small { font-size: 8px; }
 }
-@media (max-width: 360px) {
-  .about-downloads { grid-template-columns: 1fr; }
-  .about-downloads a + a { border-left: 0; border-top: 1px solid var(--line); }
-  .about-downloads a:first-child { border-radius: 7px 7px 0 0; }
-  .about-downloads a:last-child { border-radius: 0 0 7px 7px; }
-}
+
 @media print {
   .site-about { min-height: 0; }
   .about-profile { padding: 0; }

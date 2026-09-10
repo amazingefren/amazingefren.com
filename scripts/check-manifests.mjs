@@ -1,3 +1,4 @@
+import { checkDesign } from '../design/tests/check.ts';
 import assert from 'node:assert/strict';
 import { access, stat } from 'node:fs/promises';
 import platform from '../ae.manifest.ts';
@@ -223,3 +224,5 @@ console.log(`Risk declarations checked: ${riskIds.size}. Scores are qualitative;
 console.log(`Required bindings: ${bindingCount}. Vim profiles: ${systems.filter(system => system.keyboard).length}.`);
 console.log(`References checked: ${systems.length} systems, ${operationIds.size} operations, ${obligationCount} obligations.`);
 console.log(`Obligations without test references: ${missingTests}. Tests and benchmarks were not executed.`);
+
+console.log(`Design drift checked: ${await checkDesign(root, systems)} UI files.`);
