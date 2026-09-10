@@ -11,7 +11,7 @@ export default {
     prototypes: ["public-landing", "writing-studio", "dashboard", "guest-workspace", "system-explorer"],
     prototypeConvention: "manifests/prototypes/prototype.manifest.ts",
     direction: "Commonplace workspace; public hero entrance inspired by prototype 05. Minimal UI wording.",
-    landing: "Large rounded SVG research field: an illustrative flock study in dark mode and an illustrative galaxy image in light mode, with immediate HTML navigation. Approved Shared circles AE mark, blue public background, and warm light reading theme.",
+    landing: "Large rounded SVG research field: an illustrative flock study in dark mode and an illustrative galaxy image in light mode, with immediate HTML navigation. Approved Shared circles AE mark, blue dark gradient, and flat warm paper in light mode.",
     entry: "Public site first. Separate public navigation and workspace sidebar. Owner workspace opens on Dashboard.",
     guest: "A synthetic guest replica demonstrates the workspace; APIs deny all owner data access.",
   },

@@ -1,3 +1,4 @@
+import { AboutProfile } from '../../ui/portfolio/AboutProfile.tsx';
 import { ObservationField } from '../../ui/landing/ObservationField.tsx';
 import { ContinuumMark } from '../../ui/shared/ContinuumMark.tsx';
 import { ThemeControl } from '../../ui/shared/ThemeControl.tsx';
@@ -40,7 +41,7 @@ export function ReadingDemo() {
 }
 
 export function About() {
-  return <Shell page="about"><section className="about-lead"><div><p className="eyebrow">ABOUT ME <span>/</span> DENVER, COLORADO</p><h1>Efren<br /><em>Castro.</em></h1></div><div className="about-stamp" aria-hidden="true">EC<span>•</span></div></section><section className="about-intro"><p className="about-statement">Hands-on<br /><em>solutions architect.</em></p><div className="about-copy"><p>My work connects business needs to technical direction and hands-on implementation across applied AI, product architecture, software engineering, cloud infrastructure, and production operations.</p><dl><div><dt>Based in</dt><dd>Denver, Colorado</dd></div><div><dt>Languages</dt><dd>English + Spanish</dd></div></dl></div></section><section className="resume-block" id="resume"><div className="resume-heading"><p className="eyebrow">01 <span>/</span> RESUME</p><h2>Useful context.</h2><p>Download the current resume in the format that suits your workflow.</p></div><div className="resume-links"><a href="/resume/Efren_Castro_Flagship_Resume.pdf" download><strong>PDF</strong><span>Ready to read ↓</span></a><a href="/resume/Efren_Castro_Flagship_Resume.docx" download><strong>Word</strong><span>.docx ↓</span></a><a href="/resume/Efren_Castro_Flagship_Resume.tex" download><strong>LaTeX</strong><span>.tex ↓</span></a></div></section><section className="about-bottom"><p className="eyebrow">02 <span>/</span> SAY HELLO</p><a href="mailto:dev@amazingefren.com">dev@amazingefren.com <span aria-hidden="true">↗</span></a></section></Shell>;
+  return <Shell page="about"><AboutProfile /></Shell>;
 }
 
 export function NotFound() {
