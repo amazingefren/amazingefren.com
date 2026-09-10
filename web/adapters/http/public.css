@@ -1,6 +1,7 @@
 @import '../../../design/ui/index.css';
 @import '../../ui/portfolio/about.css';
 @import '../../ui/shared/public-shell.css';
+@import '../../ui/shared/public-transitions.css';
 @import '../../ui/landing/open-field.css';
 
 :root { font-family: var(--ae-font-sans); font-synthesis: none; }

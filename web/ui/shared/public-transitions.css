@@ -1,0 +1,17 @@
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  .site-header { view-transition-name: public-header; }
+  .site-footer { view-transition-name: public-footer; }
+  .site-shell > main { view-transition-name: public-content; }
+  ::view-transition-group(*) { animation-duration: 0s; }
+  ::view-transition-old(root),
+  ::view-transition-old(public-header),
+  ::view-transition-old(public-footer) { display: none; }
+  ::view-transition-new(root),
+  ::view-transition-new(public-header),
+  ::view-transition-new(public-footer) { animation: none; opacity: 1; mix-blend-mode: normal; }
+  ::view-transition-old(public-content) { animation: public-out 180ms ease-out both; mix-blend-mode: normal; }
+  ::view-transition-new(public-content) { animation: public-in 400ms cubic-bezier(.22,.61,.36,1) 60ms both; mix-blend-mode: normal; }
+}
+@keyframes public-out { to { opacity: 0; } }
+@keyframes public-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
