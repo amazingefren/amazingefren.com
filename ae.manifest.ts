@@ -141,5 +141,5 @@ export default {
     "explorerPrototype": "prototypes/system-explorer"
 },
   privateMaterial: { repository: "ae-workbench", manifest: "ae-workbench.manifest.ts", requiredForPublicBuild: false },
-  privateEngines: ["ae-resume-engine", "ae-publishing-engine", "ae-system-engine", "ae-studio-engine"],
+  privateEngines: ["ae-resume-engine", "ae-publishing-engine", "ae-system-engine", "ae-studio-engine", "ae-eval-engine"],
 } as const;
