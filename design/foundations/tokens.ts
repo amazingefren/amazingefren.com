@@ -1,4 +1,9 @@
 export const foundations = {
+  "--ae-workbench-accent": "var(--ae-theme-accent)",
+  "--ae-workbench-accent-soft": "var(--ae-theme-accent-soft)",
+  "--ae-workbench-accent-contrast": "var(--ae-theme-accent-contrast)",
+  "--ae-workbench-ambient": "var(--ae-theme-ambient)",
+
   "--ae-max": "1280px",
   "--ae-palette-dark-amber": "#ffce6d",
   "--ae-palette-dark-orange": "#f47a4f",
@@ -10,6 +15,9 @@ export const foundations = {
   "--ae-font-serif": "Georgia, \"Times New Roman\", serif",
   "--ae-font-mono": "ui-monospace, SFMono-Regular, Consolas, monospace",
   "--ae-radius-panel": "8px",
+  "--ae-workbench-radius-panel": "14px",
+  "--ae-workbench-radius-control": "8px",
+  "--ae-workbench-radius-dialog": "18px",
   "--ae-radius-control": "0px",
   "--ae-radius-pill": "999px",
   "--ae-focus-width": "2px",
@@ -84,6 +92,24 @@ export const foundations = {
 } as const;
 
 export const lightTheme = {
+  "--ae-theme-accent": "var(--ae-accent)",
+  "--ae-theme-accent-soft": "var(--ae-accent-soft)",
+  "--ae-theme-accent-contrast": "var(--ae-accent-contrast)",
+  "--ae-theme-ambient": "var(--ae-ambient)",
+
+  "--ae-status-progress": "#a54127",
+  "--ae-status-progress-surface": "#f9e7df",
+  "--ae-status-progress-line": "#e5baa8",
+  "--ae-status-progress-fill": "#c65031",
+  "--ae-status-ready": "#28704f",
+  "--ae-status-ready-surface": "#e2f1e8",
+  "--ae-status-ready-line": "#b2d8c1",
+  "--ae-status-attention": "#86591f",
+  "--ae-status-attention-surface": "#fbefd9",
+  "--ae-status-attention-line": "#dfc69b",
+  "--ae-workbench-active-surface": "linear-gradient(115deg, #ffd3af, #ffe5cc 65%, #fff0df)",
+  "--ae-workbench-shadow": "0 3px 12px rgba(24,37,54,.045)",
+
   "--ae-ink": "#182536",
   "--ae-ink-strong": "#0f1a29",
   "--ae-muted": "#66717b",
@@ -109,6 +135,24 @@ export const lightTheme = {
 } as const;
 
 export const darkTheme = {
+  "--ae-theme-accent": "#9ebdff",
+  "--ae-theme-accent-soft": "#bfd2ff",
+  "--ae-theme-accent-contrast": "#101a2d",
+  "--ae-theme-ambient": "#23385e",
+
+  "--ae-status-progress": "#b5ccff",
+  "--ae-status-progress-surface": "#23385e",
+  "--ae-status-progress-line": "#45649a",
+  "--ae-status-progress-fill": "#8aaaff",
+  "--ae-status-ready": "#a1d5b9",
+  "--ae-status-ready-surface": "#203b30",
+  "--ae-status-ready-line": "#3c6652",
+  "--ae-status-attention": "#e3c28d",
+  "--ae-status-attention-surface": "#352c21",
+  "--ae-status-attention-line": "#695338",
+  "--ae-workbench-active-surface": "linear-gradient(115deg, #223875, #1d2b55 65%, #1b2748)",
+  "--ae-workbench-shadow": "0 3px 12px rgba(0,0,0,.12)",
+
   "--ae-ink": "#f3f1ec",
   "--ae-ink-strong": "#fffaf2",
   "--ae-muted": "#a8a9a7",
