@@ -11,6 +11,7 @@ import designStyles from '../../design/ui/index.css?url';
 import workspaceStyles from '../../workspace/ui/workspace.css?url';
 import studioStyles from '../../workspace/ui/studio.css?url';
 import systemsStyles from '../../workspace/ui/systems.css?url';
+import writingStyles from '../../workspace/ui/writing/styles.css?url';
 
 function publicCatalog(): CatalogEntry[] {
   return systems.filter(system => system.visibility === 'public').map(system => ({
@@ -25,7 +26,7 @@ function publicCatalog(): CatalogEntry[] {
 }
 
 export function WorkspaceDocument({ children }: DocumentProps) {
-  return <html lang="en"><head><meta charSet="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex, nofollow" /><title>AE Workspace</title><script dangerouslySetInnerHTML={{ __html: themeBootstrap() }} /><link rel="stylesheet" href={designStyles} /><link rel="stylesheet" href={workspaceStyles} /><link rel="stylesheet" href={studioStyles} /><link rel="stylesheet" href={systemsStyles} /><style>{'body{margin:0;background:var(--ae-background)}'}</style></head><body>{children}<script>{"import('/src/client.tsx')"}</script></body></html>;
+  return <html lang="en"><head><meta charSet="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex, nofollow" /><title>AE Workspace</title><script dangerouslySetInnerHTML={{ __html: themeBootstrap() }} /><link rel="stylesheet" href={designStyles} /><link rel="stylesheet" href={workspaceStyles} /><link rel="stylesheet" href={studioStyles} /><link rel="stylesheet" href={systemsStyles} /><link rel="stylesheet" href={writingStyles} /><style>{'body{margin:0;background:var(--ae-background)}'}</style></head><body>{children}<script>{"import('/src/client.tsx')"}</script></body></html>;
 }
 
 export function GuestWorkspaceRoute({ request, response }: RequestInfo) {

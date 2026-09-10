@@ -1,3 +1,4 @@
+import { ownerWritingOperations } from './authoring/manifest.ts';
 import type { SystemManifest } from '../manifests/schema/system.schema.ts';
 
 export default {
@@ -11,6 +12,8 @@ export default {
   "visibility": "public",
   "context": {
     "decisions": [
+      "2026-09-09: Owner approved quick Notes and a separate quiet Publications application. Notes stay private; publication manuscripts are independent of source notes.",
+      "Writing operations use the configured private Access-authenticated service and D1/R2. The guest writing port is session-only. Prototype storage is not imported.",
       "Personal workspace is the owner product. Preserve the Commonplace sidebar; replace Overview with Dashboard owned by dashboard.",
       "Guest workspace mirrors the navigation and workflows with synthetic records only. Never fetch owner records and redact them in the UI.",
       "Guest writes, publish previews, exports, tasks, and experiments remain session-isolated simulations with no production side effects.",
@@ -35,6 +38,7 @@ export default {
     ]
   },
   "capabilities": [
+    "writing-application",
     "editing",
     "preview",
     "administration",
@@ -63,6 +67,7 @@ export default {
     { id: "guest", directory: "studio/ui/guest", testsDirectory: "studio/tests/views/guest", implementation: null, path: "/guest", status: "declared", audience: "guest", access: { kind: "public" }, data: "synthetic", replicaOf: "owner", isolation: "session", sideEffects: "sandbox-only", productionAccess: "denied", fallback: "fail-closed", operations: [], verification: [{ expectation: "Guest sessions cannot read owner data or each other, invoke owner APIs, publish live content, or send external requests. Missing fixtures fail closed.", tests: [] }] }
   ],
   "contracts": [
+    "contracts/writing/index.ts",
     "contracts/api/errors.schema.json",
     "contracts/api/list-input.schema.json",
     "contracts/api/read-input.schema.json",
@@ -72,6 +77,7 @@ export default {
     "contracts/studio/save-document.schema.json"
   ],
   "operations": [
+    ...ownerWritingOperations,
     {
       "id": "studio.create-document",
       dataScope: "owner",
@@ -561,6 +567,7 @@ export default {
     "testsDirectory": "studio/tests/keyboard"
   },
   "capabilityPaths": {
+    "writing-application": "studio/authoring",
     "editing": "studio/ui/editor",
     "preview": "studio/ui/preview",
     "administration": "studio/ui/administration",

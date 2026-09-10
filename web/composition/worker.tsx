@@ -10,6 +10,8 @@ import { GuestDashboardRoute } from './dashboard.tsx';
 import { GuestWorkspaceRoute, createOwnerWorkspaceRoute, WorkspaceDocument } from './workspace.tsx';
 import { workspacePages } from '../../workspace/contracts/index.ts';
 import { createOwnerWorkspaceGateway, OWNER_WORKSPACE_OPERATION_PATH, type OwnerWorkspaceService } from './owner-workspace.ts';
+import { createWritingGateway } from './writing.ts';
+import { createPublicationRoutes } from '../adapters/http/publications.tsx';
 
 const pages = { 'web/adapters/http/public.tsx': PublicRoute } as const;
 const guestDashboard = dashboard.views.find((view) => view.id === 'guest');
@@ -44,12 +46,22 @@ type PublicWorkerEnv = Env & { WORKSPACE_OWNER_SERVICE?: OwnerWorkspaceService }
 function createApplication(ownerService: OwnerWorkspaceService | undefined) {
   const ownerGateway = createOwnerWorkspaceGateway(ownerService);
   const OwnerWorkspaceRoute = createOwnerWorkspaceRoute(ownerGateway);
+  const writing = createWritingGateway(ownerService);
+  const publications = createPublicationRoutes(writing, !!ownerService);
   return defineApp([
+  route('/api/writing/operations/:operation', { post: ({ request }) => writing.operation(request) }),
+  route('/api/writing/assets/:id', { get: ({ request }) => writing.privateAsset(request) }),
+  route('/api/publications/assets/:releaseId/:assetId', { get: ({ request }) => writing.publicAsset(request) }),
+  route('/api/publications', { get: ({ request }) => publications.json(request) }),
+  route('/api/publications/:slug', { get: ({ request }) => publications.json(request) }),
+  route('/readings/feed.xml', { get: ({ request }) => publications.feed(request) }),
+  route('/readings/atom.xml', { get: ({ request }) => publications.feed(request) }),
+  route('/readings/:slug/download.md', { get: ({ request }) => publications.markdown(request) }),
   route(OWNER_WORKSPACE_OPERATION_PATH, { post: ({ request }) => ownerGateway.operation(request) }),
   route(guestDashboardSummaryPath, { get: ({ request }) => guestSummaryHandler(request) }),
   route(dashboardSummaryPath, { get: ({ request }) => ownerSummaryHandler(request) }),
   render(WorkspaceDocument, [route('/guest', GuestWorkspaceRoute), ...workspacePages.map(page => route(`/guest/${page}`, GuestWorkspaceRoute)), route('/workspace', OwnerWorkspaceRoute), ...workspacePages.map(page => route(`/workspace/${page}`, OwnerWorkspaceRoute))], { rscPayload: true }),
-  render(Document, [...publicPages.map((page) => {
+  render(Document, [route('/readings', publications.listing), route('/readings/demo', PublicRoute), route('/readings/:slug', publications.reading), ...publicPages.filter(page => page.path !== '/readings' && page.path !== '/readings/demo').map((page) => {
     if (page.access.kind !== 'public') throw new Error('Private pages require an authorization adapter');
     const handler = pages[page.entrypoint as keyof typeof pages];
     if (!handler) throw new Error(`No public handler for ${page.entrypoint}`);

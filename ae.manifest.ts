@@ -84,7 +84,7 @@ export default {
   }
 ] satisfies readonly Risk[],
   frontend: { public: "RedwoodSDK SSR", interactive: "React", language: "TypeScript", styling: "scoped CSS and CSS Modules", runtime: "Cloudflare Workers", workspace: "npm" },
-  authoring: { system: "studio", runtime: "ae-studio-engine", publication: "publishing" },
+  authoring: { system: "studio", runtime: "ae-studio-engine", publication: "publishing", contracts: "contracts/writing/index.ts", notes: "workspace/ui/writing/Notes.tsx", writer: "workspace/ui/writing/Publications.tsx" },
   contentStorage: { sourceOfTruth: "D1", files: "R2", gitContent: "fixtures-and-approved-exports-only", publishingRequiresDeployment: false },
   access: {
     scope: "required",

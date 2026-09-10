@@ -1,3 +1,4 @@
+import { ownerProjectOperations, publicProjectOperations } from '../studio/authoring/manifest.ts';
 import type { SystemManifest } from '../manifests/schema/system.schema.ts';
 
 export default {
@@ -11,6 +12,8 @@ export default {
   "visibility": "public",
   "context": {
     "decisions": [
+      "2026-09-09: Owner approved a separate zen publication writer for articles, pages, and books. Projects, ordered manuscripts, and explicit release review are distinct from quick personal notes.",
+      "Application authoring and delivery use contracts/writing/index.ts. Runtime and transaction behavior remain unverified; do not enable live publishing until reported defects and release checks are resolved.",
       "HTTP, MCP, and studio invoke the same domain operations.",
       "Private engine owns transformations; approved outputs are public.",
       "Publish full-text feeds with stable entry IDs and canonical links.",
@@ -34,6 +37,8 @@ export default {
     ]
   },
   "capabilities": [
+    "publication-projects",
+    "application-delivery",
     "publication",
     "exports",
     "rss",
@@ -54,6 +59,7 @@ export default {
   ],
   "schemaVersion": 5,
   "contracts": [
+    "contracts/writing/index.ts",
     "contracts/api/content-list.schema.json",
     "contracts/api/content.schema.json",
     "contracts/api/errors.schema.json",
@@ -63,6 +69,8 @@ export default {
     "contracts/content/publication-transition.schema.json"
   ],
   "operations": [
+    ...ownerProjectOperations,
+    ...publicProjectOperations,
     {
       "id": "publishing.list",
       "access": {
@@ -530,6 +538,8 @@ export default {
   ],
   "events": [],
   "capabilityPaths": {
+    "publication-projects": "publishing/projects",
+    "application-delivery": "publishing/delivery",
     "publication": "publishing/domain/publication",
     "exports": "publishing/adapters/exports",
     "rss": "publishing/adapters/rss",

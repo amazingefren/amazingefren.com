@@ -26,7 +26,7 @@ function Footer() {
   return <footer className="site-footer"><span>© {new Date().getFullYear()} Efren Castro</span><span className="footer-rule" aria-hidden="true" /><span>Denver, Colorado</span><a href="mailto:dev@amazingefren.com">dev@amazingefren.com <span aria-hidden="true">↗</span></a><ThemeControl /></footer>;
 }
 
-function Shell({ page, children }: { page: Page; children: ReactNode }) {
+export function Shell({ page, children }: { page: Page; children: ReactNode }) {
   return <div className={`site-shell site-${page}${page === 'home' ? ' site-open-field' : ''}`}><a className="skip-link" href="#main">Skip to content</a><Header page={page} /><main id="main" tabIndex={-1}>{children}</main><Footer /></div>;
 }
 
