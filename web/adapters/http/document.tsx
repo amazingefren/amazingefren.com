@@ -1,4 +1,5 @@
 import { themeBootstrap } from '../../../design/behaviors/theme.ts';
+import { observationMotionBootstrap } from '../../ui/landing/observation-motion.ts';
 import { lightTheme, darkTheme } from '../../../design/foundations/tokens.ts';
 import type { DocumentProps } from 'rwsdk/router';
 import type { ReactNode } from 'react';
@@ -16,6 +17,7 @@ function DocumentContent({ children, noIndex = false }: { children: ReactNode; n
         <meta name="theme-color" content={darkTheme['--ae-background']} media="(prefers-color-scheme: dark)" />
         {noIndex && <meta name="robots" content="noindex, nofollow" />}
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap() }} />
+        <script dangerouslySetInnerHTML={{ __html: observationMotionBootstrap() }} />
         <link rel="stylesheet" href={stylesUrl} />
         <link rel="stylesheet" href={dashboardStylesUrl} />
         <title>Efren Castro — Public research</title>

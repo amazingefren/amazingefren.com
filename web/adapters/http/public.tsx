@@ -1,9 +1,9 @@
 import { PrivacySummary } from '../../../privacy/ui/transparency/PrivacySummary.tsx';
 import { ActionLink } from '../../../design/ui/ActionLink.tsx';
+import { BrandMark } from '../../../design/ui/BrandMark.tsx';
+import { ThemeControl } from '../../../design/ui/ThemeControl.tsx';
 import { AboutProfile } from '../../ui/portfolio/AboutProfile.tsx';
-import { ObservationField } from '../../ui/landing/ObservationField.tsx';
-import { ContinuumMark } from '../../ui/shared/ContinuumMark.tsx';
-import { ThemeControl } from '../../ui/shared/ThemeControl.tsx';
+import { OpenField } from '../../ui/landing/OpenField.tsx';
 import type { ReactNode } from 'react';
 import type { RequestInfo } from 'rwsdk/worker';
 import './public.css';
@@ -19,19 +19,19 @@ const navigation = (page: Page) => (
 );
 
 function Header({ page }: { page: Page }) {
-  return <header className="site-header"><a className="brand" href="/" aria-label="amazingefren home"><ContinuumMark className="brand-mark" /><span className="brand-name">amazingefren</span></a>{navigation(page)}<div className="header-actions"><ThemeControl /><a className="header-contact" href="mailto:dev@amazingefren.com">Say hello <span aria-hidden="true">↗</span></a></div></header>;
+  return <header className="site-header"><a className="brand" href="/" aria-label="amazingefren home"><BrandMark className="brand-mark" variant="theme" /><span className="brand-name">amazingefren</span></a>{navigation(page)}<div className="header-actions"><a className="header-contact" href="mailto:dev@amazingefren.com">Say hello <span aria-hidden="true">↗</span></a></div></header>;
 }
 
 function Footer() {
-  return <footer className="site-footer"><span>© {new Date().getFullYear()} Efren Castro</span><span className="footer-rule" aria-hidden="true" /><span>Denver, Colorado</span><a href="mailto:dev@amazingefren.com">dev@amazingefren.com <span aria-hidden="true">↗</span></a></footer>;
+  return <footer className="site-footer"><span>© {new Date().getFullYear()} Efren Castro</span><span className="footer-rule" aria-hidden="true" /><span>Denver, Colorado</span><a href="mailto:dev@amazingefren.com">dev@amazingefren.com <span aria-hidden="true">↗</span></a><ThemeControl /></footer>;
 }
 
 function Shell({ page, children }: { page: Page; children: ReactNode }) {
-  return <div className={`site-shell site-${page}`}><a className="skip-link" href="#main">Skip to content</a><Header page={page} /><main id="main" tabIndex={-1}>{children}</main><Footer /></div>;
+  return <div className={`site-shell site-${page}${page === 'home' ? ' site-open-field' : ''}`}><a className="skip-link" href="#main">Skip to content</a><Header page={page} /><main id="main" tabIndex={-1}>{children}</main><Footer /></div>;
 }
 
 export function Home() {
-  return <Shell page="home"><section className="hero"><div className="hero-copy"><p className="eyebrow">EFREN CASTRO <span>/</span> A PUBLIC NOTEBOOK</p><h1><span>My workbench</span><br /><em>for observability</em><br /><span>in the AI era.</span></h1><p className="hero-lede">A place to explore, experiment,<br />and share what I notice.</p><div className="hero-actions"><ActionLink variant="primary" href="/readings">Explore the readings</ActionLink><ActionLink href="/about">About me</ActionLink></div></div><div className="hero-art"><ObservationField /></div><div className="hero-meta"><span>01 — OBSERVATIONS</span><span>ALWAYS CURIOUS.</span></div></section></Shell>;
+  return <Shell page="home"><OpenField /></Shell>;
 }
 
 export function Readings() {

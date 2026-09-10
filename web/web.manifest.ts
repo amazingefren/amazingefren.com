@@ -12,16 +12,17 @@ export default {
   "context": {
     "decisions": [
       "Public / is the entry even for a workspace-shaped product. Use a hero-led page with immediate paths into readings and About me.",
-      "The landing uses a large rounded SVG research field, without an eye outline or text labels. Theme-specific inner shadows and edge highlights place the scene behind the page. Static CRT scanlines, phosphor texture, and edge shading cover the artwork only; no flicker. Dark mode shows an illustrative bird lab on warm light-mode paper, with tracking paths and no clouds; light mode shows an approved atlas-style illustrated galaxy with faint coordinate guides. These are visual studies, not measured results. CSS follows explicit and system themes.",
+      "Readings is the primary public destination, including while its publishing system is built. Keep the home reading action prominent. Public refinements use web/ui/shared/public-shell.css: 14px navigation and actions, 12px metadata, footer theme selection, and shared mobile margins. Owner rejected the compact reading empty state on 2026-09-09: retain the large title, editorial reading-room composition, decorative circles, and layout-demo link.",
+      "Owner approved Open field for application implementation on 2026-09-09. Center the introduction in the main area. Use an unframed, contained background: broad bird grid with one corner-bracket detection box on the large middle bird and no crosshairs in light mode, galaxy in dark mode. Preserve the approved copy and primary Readings action. Artwork is illustrative, not measured telemetry.",
       "Keep hero text and destination links in semantic HTML, usable immediately without JavaScript. The home fits one viewport when space allows; short screens and text zoom can scroll without clipping.",
-      "Render the research field as static inline SVG with the declared local galaxy image. It needs no JavaScript, animation, GPU context, or third-party runtime assets. Keep text contrast and keyboard focus clear in both themes.",
+      "OpenField renders semantic HTML and inline SVG with the declared local galaxy image. Optional motion starts through observation-motion.ts: one simultaneous entrance with static bird silhouettes gliding from distinct positions. Only the large middle bird receives detection, with a quick ease-out into its final position. The sequence settles after 1.2 seconds. Dark mode uses the original static galaxy image, with no animation or motion button. Reduced motion and no JavaScript show the final static scene; hidden documents pause. Keep content and links available immediately. Tests: web/tests/landing/observation-motion.test.ts.",
       "The hero introduces a workbench for research and ideas. Invite exploration and observation without claiming that writing is already published.",
       "Use design/design.manifest.ts for the visual language, brand, themes, tokens, shared controls, and interaction rules. Keep route content and public composition here.",
       "Primary destinations: Readings (/readings), About me (/about), and Workbench (/guest/dashboard). Workbench opens the synthetic guest dashboard. Resume stays accessible from About me.",
       "About uses a compact two-column profile: name and role beside the approved bio, with aligned resume downloads and contact details. Keep existing personal claims. Its component and styles live in web/ui/portfolio to limit shared-file edits.",
       "Public navigation is separate from the workspace sidebar. Never redirect an unknown visitor into the owner workspace.",
       "Owner workspace routes are not linked from the public site. The public Workbench link opens the declared guest dashboard.",
-      "Light-mode window depth uses a page-colored recessed lip outside the dark galaxy; the inner shadow alone cannot define the edge against dark artwork.",
+      "The approved Open field background stops at the header and footer; no window lip, CRT texture, or frame. The older ObservationField is retained only for archived prototype references.",
       "Use AE Design copy and interaction rules. Readings needs one empty state, and the article demo needs one demo label. Keep approved personal text. Review every public route in both themes and narrow layouts.",
       "Short labels and useful content; no prototype implementation explanations in visitor flows. Mark synthetic data with concise labels.",
       "Public builds need no private engines.",
@@ -193,6 +194,11 @@ export default {
       "status": "ready"
     },
     {
+      "path": "/assets/continuum-blue.svg",
+      "source": "web/public/assets/continuum-blue.svg",
+      "status": "ready"
+    },
+    {
       "path": "/assets/continuum-mono.svg",
       "source": "web/public/assets/continuum-mono.svg",
       "status": "ready"
@@ -251,6 +257,7 @@ export default {
     "no-javascript-reading": "web/ui/reading"
   },
   "structure": {
+    "publicShell": "web/ui/shared",
     "domain": "web/domain",
     "operations": "web/operations",
     "ports": "web/ports",
