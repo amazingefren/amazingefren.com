@@ -16,27 +16,28 @@
 .open-field-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ae-space-24); }
 .observation-lock { transform-origin: 0 0; }
 @media (prefers-reduced-motion: no-preference) {
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight { animation: ae-observation-flight 1.1s linear both; }
+  [data-observation-birds="entering"] .observation-flight { opacity: 0; }
+  [data-observation-motion][data-observation-birds="entering"] .observation-flight { animation: ae-observation-flight 1.5s cubic-bezier(.22,.55,.35,1) both, ae-observation-fade 1.5s linear both; }
   [data-observation-motion][data-observation-birds="entering"] .observation-lock { animation: ae-observation-lock .3s cubic-bezier(.25,.875,.5,1) both; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-trails { animation: ae-observation-trails 1.2s linear both; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-0 { animation-name: ae-observation-flight-0; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-1 { animation-name: ae-observation-flight-1; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-2 { animation-name: ae-observation-flight-2; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-3 { animation-name: ae-observation-flight-3; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-4 { animation-name: ae-observation-flight-4; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-5 { animation-name: ae-observation-flight-5; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-6 { animation-name: ae-observation-flight-6; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-7 { animation-name: ae-observation-flight-7; }
+  [data-observation-motion][data-observation-birds="entering"] .observation-trails { animation: ae-observation-trails 1.6s linear both; }
+  [data-observation-motion][data-observation-birds="entering"] .observation-flight-0 { animation-name: ae-observation-flight-0, ae-observation-fade; }
+  [data-observation-motion][data-observation-birds="entering"] .observation-flight-1 { animation-name: ae-observation-flight-1, ae-observation-fade; }
+  [data-observation-motion][data-observation-birds="entering"] .observation-flight-2 { animation-name: ae-observation-flight-2, ae-observation-fade; }
+  [data-observation-motion][data-observation-birds="entering"] .observation-flight-3 { animation-name: ae-observation-flight-3, ae-observation-fade; }
+  [data-observation-motion][data-observation-birds="entering"] .observation-flight-4 { animation-name: ae-observation-flight-4, ae-observation-fade; }
+  [data-observation-motion][data-observation-birds="entering"] .observation-flight-5 { animation-name: ae-observation-flight-5, ae-observation-fade; }
+  [data-observation-motion][data-observation-birds="entering"] .observation-flight-6 { animation-name: ae-observation-flight-6, ae-observation-fade; }
+  [data-observation-motion][data-observation-birds="entering"] .observation-flight-7 { animation-name: ae-observation-flight-7, ae-observation-fade; }
   [data-observation-motion="paused"] .open-field-art * { animation-play-state: paused; }
 }
-@keyframes ae-observation-flight-0 { 0% { transform: translate(-250px, 160px); opacity: 0; } 12% { opacity: 1; } 72% { transform: translate(-25px, 16px); animation-timing-function: cubic-bezier(.25,.875,.5,1); } 100% { transform: translate(0, 0); opacity: 1; } }
-@keyframes ae-observation-flight-1 { 0% { transform: translate(180px, -170px); opacity: 0; } 12% { opacity: 1; } 72% { transform: translate(18px, -17px); animation-timing-function: cubic-bezier(.25,.875,.5,1); } 100% { transform: translate(0, 0); opacity: 1; } }
-@keyframes ae-observation-flight-2 { 0% { transform: translate(140px, 210px); opacity: 0; } 12% { opacity: 1; } 72% { transform: translate(14px, 21px); animation-timing-function: cubic-bezier(.25,.875,.5,1); } 100% { transform: translate(0, 0); opacity: 1; } }
-@keyframes ae-observation-flight-3 { 0% { transform: translate(-320px, 120px); opacity: 0; } 12% { opacity: 1; } 72% { transform: translate(-32px, 12px); animation-timing-function: cubic-bezier(.25,.875,.5,1); } 100% { transform: translate(0, 0); opacity: 1; } }
-@keyframes ae-observation-flight-4 { 0% { transform: translate(230px, -130px); opacity: 0; } 12% { opacity: 1; } 72% { transform: translate(23px, -13px); animation-timing-function: cubic-bezier(.25,.875,.5,1); } 100% { transform: translate(0, 0); opacity: 1; } }
-@keyframes ae-observation-flight-5 { 0% { transform: translate(-190px, -210px); opacity: 0; } 12% { opacity: 1; } 72% { transform: translate(-19px, -21px); animation-timing-function: cubic-bezier(.25,.875,.5,1); } 100% { transform: translate(0, 0); opacity: 1; } }
-@keyframes ae-observation-flight-6 { 0% { transform: translate(260px, 150px); opacity: 0; } 12% { opacity: 1; } 72% { transform: translate(26px, 15px); animation-timing-function: cubic-bezier(.25,.875,.5,1); } 100% { transform: translate(0, 0); opacity: 1; } }
-@keyframes ae-observation-flight-7 { 0% { transform: translate(-160px, -100px); opacity: 0; } 12% { opacity: 1; } 72% { transform: translate(-16px, -10px); animation-timing-function: cubic-bezier(.25,.875,.5,1); } 100% { transform: translate(0, 0); opacity: 1; } }
+@keyframes ae-observation-flight-0 { 0% { transform: translate(-250px, 160px); } 100% { transform: translate(0, 0); } }
+@keyframes ae-observation-flight-1 { 0% { transform: translate(180px, -170px); } 100% { transform: translate(0, 0); } }
+@keyframes ae-observation-flight-2 { 0% { transform: translate(140px, 210px); } 100% { transform: translate(0, 0); } }
+@keyframes ae-observation-flight-3 { 0% { transform: translate(-320px, 120px); } 100% { transform: translate(0, 0); } }
+@keyframes ae-observation-flight-4 { 0% { transform: translate(230px, -130px); } 100% { transform: translate(0, 0); } }
+@keyframes ae-observation-flight-5 { 0% { transform: translate(-190px, -210px); } 100% { transform: translate(0, 0); } }
+@keyframes ae-observation-flight-6 { 0% { transform: translate(260px, 150px); } 100% { transform: translate(0, 0); } }
+@keyframes ae-observation-flight-7 { 0% { transform: translate(-160px, -100px); } 100% { transform: translate(0, 0); } }
 @keyframes ae-observation-lock { 0% { opacity: 0; transform: scale(1.4); } 35% { opacity: .35; } 100% { transform: scale(1); } }
 @keyframes ae-observation-trails { 0% { opacity: 0; } 100% { opacity: .5; } }
 @media (max-width: 1376px) { .open-field-background { right: -48px; } }
@@ -53,3 +54,4 @@
 }
 
 @media print { .open-field-background { display: none; } }
+@keyframes ae-observation-fade { 0% { opacity: 0; } 35%, 100% { opacity: 1; } }

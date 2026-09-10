@@ -2,14 +2,14 @@ import { ActionLink } from '../../../design/ui/ActionLink.tsx';
 import { birdShapes } from './bird-shapes.ts';
 
 const birds = [
-  { x: 420, y: 280, scale: .58, angle: 9, shape: 1, opacity: .42, enter: 0, duration: 0.9 },
-  { x: 760, y: 190, scale: .7, angle: -12, shape: 0, opacity: .55, enter: 0, duration: 1.1 },
-  { x: 1160, y: 240, scale: .62, angle: 12, shape: 2, opacity: .36, enter: 0, duration: 0.8 },
-  { x: 870, y: 510, scale: 1.65, angle: -9, shape: 0, opacity: .95, enter: 0, duration: 1 },
-  { x: 1280, y: 620, scale: .78, angle: 11, shape: 1, opacity: .62, enter: 0, duration: 0.95 },
-  { x: 590, y: 730, scale: .9, angle: -18, shape: 0, opacity: .4, enter: 0, duration: 0.85 },
-  { x: 1030, y: 850, scale: .95, angle: 16, shape: 2, opacity: .78, enter: 0, duration: 1.05 },
-  { x: 280, y: 600, scale: .6, angle: -19, shape: 1, opacity: .55, enter: 0, duration: 0.9 }
+  { x: 420, y: 280, scale: .58, angle: 9, shape: 1, opacity: .42, enter: 0, duration: 1.22 },
+  { x: 760, y: 190, scale: .7, angle: -12, shape: 0, opacity: .55, enter: 0, duration: 1.49 },
+  { x: 1160, y: 240, scale: .62, angle: 12, shape: 2, opacity: .36, enter: 0, duration: 1.08 },
+  { x: 870, y: 510, scale: 1.65, angle: -9, shape: 0, opacity: .95, enter: 0, duration: 1.35 },
+  { x: 1280, y: 620, scale: .78, angle: 11, shape: 1, opacity: .62, enter: 0, duration: 1.28 },
+  { x: 590, y: 730, scale: .9, angle: -18, shape: 0, opacity: .4, enter: 0, duration: 1.15 },
+  { x: 1030, y: 850, scale: .95, angle: 16, shape: 2, opacity: .78, enter: 0, duration: 1.42 },
+  { x: 280, y: 600, scale: .6, angle: -19, shape: 1, opacity: .55, enter: 0, duration: 1.22 }
 ] as const;
 
 function detectionBox(scale: number, shape: number, index: number) {

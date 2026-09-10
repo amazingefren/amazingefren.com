@@ -34,6 +34,7 @@ function fixture(reduced = false, mounted = true) {
 test('bird motion starts when its scene arrives without requiring a control', () => {
   const page = fixture(false, false);
   assert.equal(page.state(), undefined);
+  assert.equal(page.birds(), 'entering');
   page.mount(true);
   assert.equal(page.state(), 'running');
   page.mount(false);
@@ -69,5 +70,13 @@ test('only the full entrance finishes the sequence and it stays settled across n
   assert.equal(page.birds(), 'settled');
   page.mount(false);
   page.mount(true);
+  assert.equal(page.birds(), 'settled');
+});
+
+test('reduced motion stays visible even before the streamed scene mounts', () => {
+  const page = fixture(true, false);
+  assert.equal(page.birds(), 'settled');
+  page.mount(true);
+  assert.equal(page.state(), 'static');
   assert.equal(page.birds(), 'settled');
 });

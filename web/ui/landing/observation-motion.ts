@@ -1,6 +1,7 @@
 export function installObservationMotion(document: Document, view: Pick<Window, 'matchMedia'>) {
   const preference = view.matchMedia('(prefers-reduced-motion: reduce)');
   let settled = preference.matches;
+  document.documentElement.setAttribute('data-observation-birds', settled ? 'settled' : 'entering');
   function sync() {
     const root = document.documentElement;
     const scene = document.querySelector('.observation-birds');
