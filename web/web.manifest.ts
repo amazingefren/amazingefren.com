@@ -21,6 +21,7 @@ export default {
       "Primary destinations: Readings (/readings), About me (/about), and Workbench (/guest/dashboard). Workbench opens the synthetic guest dashboard. Resume stays accessible from About me.",
       "About uses a compact two-column profile: name and role beside the approved bio, with aligned resume downloads and contact details. Keep existing personal claims. Its component and styles live in web/ui/portfolio to limit shared-file edits.",
       "Public navigation is separate from the workspace sidebar. Never redirect an unknown visitor into the owner workspace.",
+      "Navigation into or out of guest and owner workspace routes loads a full document so each shell receives its styles and bootstrap scripts. Public-to-public navigation may use client routing.",
       "Owner workspace routes are not linked from the public site. The public Workbench link opens the declared guest dashboard.",
       "The approved Open field background stops at the header and footer; no window lip, CRT texture, or frame. The older ObservationField is retained only for archived prototype references.",
       "Use AE Design copy and interaction rules. Readings needs one empty state, and the article demo needs one demo label. Keep approved personal text. Review every public route in both themes and narrow layouts.",

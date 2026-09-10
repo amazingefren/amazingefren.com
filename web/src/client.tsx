@@ -1,7 +1,7 @@
 import { initClient, initClientNavigation } from 'rwsdk/client';
 
 const { handleResponse, onHydrated } = initClientNavigation({
-  shouldIntercept: ({ toUrl }) => !isWorkspacePath(toUrl.pathname)
+  shouldIntercept: ({ fromUrl, toUrl }) => !isWorkspacePath(fromUrl.pathname) && !isWorkspacePath(toUrl.pathname)
 });
 void initClient({ handleResponse, onHydrated });
 
