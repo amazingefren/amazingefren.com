@@ -20,4 +20,3 @@ export async function boundedJson(message: Request | Response, limit: number): P
   } catch { return { ok: false, error: { code: 'invalid', message: 'JSON could not be read.' } }; }
   finally { reader.releaseLock(); }
 }
-

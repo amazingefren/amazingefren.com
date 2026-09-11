@@ -22,5 +22,29 @@
     ]
   },
   "workers_dev": false,
-  "preview_urls": false
+  "preview_urls": false,
+  "account_id": "9a90a6a9b628c0261f3882373dde0439",
+  "vars": {
+    "AUTH_ORIGIN": "https://amazingefren.com"
+  },
+  "routes": [
+    {
+      "pattern": "amazingefren.com",
+      "custom_domain": true
+    }
+  ],
+  "services": [
+    {
+      "binding": "WORKSPACE_OWNER_SERVICE",
+      "service": "ae-studio-engine-owner-service"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "AUTH_DB",
+      "database_name": "ae-auth",
+      "database_id": "78e70403-9d43-4abd-a9d7-6ff73661b038",
+      "migrations_dir": "../auth/migrations"
+    }
+  ]
 }

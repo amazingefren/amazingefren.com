@@ -1,16 +1,17 @@
 export default {
-  purpose: 'Gate the first deployment until owner access and storage are configured.',
+  purpose: 'Govern first-deployment configuration and owner acceptance.',
   decisions: [
+    'Owner requested continued first-deployment setup on 2026-09-10 and connected Wrangler. Account and active amazingefren.com zone verified before resource creation. Keep Worker observability disabled until collection is approved.',
     'Public web and private owner service use a shared dedicated AUTH_DB for passkeys and sessions. Content uses a separate WORKSPACE_OWNER_DB and private WRITING_ASSETS bucket.',
     'Production authentication uses the exact HTTPS AUTH_ORIGIN. Enroll on the permanent domain after TLS is active; localhost or preview passkeys do not migrate to that domain.',
     'Set AUTH_BOOTSTRAP_TOKEN as a Worker secret with at least 32 random bytes encoded as base64url. Never put it in URLs, source, logs, or command history. Enrollment closes permanently in D1 after the first passkey; remove the secret after enrollment.',
     'The web Worker has the sole public route. Disable workers.dev and preview URLs on both Workers; the owner service has no public routes.',
     'Use a fresh database with the consolidated initial migration. Existing local databases retain their migration history; export any needed records before choosing a new local database. Do not replay the initial migration over old tables.',
     'The owner must test 1Password enrollment, logout, repeat sign-in, and an independent backup passkey on the final domain before storing irreplaceable data.',
-    'Cloudflare account connection, provisioning, secrets, remote migration application, deployment, and restore drills remain unperformed.'
+    'Cloudflare resources and initial schemas were created on 2026-09-10. Both Workers are deployed on the permanent HTTPS domain; live anonymous access checks passed. Real passkey acceptance and restore drills remain pending.'
   ],
   capabilities: ['web', 'owner-auth', 'private-storage'],
-  governance: { release: 'Blocked until configuration checks and final-domain passkey acceptance pass.', deploymentsAuthorized: false },
+  governance: { release: 'Deployed with private access protected. Final-domain owner passkey acceptance remains pending.', deploymentsAuthorized: true },
   risks: ['Local tests do not prove provider configuration, backup recovery, or 1Password behavior.'],
   contracts: {
     origin: 'https://amazingefren.com',

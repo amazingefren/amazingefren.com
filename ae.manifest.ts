@@ -117,7 +117,7 @@ export default {
     unit: "system / operation / obligation",
     resultStates: ["not-run", "passed", "failed", "blocked"],
     lineCoverageTarget: null,
-    limitation: "Current checks validate declarations and references. Runtime obligations remain untested; no benchmark runner exists.",
+    limitation: "Declaration checks and launch runtime tests exist. Broader obligations without test references remain unverified; no benchmark runner exists.",
   },
   systems: "manifests/registry.ts",
   rules: "AGENTS.md",
