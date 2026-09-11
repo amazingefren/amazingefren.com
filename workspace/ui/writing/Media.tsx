@@ -4,11 +4,13 @@ import type {
   StudioProps,
   StudioState,
 } from '../../../contracts/writing/index.ts';
+import { maximumImageBytes, prepareImage } from './image-compression.ts';
 export function MediaView(props: StudioProps) {
   const [state, setState] = useState(props.state),
     [selected, setSelected] = useState(''),
     [draft, setDraft] = useState<Asset | null>(null),
-    [message, setMessage] = useState('');
+    [message, setMessage] = useState(''),
+    [processing, setProcessing] = useState(false);
   const current =
       draft ?? state.assets.find((item) => item.id === selected) ?? null,
     dirty = Boolean(draft);
@@ -38,42 +40,40 @@ export function MediaView(props: StudioProps) {
     setMessage(result.error.message);
     return null;
   };
-  const upload = (event: ChangeEvent<HTMLInputElement>) => {
+  const upload = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     event.target.value = '';
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024)
-      return setMessage('Image must be 2 MiB or smaller.');
-    if (
-      !['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(
-        file.type,
-      )
-    )
-      return setMessage('Use a PNG, JPEG, WebP, or GIF image.');
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result !== 'string') return;
-      const dataUrl = reader.result;
-      const image = new Image();
-      image.onload = async () => {
-        const next = await run({
-          operation: 'studio.assets.add',
-          input: {
-            name: file.name,
-            mime: file.type as Asset['mime'],
-            dataUrl,
-            alt: '',
-            caption: '',
-            rights: '',
-          },
-        });
-        if (next) setSelected(next.assets.at(-1)?.id ?? '');
-      };
-      image.onerror = () => setMessage('This image is malformed.');
-      image.src = dataUrl;
-    };
-    reader.onerror = () => setMessage('This image could not be read.');
-    reader.readAsDataURL(file);
+    if (!file || processing || props.busy) return;
+    setProcessing(true);
+    setMessage(file.size > maximumImageBytes ? 'Compressing image...' : '');
+    try {
+      const image = await prepareImage(file);
+      const next = await run({
+        operation: 'studio.assets.add',
+        input: {
+          name: image.name,
+          mime: image.mime,
+          dataUrl: image.dataUrl,
+          alt: '',
+          caption: '',
+          rights: '',
+        },
+      });
+      if (next) {
+        setSelected(next.assets.at(-1)?.id ?? '');
+        setMessage(
+          image.compressed ? 'Image compressed to WebP before upload.' : '',
+        );
+      }
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : 'This image could not be read.',
+      );
+    } finally {
+      setProcessing(false);
+    }
   };
   return (
     <section className="studio-page">
@@ -87,14 +87,14 @@ export function MediaView(props: StudioProps) {
           <input
             type="file"
             accept="image/png,image/jpeg,image/webp,image/gif"
-            disabled={props.busy}
+            disabled={props.busy || processing}
             onChange={upload}
           />
         </label>
       </div>
       <header className="studio-heading">
         <h1>Media library</h1>
-        <p>PNG, JPEG, WebP or GIF / up to 2 MiB</p>
+        <p>PNG, JPEG, WebP or GIF / larger images compress to WebP</p>
       </header>
       {message && (
         <p className="studio-notice" role="alert">

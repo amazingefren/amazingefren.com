@@ -241,9 +241,16 @@
   background: var(--ae-panel);
   color: var(--ae-ink);
 }
-.zen-panel-content {
-  display: grid;
+.zen-panel > .zen-panel-heading {
+  justify-content: space-between;
+  margin-top: 0;
+}
+.zen-panel > .zen-panel-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: initial;
   gap: var(--ae-space-16);
+  margin-top: 0;
 }
 .zen-panel-content input,
 .zen-panel-content textarea,
