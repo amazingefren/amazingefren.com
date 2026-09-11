@@ -1,6 +1,7 @@
 export default {
   purpose: 'Govern first-deployment configuration and owner acceptance.',
   decisions: [
+    '2026-09-10: Owner marks this first deployment as initialization. First publication: https://amazingefren.com/readings/ae-intro.',
     'Owner requested continued first-deployment setup on 2026-09-10 and connected Wrangler. Account and active amazingefren.com zone verified before resource creation. Keep Worker observability disabled until collection is approved.',
     'Public web and private owner service use a shared dedicated AUTH_DB for passkeys and sessions. Content uses a separate WORKSPACE_OWNER_DB and private WRITING_ASSETS bucket.',
     'Production authentication uses the exact HTTPS AUTH_ORIGIN. Enroll on the permanent domain after TLS is active; localhost or preview passkeys do not migrate to that domain.',

@@ -13,7 +13,7 @@ export default {
   "context": {
     "decisions": [
       "2026-09-09: Owner approved a separate zen publication writer for articles, pages, and books. Projects, ordered manuscripts, and explicit release review are distinct from quick personal notes.",
-      "Application authoring and delivery use contracts/writing/index.ts. Runtime and transaction behavior remain unverified; do not enable live publishing until reported defects and release checks are resolved.",
+      "Application authoring and delivery use contracts/writing/index.ts. Launch integration verifies private persistence, approved publication, asset isolation, and withdrawal; evidence: ae-workbench/auth-launch-review/integration.json. First owner publication is live at /readings/ae-intro. Declared-only bindings remain unverified.",
       "HTTP, MCP, and studio invoke the same domain operations.",
       "Private engine owns transformations; approved outputs are public.",
       "Publish full-text feeds with stable entry IDs and canonical links.",
