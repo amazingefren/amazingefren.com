@@ -88,6 +88,20 @@ const runtime = new Miniflare(
 const send = (path, options) =>
   runtime.dispatchFetch(origin + path, { redirect: 'manual', ...options });
 try {
+  const openapi = await send('/api/openapi.json');
+  assert.equal(openapi.status, 200);
+  const discovery = await openapi.json();
+  assert.equal(discovery.openapi, '3.1.0');
+  assert.ok(discovery.paths['/api/systems/{id}']);
+  assert.ok(discovery.paths['/api/openapi.json']);
+  assert.ok(
+    Object.keys(discovery.paths).every(
+      (path) =>
+        !path.startsWith('/api/evidence') &&
+        !path.startsWith('/api/evaluation'),
+    ),
+  );
+  assert.equal(discovery.paths['/api/openapi.json'].get.requestBody, undefined);
   const catalog = await send('/api/systems');
   assert.equal(catalog.status, 200);
   const listing = await catalog.json();

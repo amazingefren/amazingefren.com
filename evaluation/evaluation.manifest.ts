@@ -137,7 +137,8 @@ export default {
       'Execution accepts text and model subjects through a private injected port. It does not execute arbitrary code.',
       'Missing provider usage is null. Aggregates expose scheduled and unknown denominators.',
       'Public contracts and synthetic fixtures do not import the private engine.',
-      'Selected-run reports can be saved to private Notes through the existing writing operation. Publication remains an explicit authoring action.',
+      'Guest benchmark state persists through workspace navigation in session storage. Invalid or owner state is rejected and concurrent changes return a conflict.',
+      'Selected-run reports can be saved to private Notes or recorded as draft observations in Evidence with their run reference. Review and publication remain explicit owner actions.',
       'MCP and CLI owner adapters require an injected authorized port; the public MCP endpoint does not expose owner operations.',
     ],
     openQuestions: [
@@ -206,7 +207,10 @@ export default {
       verification: [
         {
           expectation: 'Guest benchmarks use isolated synthetic state.',
-          tests: ['evaluation/tests/guest.test.ts'],
+          tests: [
+            'evaluation/tests/guest.test.ts',
+            'evaluation/tests/guest-session.test.ts',
+          ],
         },
       ],
     },
@@ -231,7 +235,10 @@ export default {
           id: 'evaluation.guest-execute.behavior',
           category: 'behavior',
           expectation: 'Guest benchmarks use only synthetic isolated state.',
-          tests: ['evaluation/tests/guest.test.ts'],
+          tests: [
+            'evaluation/tests/guest.test.ts',
+            'evaluation/tests/guest-session.test.ts',
+          ],
         },
       ],
     },

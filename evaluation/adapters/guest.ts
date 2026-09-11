@@ -1,5 +1,6 @@
 import {
   parseEvaluationCommand,
+  isEvaluationState,
   type EvaluationAggregate,
   type EvaluationAttempt,
   type EvaluationCommand,
@@ -12,10 +13,33 @@ import { emptyEvaluationState } from '../fixtures/guest.ts';
 
 const time = '1970-01-01T00:00:00.000Z';
 
-export function createGuestEvaluationPort(): EvaluationPort {
-  let state = clone(emptyEvaluationState());
+export function createGuestEvaluationPort(
+  initial = emptyEvaluationState(),
+): EvaluationPort {
+  if (
+    !isEvaluationState(initial) ||
+    !initial.synthetic ||
+    initial.definitions.some((item) => item.ownerId !== 'guest') ||
+    initial.runs.some(
+      (item) => item.ownerId !== 'guest' || item.definition.ownerId !== 'guest',
+    )
+  )
+    throw new Error('Guest evaluation state is invalid.');
+  let state = clone(initial);
   let sequence = 0;
-  const next = (kind: string) => `${kind}-${++sequence}`;
+  const used = new Set([
+    ...state.definitions.map((item) => item.id),
+    ...state.runs.flatMap((item) => [
+      item.id,
+      ...item.attempts.map((attempt) => attempt.id),
+    ]),
+  ]);
+  const next = (kind: string) => {
+    let id = `${kind}-${++sequence}`;
+    while (used.has(id)) id = `${kind}-${++sequence}`;
+    used.add(id);
+    return id;
+  };
   return {
     async execute(raw): Promise<EvaluationResult> {
       const command = parseEvaluationCommand(raw);

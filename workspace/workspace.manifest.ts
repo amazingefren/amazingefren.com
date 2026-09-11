@@ -238,6 +238,7 @@ export default {
   visibility: 'public',
   context: {
     decisions: [
+      '2026-09-10: Evidence links to a private claim and observation ledger, with sources and explicit review before owner-only export. Guest benchmark and evidence ledgers persist within the sandbox session and reset with the workspace.',
       '2026-09-10: Benchmarks opens the Evaluation workbench. Owner operations use passkey-protected private storage; guest imports and comparisons use isolated synthetic state.',
       'First deployment adds the web launch access boundary to all guest views and HTTP APIs. Public guest operation contracts describe the retained synthetic capability; anonymous hosting is disabled until a later release.',
       'AE Work application build authorized on 2026-09-09. Work routes, operations and storage contracts belong to work/work.manifest.ts; the workspace shell links Work alongside existing sections.',

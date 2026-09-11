@@ -1,0 +1,61 @@
+.evidence-workbench {
+  display: grid;
+  gap: var(--ae-space-24);
+}
+.evidence-workbench header,
+.evidence-actions {
+  display: flex;
+  gap: var(--ae-space-12);
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.evidence-workbench h1 {
+  margin: 0;
+}
+.evidence-grid {
+  display: grid;
+  grid-template-columns: minmax(14rem, 1fr) minmax(0, 2fr);
+  gap: var(--ae-space-24);
+}
+.evidence-grid aside,
+.evidence-grid form {
+  min-width: 0;
+}
+.evidence-grid label {
+  display: grid;
+  gap: var(--ae-space-8);
+  margin-bottom: var(--ae-space-16);
+}
+.evidence-grid textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+.evidence-list {
+  display: grid;
+  gap: var(--ae-space-8);
+}
+.evidence-list button {
+  min-width: 0;
+  text-align: left;
+}
+.evidence-list button[aria-pressed='true'] {
+  border-color: var(--ae-action-primary);
+  background: var(--ae-hover-surface);
+}
+.evidence-list span,
+.evidence-list small {
+  display: block;
+  color: var(--ae-muted);
+}
+.evidence-list strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .evidence-grid {
+    grid-template-columns: 1fr;
+  }
+}

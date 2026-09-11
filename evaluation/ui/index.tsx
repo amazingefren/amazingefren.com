@@ -16,10 +16,12 @@ export function EvaluationWorkbench({
   audience,
   port,
   onDocumentReport,
+  onRecordEvidence,
 }: {
   audience: 'owner' | 'guest';
   port: EvaluationPort;
   onDocumentReport?: (title: string, markdown: string) => Promise<string>;
+  onRecordEvidence?: (runId: string, markdown: string) => Promise<string>;
 }) {
   const [state, setState] = useState<EvaluationState | null>(null);
   const [message, setMessage] = useState('');
@@ -180,6 +182,29 @@ export function EvaluationWorkbench({
       );
     } catch {
       setMessage('The report could not be saved to Notes.');
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function recordEvidence() {
+    if (!selectedRun || !onRecordEvidence) return;
+    setBusy(true);
+    setMessage('');
+    try {
+      const result = await port.execute({
+        operation: 'evaluation.export-report',
+        runId: selectedRun.id,
+        format: 'markdown',
+      });
+      if (!result.ok || !('report' in result)) {
+        setMessage(result.ok ? 'Report unavailable.' : result.error.message);
+        return;
+      }
+      setMessage(
+        await onRecordEvidence(selectedRun.id, reportMarkdown(result.report)),
+      );
+    } catch {
+      setMessage('The report could not be recorded in Evidence.');
     } finally {
       setBusy(false);
     }
@@ -459,6 +484,14 @@ export function EvaluationWorkbench({
               onClick={() => void documentReport()}
             >
               Save report to Notes
+            </button>
+          )}
+          {onRecordEvidence && (
+            <button
+              disabled={busy || !selectedRun}
+              onClick={() => void recordEvidence()}
+            >
+              Record in Evidence
             </button>
           )}
         </section>

@@ -132,7 +132,8 @@ export function SystemsPage({ catalog, execute, audience }: SystemsPageProps) {
         <h1 id="systems-title">Systems</h1>
         <div>
           <a href="/exports/systems/index.json">JSON</a> ·{' '}
-          <a href="/exports/systems.zip">Offline bundle</a>
+          <a href="/exports/systems.zip">Offline bundle</a> ·{' '}
+          <a href="/api/openapi.json">OpenAPI</a>
         </div>
       </header>
       <div className="ws-explorer">

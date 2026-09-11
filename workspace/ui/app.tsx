@@ -21,6 +21,9 @@ import { TasksPage, ExperimentsPage, RelationshipsPage } from './studio.tsx';
 import { SystemsPage, ConnectionsPage, AccessPage } from './systems.tsx';
 
 import { resetGuestWork } from '../../work/adapters/guest.ts';
+import { resetGuestEvaluation } from '../../evaluation/adapters/guest-session.ts';
+import { resetGuestEvidence } from '../../evidence/adapters/guest-session.ts';
+import { EvidencePage } from './evidence-page.tsx';
 import { WorkPage } from './work-page.tsx';
 import { WritingPage } from './writing-page.tsx';
 import { BenchmarkPage } from './benchmark-page.tsx';
@@ -32,13 +35,14 @@ const labels = {
   tasks: 'Tasks',
   experiments: 'Experiments',
   benchmarks: 'Benchmarks',
+  evidence: 'Evidence',
   relationships: 'Relationships',
   publishing: 'Publications',
   systems: 'Systems',
   connections: 'Connections',
   access: 'Access',
 };
-const symbols = ['▦', '◇', '▤', '☷', '◉', '∷', '⇄', '↗', '⌘', '⊞', '⌑'];
+const symbols = ['▦', '◇', '▤', '☷', '◉', '∷', '≡', '⇄', '↗', '⌘', '⊞', '⌑'];
 export function WorkspaceApp({
   initialPage,
   catalog,
@@ -272,6 +276,7 @@ export function WorkspaceApp({
         tasks: <TasksPage {...props} />,
         experiments: <ExperimentsPage {...props} />,
         benchmarks: <BenchmarkPage audience={audience} />,
+        evidence: <EvidencePage audience={audience} />,
         relationships: <RelationshipsPage {...props} />,
         publishing: <WritingPage {...props} section="publishing" />,
         systems: <SystemsPage {...props} catalog={catalog} />,
@@ -449,6 +454,8 @@ export function WorkspaceApp({
               if (result.ok) {
                 try {
                   resetGuestWork(window.sessionStorage);
+                  resetGuestEvaluation(window.sessionStorage);
+                  resetGuestEvidence(window.sessionStorage);
                   window.dispatchEvent(new Event('work:guest-reset'));
                   resetDialog.current?.close();
                 } catch {

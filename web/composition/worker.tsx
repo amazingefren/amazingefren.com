@@ -29,6 +29,9 @@ import { createPortablePublicationHttpHandler } from '../../publishing/adapters/
 import { createPublicationAssetPort } from './publication-assets.ts';
 import { createPublicMcpHttpHandler } from '../../mcp/composition/index.ts';
 import { createEvaluationGateway } from '../../evaluation/adapters/owner.ts';
+import { createEvidenceGateway } from '../../evidence/adapters/owner.ts';
+import { createOpenApiHttpHandler } from '../../api/adapters/http.ts';
+import { systems as systemManifests } from '../../manifests/registry.ts';
 import {
   createSystemExplorer,
   createSystemExplorerHttpHandler,
@@ -112,9 +115,15 @@ function createApplication(environment: PublicWorkerEnv) {
   });
   const systems = createSystemExplorerHttpHandler(createSystemExplorer());
   const evaluation = createEvaluationGateway(ownerService);
+  const evidence = createEvidenceGateway(ownerService);
+  const openapi = createOpenApiHttpHandler(systemManifests, '1');
   return defineApp([
     render(AuthDocument, [route('/auth/me', AuthRoute)], { rscPayload: true }),
     route('/api/systems', { get: ({ request }) => systems(request) }),
+    route('/api/openapi.json', { get: ({ request }) => openapi(request) }),
+    route('/api/evidence/operations/:operation', {
+      post: ({ request }) => evidence(request),
+    }),
     route('/api/evaluation/operations/:operation', {
       post: ({ request }) => evaluation(request),
     }),

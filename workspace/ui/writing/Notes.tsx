@@ -234,6 +234,23 @@ export function NotesView(props: StudioProps) {
                     >
                       {item.archived ? 'Reopen' : 'Archive'}
                     </button>
+                    <button
+                      disabled={props.busy || Boolean(drafts[item.id])}
+                      onClick={async () => {
+                        const next = await run({
+                          operation: 'publishing.projects.create',
+                          input: {
+                            kind: 'article',
+                            title: item.title,
+                            sourceId: item.id,
+                          },
+                        });
+                        const created = next?.publications.at(-1);
+                        if (created) props.navigate('publishing', created.id);
+                      }}
+                    >
+                      Create publication
+                    </button>
                   </div>
                   <details>
                     <summary>Tags and history</summary>

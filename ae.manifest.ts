@@ -190,7 +190,7 @@ export default {
     resultStates: ['not-run', 'passed', 'failed', 'blocked'],
     lineCoverageTarget: null,
     limitation:
-      'Declaration checks and launch runtime tests exist. Broader obligations without test references remain unverified; no benchmark runner exists.',
+      'Declaration checks, launch runtime tests, and bounded evaluation execution exist. Broader obligations without test references remain unverified; live provider execution requires configuration.',
   },
   systems: 'manifests/registry.ts',
   rules: 'AGENTS.md',

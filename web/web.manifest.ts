@@ -84,6 +84,7 @@ export default {
       '/api/writing',
       '/api/dashboard',
       '/api/evaluation',
+      '/api/evidence',
     ],
     signInPath: '/auth/me',
     frameworkActions: 'denied',

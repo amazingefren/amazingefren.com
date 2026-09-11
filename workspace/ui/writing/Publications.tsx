@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { ThemeControl } from '../../../design/ui/index.ts';
 import { Editor, MarkdownPreview } from './Editor.tsx';
+import { readMarkdownImport } from './markdown-import.ts';
 import type {
   Command,
   Publication,
@@ -40,6 +41,8 @@ export function PublicationsView(props: StudioProps) {
   const [tools, setTools] = useState(false);
   const [message, setMessage] = useState('');
   const [saving, setSaving] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const importTarget = useRef('');
   const [tagText, setTagText] = useState<string | null>(null);
   const [retry, setRetry] = useState(0);
   const createDialog = useRef<HTMLDialogElement>(null);
@@ -74,6 +77,12 @@ export function PublicationsView(props: StudioProps) {
     changed,
     project && metas[project.id],
     retry,
+  ]);
+  importTarget.current = JSON.stringify([
+    props.recordId,
+    stored?.id,
+    chapter?.body,
+    signature,
   ]);
   useEffect(() => {
     props.onDirtyChange?.(dirty || saving);
@@ -236,6 +245,29 @@ export function PublicationsView(props: StudioProps) {
     } finally {
       locked.current = false;
       setSaving(false);
+    }
+  }
+  async function importMarkdown(file: File | undefined) {
+    if (!file || !chapter || dirty || importing || saving || props.busy) return;
+    const target = importTarget.current;
+    setImporting(true);
+    try {
+      const result = await readMarkdownImport(file);
+      if (importTarget.current !== target) {
+        setMessage(
+          'The manuscript changed while reading the file. Import it again.',
+        );
+        return;
+      }
+      if (!result.ok) {
+        setMessage(result.message);
+        return;
+      }
+      updateChapter({ body: result.body });
+      setMessage('Imported Markdown.');
+      options.current?.close();
+    } finally {
+      setImporting(false);
     }
   }
   if (!props.recordId) {
@@ -483,6 +515,21 @@ export function PublicationsView(props: StudioProps) {
           >
             Writing tools
           </button>
+          {chapter && (
+            <label>
+              Import Markdown
+              <input
+                type="file"
+                accept=".md,text/markdown,text/plain"
+                disabled={props.busy || saving || dirty || importing}
+                onChange={(event) => {
+                  const file = event.currentTarget.files?.[0];
+                  event.currentTarget.value = '';
+                  void importMarkdown(file);
+                }}
+              />
+            </label>
+          )}
           <button
             onClick={() => {
               options.current?.close();
