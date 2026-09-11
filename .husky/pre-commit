@@ -1,0 +1,2 @@
+node "$(dirname "$0")/../scripts/format/hook.mjs" || printf '%s\n' 'Formatting unavailable; commit continues.'
+exit 0

@@ -4,10 +4,7 @@
   "additionalProperties": false,
   "properties": {
     "dataScope": {
-      "enum": [
-        "owner",
-        "synthetic"
-      ]
+      "enum": ["owner", "synthetic"]
     },
     "from": {
       "type": "string",
@@ -22,10 +19,7 @@
       "format": "date-time"
     },
     "freshness": {
-      "type": [
-        "string",
-        "null"
-      ],
+      "type": ["string", "null"],
       "format": "date-time"
     },
     "metrics": {
@@ -35,45 +29,24 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "enum": [
-              "page-views",
-              "honeypot-triggers",
-              "honeypot-trigger-rate"
-            ]
+            "enum": ["page-views", "honeypot-triggers", "honeypot-trigger-rate"]
           },
           "value": {
-            "type": [
-              "number",
-              "null"
-            ],
+            "type": ["number", "null"],
             "minimum": 0
           },
           "unit": {
-            "enum": [
-              "count",
-              "ratio"
-            ]
+            "enum": ["count", "ratio"]
           },
           "status": {
-            "enum": [
-              "available",
-              "unavailable",
-              "stale",
-              "suppressed"
-            ]
+            "enum": ["available", "unavailable", "stale", "suppressed"]
           },
           "numerator": {
-            "type": [
-              "integer",
-              "null"
-            ],
+            "type": ["integer", "null"],
             "minimum": 0
           },
           "denominator": {
-            "type": [
-              "integer",
-              "null"
-            ],
+            "type": ["integer", "null"],
             "minimum": 0
           },
           "source": {
@@ -93,12 +66,5 @@
       }
     }
   },
-  "required": [
-    "dataScope",
-    "from",
-    "to",
-    "generatedAt",
-    "freshness",
-    "metrics"
-  ]
+  "required": ["dataScope", "from", "to", "generatedAt", "freshness", "metrics"]
 }

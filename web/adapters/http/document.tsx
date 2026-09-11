@@ -6,18 +6,37 @@ import type { ReactNode } from 'react';
 import stylesUrl from './public.css?url';
 import dashboardStylesUrl from '../../../dashboard/ui/guest/dashboard.css?url';
 
-function DocumentContent({ children, noIndex = false }: { children: ReactNode; noIndex?: boolean }) {
+function DocumentContent({
+  children,
+  noIndex = false,
+}: {
+  children: ReactNode;
+  noIndex?: boolean;
+}) {
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Efren Castro — solutions architect, public notes, and work in progress." />
-        <meta name="theme-color" content={lightTheme['--ae-background']} media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content={darkTheme['--ae-background']} media="(prefers-color-scheme: dark)" />
+        <meta
+          name="description"
+          content="Efren Castro — solutions architect, public notes, and work in progress."
+        />
+        <meta
+          name="theme-color"
+          content={lightTheme['--ae-background']}
+          media="(prefers-color-scheme: light)"
+        />
+        <meta
+          name="theme-color"
+          content={darkTheme['--ae-background']}
+          media="(prefers-color-scheme: dark)"
+        />
         {noIndex && <meta name="robots" content="noindex, nofollow" />}
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap() }} />
-        <script dangerouslySetInnerHTML={{ __html: observationMotionBootstrap() }} />
+        <script
+          dangerouslySetInnerHTML={{ __html: observationMotionBootstrap() }}
+        />
         <link rel="stylesheet" href={stylesUrl} />
         <link rel="stylesheet" href={dashboardStylesUrl} />
         <title>Efren Castro — Public research</title>
@@ -28,5 +47,11 @@ function DocumentContent({ children, noIndex = false }: { children: ReactNode; n
 }
 
 export function Document({ children, request }: DocumentProps) {
-  return <DocumentContent noIndex={new URL(request.url).pathname === '/readings/demo'}>{children}</DocumentContent>;
+  return (
+    <DocumentContent
+      noIndex={new URL(request.url).pathname === '/readings/demo'}
+    >
+      {children}
+    </DocumentContent>
+  );
 }

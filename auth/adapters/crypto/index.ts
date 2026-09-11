@@ -6,7 +6,13 @@ export const authCrypto: AuthCrypto = {
   token: () => encode(crypto.getRandomValues(new Uint8Array(32))),
   hash: hashToken,
   async matchesSecret(candidate, secret) {
-    const [left, right] = await Promise.all([hashToken(candidate), hashToken(secret)]);
-    return timingSafeEqual(new TextEncoder().encode(left), new TextEncoder().encode(right));
+    const [left, right] = await Promise.all([
+      hashToken(candidate),
+      hashToken(secret),
+    ]);
+    return timingSafeEqual(
+      new TextEncoder().encode(left),
+      new TextEncoder().encode(right),
+    );
   },
 };

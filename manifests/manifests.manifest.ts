@@ -1,61 +1,65 @@
 import type { SystemManifest } from '../manifests/schema/system.schema.ts';
 
 export default {
-  kind: "system",
-  "id": "manifests",
-  "name": "AE Manifests",
-  "purpose": "Public manifest schema and explicit system registry.",
-  "owner": "amazingefren",
-  "status": "declared",
-  "scope": "required",
-  "visibility": "public",
-  "context": {
-    "decisions": [
-      "Colocated declarations; central discovery.",
-      "Schema v5 adds owner, public, and guest data views. Visibility describes the manifest, not access to system data.",
-      "Guest replicas use synthetic session-isolated data. Public views use approved publications; neither grants owner API access.",
-      "Views reference owning operations with matching dataScope. View access controls entry only; each operation still enforces its own permissions. Views grant no permissions or implicit bindings; undeclared guest operations remain denied.",
-      "Views are design declarations until implemented and independently tested. Existing pages still describe mounted routes.",
-      "Manifest kind selects its schema. Many manifests can share a kind; schemas compose reusable parts.",
-      "System manifests describe software; convention manifests contain complete rules and examples.",
-      "Use *.schema.ts for structures and *.manifest.ts for declarations. Registry keeps kinds separate.",
-      "Risks live with their owner; platform risks live in ae.manifest.ts. Public summaries only; sensitive evidence stays private.",
-      "Scores are qualitative likelihood times impact (1-5 each), not probabilities. Residual stays unknown until assessed. Empty catalogs do not mean risk-free.",
-      "Private ae-system-engine owns code generation and full validation.",
-      "Current public checker validates declarations and references, not runtime enforcement."
+  kind: 'system',
+  id: 'manifests',
+  name: 'AE Manifests',
+  purpose: 'Public manifest schema and explicit system registry.',
+  owner: 'amazingefren',
+  status: 'declared',
+  scope: 'required',
+  visibility: 'public',
+  context: {
+    decisions: [
+      'Colocated declarations; central discovery.',
+      'Schema v5 adds owner, public, and guest data views. Visibility describes the manifest, not access to system data.',
+      'Guest replicas use synthetic session-isolated data. Public views use approved publications; neither grants owner API access.',
+      'Views reference owning operations with matching dataScope. View access controls entry only; each operation still enforces its own permissions. Views grant no permissions or implicit bindings; undeclared guest operations remain denied.',
+      'Views are design declarations until implemented and independently tested. Existing pages still describe mounted routes.',
+      'Manifest kind selects its schema. Many manifests can share a kind; schemas compose reusable parts.',
+      'System manifests describe software; convention manifests contain complete rules and examples.',
+      'Use *.schema.ts for structures and *.manifest.ts for declarations. Registry keeps kinds separate.',
+      'Risks live with their owner; platform risks live in ae.manifest.ts. Public summaries only; sensitive evidence stays private.',
+      'Scores are qualitative likelihood times impact (1-5 each), not probabilities. Residual stays unknown until assessed. Empty catalogs do not mean risk-free.',
+      'Private ae-system-engine owns code generation and full validation.',
+      'Current public checker validates declarations and references, not runtime enforcement.',
     ],
-    "openQuestions": [
-      "Compatibility policy and generated binding design."
-    ]
+    openQuestions: ['Compatibility policy and generated binding design.'],
   },
-  "capabilities": [
-    "system-description",
-    "registry",
-    "risk-catalog",
-    "commit-records",
-    "prototype-orchestration"
+  capabilities: [
+    'system-description',
+    'registry',
+    'risk-catalog',
+    'commit-records',
+    'prototype-orchestration',
   ],
-  "governance": {
-    "permissionsDefined": [],
-    "dataClassification": "public"
+  governance: {
+    permissionsDefined: [],
+    dataClassification: 'public',
   },
-  "risks": [],
-  "dependencies": [],
-  "schemaVersion": 5,
-  "contracts": ["manifests/schema/system.schema.ts", "manifests/schema/convention.schema.ts", "manifests/schema/risk.schema.ts", "manifests/schema/view.schema.ts", "manifests/schema/operation.schema.ts"],
-  "operations": [],
-  "events": [],
-  "capabilityPaths": {
-    "system-description": "manifests/schema",
-    "registry": "manifests",
-    "risk-catalog": "manifests/risks",
-    "commit-records": "manifests/commits",
-    "prototype-orchestration": "manifests/prototypes"
+  risks: [],
+  dependencies: [],
+  schemaVersion: 5,
+  contracts: [
+    'manifests/schema/system.schema.ts',
+    'manifests/schema/convention.schema.ts',
+    'manifests/schema/risk.schema.ts',
+    'manifests/schema/view.schema.ts',
+    'manifests/schema/operation.schema.ts',
+  ],
+  operations: [],
+  events: [],
+  capabilityPaths: {
+    'system-description': 'manifests/schema',
+    registry: 'manifests',
+    'risk-catalog': 'manifests/risks',
+    'commit-records': 'manifests/commits',
+    'prototype-orchestration': 'manifests/prototypes',
   },
-  "structure": {},
-  "entrypoints": [
-    "manifests/schema/system.schema.ts",
-    "manifests/registry.ts",
-    "scripts/check-manifests.mjs"
-  ]
+  structure: {},
+  entrypoints: [
+    'manifests/schema/system.schema.ts',
+    'manifests/registry.ts',
+    'scripts/check-manifests.mjs',
+  ],
 } as const satisfies SystemManifest;

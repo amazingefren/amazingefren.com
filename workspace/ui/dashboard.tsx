@@ -1,24 +1,239 @@
 import { useState } from 'react';
 import type { WorkspacePageProps } from '../contracts/index.ts';
 
-export function DashboardPage({ state, execute, busy, navigate }: WorkspacePageProps) {
+export function DashboardPage({
+  state,
+  execute,
+  busy,
+  navigate,
+}: WorkspacePageProps) {
   const [days, setDays] = useState('7');
-  const pending = state.tasks.filter(task => !task.done);
-  const documents = [...state.documents].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  const pending = state.tasks.filter((task) => !task.done);
+  const documents = [...state.documents].sort((a, b) =>
+    b.updatedAt.localeCompare(a.updatedAt),
+  );
   const featured = documents[0];
-  const running = state.experiments.filter(item => item.status === 'running');
-  const values = days === '7' ? [124, 168, 143, 212, 185, 193, 259] : [420, 655, 480, 798, 622, 861, 910];
+  const running = state.experiments.filter((item) => item.status === 'running');
+  const values =
+    days === '7'
+      ? [124, 168, 143, 212, 185, 193, 259]
+      : [420, 655, 480, 798, 622, 861, 910];
   const total = values.reduce((sum, value) => sum + value, 0);
-  return <div className="ws-dashboard">
-    <h1 className="ws-sr-only">Dashboard</h1>
-    <div className="ws-metrics"><div><strong>{String(state.documents.length).padStart(2, '0')}</strong><span>documents</span></div><div><strong>{String(running.length).padStart(2, '0')}</strong><span>running experiments</span></div><div><strong>{String(pending.length).padStart(2, '0')}</strong><span>open tasks</span></div></div>
-    <div className="ws-dashboard-grid"><section><div className="ws-section-heading"><h2>On the desk <span>{documents.length}</span></h2><button onClick={() => navigate('documents')}>All documents <span aria-hidden="true">↗</span></button></div>
-      {featured ? <button className="ws-featured ws-card" onClick={() => navigate('documents', featured.id)}><div className="ws-card-top"><span aria-hidden="true">▤</span><span className="ws-status ws-progress">In progress</span><span aria-hidden="true">↗</span></div><h3>{featured.title}</h3><div className="ws-card-meta"><span>Draft</span><span>Revision {featured.revision}</span></div></button> : <div className="ws-card ws-empty"><p>No documents yet.</p><button onClick={() => navigate('documents')}>Create a document</button></div>}
-      <div className="ws-recent-documents">{documents.slice(1, 3).map(document => <button className="ws-card" key={document.id} onClick={() => navigate('documents', document.id)}><span aria-hidden="true">▤</span><h3>{document.title}</h3><div className="ws-card-meta"><span>Draft</span><span>Revision {document.revision}</span></div></button>)}</div>
-    </section><section><div className="ws-section-heading"><h2>Tasks <span>{pending.length}</span></h2><button onClick={() => navigate('tasks')}>All tasks <span aria-hidden="true">↗</span></button></div><div className="ws-review-list">{pending.slice(0, 3).map(task => <div className="ws-review" key={task.id}><span className="ws-review-icon" aria-hidden="true">↳</span><span>{task.title}</span><button disabled={busy} onClick={() => void execute({ operation: 'workspace.complete-task', input: { id: task.id, done: true } })}>Complete</button></div>)}{!pending.length && <p className="ws-empty">All caught up.</p>}</div>
-      <div className="ws-section-heading ws-secondary-heading"><h2>Experiments <span>{state.experiments.length}</span></h2><button onClick={() => navigate('experiments')}>Open <span aria-hidden="true">↗</span></button></div>{state.experiments.slice(0, 2).map(item => <button className="ws-experiment-row" key={item.id} onClick={() => navigate('experiments', item.id)}><span aria-hidden="true">◉</span><span>{item.title}</span><span className={`ws-status ${item.status === 'running' ? 'ws-progress' : item.status === 'complete' ? 'ws-ready' : ''}`}>{item.status}</span></button>)}
-    </section></div>
-    <section className="ws-toolkit"><div className="ws-section-heading"><h2>Workspace</h2></div><div className="ws-toolkit-grid">{([['documents', 'Studio', 'Write & organize', '¶'], ['publishing', 'Publishing', 'Preview & export', '↗'], ['systems', 'Systems', 'Explore contracts', '⌘'], ['experiments', 'Experiments', 'Record & learn', '◉'], ['connections', 'Connections', 'Inspect services', '⇄'], ['access', 'Access', 'View boundaries', '⊞']] as const).map(([page, label, description, icon]) => <button className="ws-card" key={page} onClick={() => navigate(page)}><span aria-hidden="true">{icon}</span><strong>{label}</strong></button>)}</div></section>
-    <div className="ws-dashboard-grid ws-dashboard-bottom"><section><div className="ws-section-heading"><h2>Recent activity</h2></div>{state.activity.slice(0, 5).map(item => <div className="ws-activity-row" key={item.id}><time dateTime={item.at}>{new Date(item.at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</time><span>{item.label}</span></div>)}{!state.activity.length && <p className="ws-empty">No activity yet.</p>}</section><section className="ws-pulse"><div className="ws-section-heading"><h2>Site pulse</h2><select aria-label="Site pulse window" value={days} onChange={event => setDays(event.target.value)}><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select></div>{state.synthetic ? <><div className="ws-pulse-value"><strong>{total.toLocaleString()}</strong><span>sample page views</span></div><div className="ws-chart" role="img" aria-label={`Sample counts: ${values.join(', ')}`} >{values.map((value, index) => <span key={index} style={{ height: `${value / Math.max(...values) * 100}%` }} />)}</div><details><summary>Source & values</summary><p>Synthetic {days === '7' ? 'daily' : 'period'} counts: {values.join(', ')}. No visitor collection is enabled.</p></details></> : <p className="ws-empty">Telemetry is not connected.</p>}</section></div>
-  </div>;
+  return (
+    <div className="ws-dashboard">
+      <h1 className="ws-sr-only">Dashboard</h1>
+      <div className="ws-metrics">
+        <div>
+          <strong>{String(state.documents.length).padStart(2, '0')}</strong>
+          <span>documents</span>
+        </div>
+        <div>
+          <strong>{String(running.length).padStart(2, '0')}</strong>
+          <span>running experiments</span>
+        </div>
+        <div>
+          <strong>{String(pending.length).padStart(2, '0')}</strong>
+          <span>open tasks</span>
+        </div>
+      </div>
+      <div className="ws-dashboard-grid">
+        <section>
+          <div className="ws-section-heading">
+            <h2>
+              On the desk <span>{documents.length}</span>
+            </h2>
+            <button onClick={() => navigate('documents')}>
+              All documents <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          {featured ? (
+            <button
+              className="ws-featured ws-card"
+              onClick={() => navigate('documents', featured.id)}
+            >
+              <div className="ws-card-top">
+                <span aria-hidden="true">▤</span>
+                <span className="ws-status ws-progress">In progress</span>
+                <span aria-hidden="true">↗</span>
+              </div>
+              <h3>{featured.title}</h3>
+              <div className="ws-card-meta">
+                <span>Draft</span>
+                <span>Revision {featured.revision}</span>
+              </div>
+            </button>
+          ) : (
+            <div className="ws-card ws-empty">
+              <p>No documents yet.</p>
+              <button onClick={() => navigate('documents')}>
+                Create a document
+              </button>
+            </div>
+          )}
+          <div className="ws-recent-documents">
+            {documents.slice(1, 3).map((document) => (
+              <button
+                className="ws-card"
+                key={document.id}
+                onClick={() => navigate('documents', document.id)}
+              >
+                <span aria-hidden="true">▤</span>
+                <h3>{document.title}</h3>
+                <div className="ws-card-meta">
+                  <span>Draft</span>
+                  <span>Revision {document.revision}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+        <section>
+          <div className="ws-section-heading">
+            <h2>
+              Tasks <span>{pending.length}</span>
+            </h2>
+            <button onClick={() => navigate('tasks')}>
+              All tasks <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          <div className="ws-review-list">
+            {pending.slice(0, 3).map((task) => (
+              <div className="ws-review" key={task.id}>
+                <span className="ws-review-icon" aria-hidden="true">
+                  ↳
+                </span>
+                <span>{task.title}</span>
+                <button
+                  disabled={busy}
+                  onClick={() =>
+                    void execute({
+                      operation: 'workspace.complete-task',
+                      input: { id: task.id, done: true },
+                    })
+                  }
+                >
+                  Complete
+                </button>
+              </div>
+            ))}
+            {!pending.length && <p className="ws-empty">All caught up.</p>}
+          </div>
+          <div className="ws-section-heading ws-secondary-heading">
+            <h2>
+              Experiments <span>{state.experiments.length}</span>
+            </h2>
+            <button onClick={() => navigate('experiments')}>
+              Open <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          {state.experiments.slice(0, 2).map((item) => (
+            <button
+              className="ws-experiment-row"
+              key={item.id}
+              onClick={() => navigate('experiments', item.id)}
+            >
+              <span aria-hidden="true">◉</span>
+              <span>{item.title}</span>
+              <span
+                className={`ws-status ${item.status === 'running' ? 'ws-progress' : item.status === 'complete' ? 'ws-ready' : ''}`}
+              >
+                {item.status}
+              </span>
+            </button>
+          ))}
+        </section>
+      </div>
+      <section className="ws-toolkit">
+        <div className="ws-section-heading">
+          <h2>Workspace</h2>
+        </div>
+        <div className="ws-toolkit-grid">
+          {(
+            [
+              ['documents', 'Studio', 'Write & organize', '¶'],
+              ['publishing', 'Publishing', 'Preview & export', '↗'],
+              ['systems', 'Systems', 'Explore contracts', '⌘'],
+              ['experiments', 'Experiments', 'Record & learn', '◉'],
+              ['connections', 'Connections', 'Inspect services', '⇄'],
+              ['access', 'Access', 'View boundaries', '⊞'],
+            ] as const
+          ).map(([page, label, description, icon]) => (
+            <button
+              className="ws-card"
+              key={page}
+              onClick={() => navigate(page)}
+            >
+              <span aria-hidden="true">{icon}</span>
+              <strong>{label}</strong>
+            </button>
+          ))}
+        </div>
+      </section>
+      <div className="ws-dashboard-grid ws-dashboard-bottom">
+        <section>
+          <div className="ws-section-heading">
+            <h2>Recent activity</h2>
+          </div>
+          {state.activity.slice(0, 5).map((item) => (
+            <div className="ws-activity-row" key={item.id}>
+              <time dateTime={item.at}>
+                {new Date(item.at).toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </time>
+              <span>{item.label}</span>
+            </div>
+          ))}
+          {!state.activity.length && (
+            <p className="ws-empty">No activity yet.</p>
+          )}
+        </section>
+        <section className="ws-pulse">
+          <div className="ws-section-heading">
+            <h2>Site pulse</h2>
+            <select
+              aria-label="Site pulse window"
+              value={days}
+              onChange={(event) => setDays(event.target.value)}
+            >
+              <option value="7">Last 7 days</option>
+              <option value="30">Last 30 days</option>
+            </select>
+          </div>
+          {state.synthetic ? (
+            <>
+              <div className="ws-pulse-value">
+                <strong>{total.toLocaleString()}</strong>
+                <span>sample page views</span>
+              </div>
+              <div
+                className="ws-chart"
+                role="img"
+                aria-label={`Sample counts: ${values.join(', ')}`}
+              >
+                {values.map((value, index) => (
+                  <span
+                    key={index}
+                    style={{
+                      height: `${(value / Math.max(...values)) * 100}%`,
+                    }}
+                  />
+                ))}
+              </div>
+              <details>
+                <summary>Source & values</summary>
+                <p>
+                  Synthetic {days === '7' ? 'daily' : 'period'} counts:{' '}
+                  {values.join(', ')}. No visitor collection is enabled.
+                </p>
+              </details>
+            </>
+          ) : (
+            <p className="ws-empty">Telemetry is not connected.</p>
+          )}
+        </section>
+      </div>
+    </div>
+  );
 }

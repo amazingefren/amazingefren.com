@@ -1,57 +1,263 @@
-.site-open-field { isolation: isolate; background: var(--ae-background); }
-:root .site-shell.site-open-field main { flex: 1; display: grid; align-items: center; position: relative; isolation: isolate; min-height: 560px; }
-.open-field-background { position: absolute; left: 20%; right: calc((1280px - 100vw) / 2); top: 0; bottom: 0; overflow: hidden; z-index: -1; pointer-events: none; }
-.open-field-art { width: 100%; height: 100%; mask-image: linear-gradient(to right, transparent, black 65%); }
-.observation-galaxy { display: none; }
-[data-theme="dark"] .observation-birds { display: none; }
-[data-theme="dark"] .observation-galaxy { display: inline; }
+.site-open-field {
+  isolation: isolate;
+  background: var(--ae-background);
+}
+:root .site-shell.site-open-field main {
+  flex: 1;
+  display: grid;
+  align-items: center;
+  position: relative;
+  isolation: isolate;
+  min-height: 560px;
+}
+.open-field-background {
+  position: absolute;
+  left: 20%;
+  right: calc((1280px - 100vw) / 2);
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+.open-field-art {
+  width: 100%;
+  height: 100%;
+  mask-image: linear-gradient(to right, transparent, black 65%);
+}
+.observation-galaxy {
+  display: none;
+}
+[data-theme='dark'] .observation-birds {
+  display: none;
+}
+[data-theme='dark'] .observation-galaxy {
+  display: inline;
+}
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .observation-birds { display: none; }
-  :root:not([data-theme]) .observation-galaxy { display: inline; }
+  :root:not([data-theme]) .observation-birds {
+    display: none;
+  }
+  :root:not([data-theme]) .observation-galaxy {
+    display: inline;
+  }
 }
-.open-field-intro { width: 100%; padding: var(--ae-space-64) 0; }
-.open-field-intro h1 { margin: 0 0 var(--ae-space-24); font-size: clamp(46px, 4.8vw, 70px); line-height: 1.06; letter-spacing: -.045em; }
-.open-field-intro h1 em { color: var(--ae-theme-accent-soft); }
-.open-field-intro > p { margin: 0 0 var(--ae-space-24); color: var(--ae-body-copy); font-size: var(--ae-text-18); line-height: 1.65; }
-.open-field-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ae-space-24); }
-.observation-lock { transform-origin: 0 0; }
+.open-field-intro {
+  width: 100%;
+  padding: var(--ae-space-64) 0;
+}
+.open-field-intro h1 {
+  margin: 0 0 var(--ae-space-24);
+  font-size: clamp(46px, 4.8vw, 70px);
+  line-height: 1.06;
+  letter-spacing: -0.045em;
+}
+.open-field-intro h1 em {
+  color: var(--ae-theme-accent-soft);
+}
+.open-field-intro > p {
+  margin: 0 0 var(--ae-space-24);
+  color: var(--ae-body-copy);
+  font-size: var(--ae-text-18);
+  line-height: 1.65;
+}
+.open-field-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ae-space-24);
+}
+.observation-lock {
+  transform-origin: 0 0;
+}
 @media (prefers-reduced-motion: no-preference) {
-  [data-observation-birds="entering"] .observation-flight { opacity: 0; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight { animation: ae-observation-flight 1.5s cubic-bezier(.22,.55,.35,1) both, ae-observation-fade 1.5s linear both; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-lock { animation: ae-observation-lock .3s cubic-bezier(.25,.875,.5,1) both; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-trails { animation: ae-observation-trails 1.6s linear both; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-0 { animation-name: ae-observation-flight-0, ae-observation-fade; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-1 { animation-name: ae-observation-flight-1, ae-observation-fade; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-2 { animation-name: ae-observation-flight-2, ae-observation-fade; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-3 { animation-name: ae-observation-flight-3, ae-observation-fade; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-4 { animation-name: ae-observation-flight-4, ae-observation-fade; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-5 { animation-name: ae-observation-flight-5, ae-observation-fade; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-6 { animation-name: ae-observation-flight-6, ae-observation-fade; }
-  [data-observation-motion][data-observation-birds="entering"] .observation-flight-7 { animation-name: ae-observation-flight-7, ae-observation-fade; }
-  [data-observation-motion="paused"] .open-field-art * { animation-play-state: paused; }
+  [data-observation-birds='entering'] .observation-flight {
+    opacity: 0;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-flight {
+    animation:
+      ae-observation-flight 1.5s cubic-bezier(0.22, 0.55, 0.35, 1) both,
+      ae-observation-fade 1.5s linear both;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-lock {
+    animation: ae-observation-lock 0.3s cubic-bezier(0.25, 0.875, 0.5, 1) both;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-trails {
+    animation: ae-observation-trails 1.6s linear both;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-flight-0 {
+    animation-name: ae-observation-flight-0, ae-observation-fade;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-flight-1 {
+    animation-name: ae-observation-flight-1, ae-observation-fade;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-flight-2 {
+    animation-name: ae-observation-flight-2, ae-observation-fade;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-flight-3 {
+    animation-name: ae-observation-flight-3, ae-observation-fade;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-flight-4 {
+    animation-name: ae-observation-flight-4, ae-observation-fade;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-flight-5 {
+    animation-name: ae-observation-flight-5, ae-observation-fade;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-flight-6 {
+    animation-name: ae-observation-flight-6, ae-observation-fade;
+  }
+  [data-observation-motion][data-observation-birds='entering']
+    .observation-flight-7 {
+    animation-name: ae-observation-flight-7, ae-observation-fade;
+  }
+  [data-observation-motion='paused'] .open-field-art * {
+    animation-play-state: paused;
+  }
 }
-@keyframes ae-observation-flight-0 { 0% { transform: translate(-250px, 160px); } 100% { transform: translate(0, 0); } }
-@keyframes ae-observation-flight-1 { 0% { transform: translate(180px, -170px); } 100% { transform: translate(0, 0); } }
-@keyframes ae-observation-flight-2 { 0% { transform: translate(140px, 210px); } 100% { transform: translate(0, 0); } }
-@keyframes ae-observation-flight-3 { 0% { transform: translate(-320px, 120px); } 100% { transform: translate(0, 0); } }
-@keyframes ae-observation-flight-4 { 0% { transform: translate(230px, -130px); } 100% { transform: translate(0, 0); } }
-@keyframes ae-observation-flight-5 { 0% { transform: translate(-190px, -210px); } 100% { transform: translate(0, 0); } }
-@keyframes ae-observation-flight-6 { 0% { transform: translate(260px, 150px); } 100% { transform: translate(0, 0); } }
-@keyframes ae-observation-flight-7 { 0% { transform: translate(-160px, -100px); } 100% { transform: translate(0, 0); } }
-@keyframes ae-observation-lock { 0% { opacity: 0; transform: scale(1.4); } 35% { opacity: .35; } 100% { transform: scale(1); } }
-@keyframes ae-observation-trails { 0% { opacity: 0; } 100% { opacity: .5; } }
-@media (max-width: 1376px) { .open-field-background { right: -48px; } }
-@media (max-width: 850px) { .open-field-background { left: 8%; right: -22px; } }
+@keyframes ae-observation-flight-0 {
+  0% {
+    transform: translate(-250px, 160px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes ae-observation-flight-1 {
+  0% {
+    transform: translate(180px, -170px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes ae-observation-flight-2 {
+  0% {
+    transform: translate(140px, 210px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes ae-observation-flight-3 {
+  0% {
+    transform: translate(-320px, 120px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes ae-observation-flight-4 {
+  0% {
+    transform: translate(230px, -130px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes ae-observation-flight-5 {
+  0% {
+    transform: translate(-190px, -210px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes ae-observation-flight-6 {
+  0% {
+    transform: translate(260px, 150px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes ae-observation-flight-7 {
+  0% {
+    transform: translate(-160px, -100px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes ae-observation-lock {
+  0% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+  35% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes ae-observation-trails {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@media (max-width: 1376px) {
+  .open-field-background {
+    right: -48px;
+  }
+}
+@media (max-width: 850px) {
+  .open-field-background {
+    left: 8%;
+    right: -22px;
+  }
+}
 @media (max-width: 560px) {
-  :root .site-shell.site-open-field main { min-height: 620px; }
-  .open-field-intro { padding: var(--ae-space-32) 0 200px; }
-  .open-field-intro h1 { font-size: clamp(34px, 10vw, 52px); }
-  .open-field-intro > p { font-size: var(--ae-text-16); }
-  .open-field-background { left: 0; right: -18px; }
-  .open-field-art { mask-image: linear-gradient(to bottom, transparent 35%, black 85%); }
-  .observation-mobile-scene { transform: translateY(230px); }
-  .open-field-actions { gap: var(--ae-space-20); }
+  :root .site-shell.site-open-field main {
+    min-height: 620px;
+  }
+  .open-field-intro {
+    padding: var(--ae-space-32) 0 200px;
+  }
+  .open-field-intro h1 {
+    font-size: clamp(34px, 10vw, 52px);
+  }
+  .open-field-intro > p {
+    font-size: var(--ae-text-16);
+  }
+  .open-field-background {
+    left: 0;
+    right: -18px;
+  }
+  .open-field-art {
+    mask-image: linear-gradient(to bottom, transparent 35%, black 85%);
+  }
+  .observation-mobile-scene {
+    transform: translateY(230px);
+  }
+  .open-field-actions {
+    gap: var(--ae-space-20);
+  }
 }
 
-@media print { .open-field-background { display: none; } }
-@keyframes ae-observation-fade { 0% { opacity: 0; } 35%, 100% { opacity: 1; } }
+@media print {
+  .open-field-background {
+    display: none;
+  }
+}
+@keyframes ae-observation-fade {
+  0% {
+    opacity: 0;
+  }
+  35%,
+  100% {
+    opacity: 1;
+  }
+}

@@ -8,22 +8,246 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["operation", "input"],
-      "properties": { "operation": { "type": "string" }, "input": { "type": "object" } }
+      "properties": {
+        "operation": { "type": "string" },
+        "input": { "type": "object" }
+      }
     }
   },
   "oneOf": [
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.read" }, "input": { "$ref": "#/$defs/empty" } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.reset" }, "input": { "$ref": "#/$defs/empty" } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.create-document" }, "input": { "type": "object", "additionalProperties": false, "required": ["title"], "properties": { "title": { "type": "string", "minLength": 1, "maxLength": 160 }, "body": { "type": "string", "maxLength": 200000 } } } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.save-document" }, "input": { "type": "object", "additionalProperties": false, "required": ["id", "title", "body", "revision"], "properties": { "id": { "$ref": "#/$defs/id" }, "title": { "type": "string", "minLength": 1, "maxLength": 160 }, "body": { "type": "string", "maxLength": 200000 }, "revision": { "$ref": "#/$defs/revision" } } } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.restore-document" }, "input": { "type": "object", "additionalProperties": false, "required": ["id", "sourceRevision", "revision"], "properties": { "id": { "$ref": "#/$defs/id" }, "sourceRevision": { "$ref": "#/$defs/revision" }, "revision": { "$ref": "#/$defs/revision" } } } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.create-task" }, "input": { "type": "object", "additionalProperties": false, "required": ["title"], "properties": { "title": { "type": "string", "minLength": 1, "maxLength": 160 }, "documentId": { "$ref": "#/$defs/id" } } } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.complete-task" }, "input": { "type": "object", "additionalProperties": false, "required": ["id", "done"], "properties": { "id": { "$ref": "#/$defs/id" }, "done": { "type": "boolean" } } } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.create-experiment" }, "input": { "type": "object", "additionalProperties": false, "required": ["title", "hypothesis"], "properties": { "title": { "type": "string", "minLength": 1, "maxLength": 160 }, "hypothesis": { "type": "string", "minLength": 1, "maxLength": 4000 } } } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.update-experiment" }, "input": { "type": "object", "additionalProperties": false, "required": ["id", "status", "observations"], "properties": { "id": { "$ref": "#/$defs/id" }, "status": { "enum": ["planned", "running", "complete"] }, "observations": { "type": "string", "maxLength": 20000 } } } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.link-documents" }, "input": { "type": "object", "additionalProperties": false, "required": ["from", "to", "label"], "properties": { "from": { "$ref": "#/$defs/id" }, "to": { "$ref": "#/$defs/id" }, "label": { "type": "string", "minLength": 1, "maxLength": 160 } } } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.unlink-documents" }, "input": { "type": "object", "additionalProperties": false, "required": ["id"], "properties": { "id": { "$ref": "#/$defs/id" } } } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.publish" }, "input": { "type": "object", "additionalProperties": false, "required": ["id", "revision"], "properties": { "id": { "$ref": "#/$defs/id" }, "revision": { "$ref": "#/$defs/revision" } } } } }] },
-    { "allOf": [{ "$ref": "#/$defs/command" }, { "properties": { "operation": { "const": "workspace.withdraw" }, "input": { "type": "object", "additionalProperties": false, "required": ["id"], "properties": { "id": { "$ref": "#/$defs/id" } } } } }] }
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.read" },
+            "input": { "$ref": "#/$defs/empty" }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.reset" },
+            "input": { "$ref": "#/$defs/empty" }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.create-document" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["title"],
+              "properties": {
+                "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+                "body": { "type": "string", "maxLength": 200000 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.save-document" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "title", "body", "revision"],
+              "properties": {
+                "id": { "$ref": "#/$defs/id" },
+                "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+                "body": { "type": "string", "maxLength": 200000 },
+                "revision": { "$ref": "#/$defs/revision" }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.restore-document" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "sourceRevision", "revision"],
+              "properties": {
+                "id": { "$ref": "#/$defs/id" },
+                "sourceRevision": { "$ref": "#/$defs/revision" },
+                "revision": { "$ref": "#/$defs/revision" }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.create-task" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["title"],
+              "properties": {
+                "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+                "documentId": { "$ref": "#/$defs/id" }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.complete-task" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "done"],
+              "properties": {
+                "id": { "$ref": "#/$defs/id" },
+                "done": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.create-experiment" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["title", "hypothesis"],
+              "properties": {
+                "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+                "hypothesis": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.update-experiment" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "status", "observations"],
+              "properties": {
+                "id": { "$ref": "#/$defs/id" },
+                "status": { "enum": ["planned", "running", "complete"] },
+                "observations": { "type": "string", "maxLength": 20000 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.link-documents" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["from", "to", "label"],
+              "properties": {
+                "from": { "$ref": "#/$defs/id" },
+                "to": { "$ref": "#/$defs/id" },
+                "label": { "type": "string", "minLength": 1, "maxLength": 160 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.unlink-documents" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id"],
+              "properties": { "id": { "$ref": "#/$defs/id" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.publish" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "revision"],
+              "properties": {
+                "id": { "$ref": "#/$defs/id" },
+                "revision": { "$ref": "#/$defs/revision" }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/command" },
+        {
+          "properties": {
+            "operation": { "const": "workspace.withdraw" },
+            "input": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id"],
+              "properties": { "id": { "$ref": "#/$defs/id" } }
+            }
+          }
+        }
+      ]
+    }
   ]
 }

@@ -2,7 +2,16 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "synthetic", "documents", "tasks", "experiments", "relationships", "publications", "activity"],
+  "required": [
+    "version",
+    "synthetic",
+    "documents",
+    "tasks",
+    "experiments",
+    "relationships",
+    "publications",
+    "activity"
+  ],
   "properties": {
     "version": { "type": "integer", "minimum": 1 },
     "synthetic": { "type": "boolean" },

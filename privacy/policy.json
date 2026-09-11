@@ -11,10 +11,7 @@
   },
   "consent": {
     "default": "off",
-    "choice": [
-      "allow",
-      "decline"
-    ],
+    "choice": ["allow", "decline"],
     "withdrawal": "as-easy-as-opt-in",
     "readingRequiresConsent": false,
     "beforeConsent": "No analytics script, identifier, event, or queued history.",
@@ -24,17 +21,8 @@
   "metrics": {
     "clicks": {
       "meaning": "Consented clicks on allowlisted controls.",
-      "fields": [
-        "articleId",
-        "controlId",
-        "coarse-time-bucket"
-      ],
-      "exclude": [
-        "typed-text",
-        "link-query",
-        "full-url",
-        "referrer"
-      ]
+      "fields": ["articleId", "controlId", "coarse-time-bucket"],
+      "exclude": ["typed-text", "link-query", "full-url", "referrer"]
     },
     "activeReaders": {
       "meaning": "Approximate opted-in active sessions, not people.",
@@ -54,10 +42,7 @@
     },
     "pageViews": {
       "meaning": "Accepted opted-in public page-view events, not unique people or all traffic.",
-      "fields": [
-        "public-page-id",
-        "coarse-time-bucket"
-      ],
+      "fields": ["public-page-id", "coarse-time-bucket"],
       "exclude": [
         "private routes",
         "guest fixture events",
@@ -96,11 +81,7 @@
       "verification-results",
       "known-limitations"
     ],
-    "private": [
-      "security-log-contents",
-      "credentials",
-      "incident-details"
-    ],
+    "private": ["security-log-contents", "credentials", "incident-details"],
     "compliance": "Publish scope and evidence. Do not claim certification or universal compliance from a manifest."
   },
   "verification": [

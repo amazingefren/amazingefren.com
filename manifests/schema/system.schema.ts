@@ -5,14 +5,14 @@ import type { Operation } from './operation.schema.ts';
 import type { SystemView } from './view.schema.ts';
 
 export interface SystemManifest {
-  kind: "system";
+  kind: 'system';
   id: string;
   name: string;
   purpose: string;
   owner: string;
-  status: "declared" | "prototype" | "implemented";
-  scope: "required";
-  visibility: "public" | "private";
+  status: 'declared' | 'prototype' | 'implemented';
+  scope: 'required';
+  visibility: 'public' | 'private';
   context: {
     decisions: readonly string[];
     openQuestions: readonly string[];
@@ -20,7 +20,7 @@ export interface SystemManifest {
   capabilities: readonly string[];
   governance: {
     permissionsDefined: readonly string[];
-    dataClassification: "public" | "private" | "mixed";
+    dataClassification: 'public' | 'private' | 'mixed';
   };
   risks: readonly Risk[];
   dependencies: readonly string[];
@@ -31,11 +31,20 @@ export interface SystemManifest {
   events: readonly {
     id: string;
     contract: string;
-    direction: "emits" | "consumes";
+    direction: 'emits' | 'consumes';
   }[];
   keyboard?: KeyboardProfile;
-  pages?: readonly { path: string; entrypoint: string; access: AccessRule; status: "prototype" | "implemented" }[];
-  staticFiles?: readonly { path: string; source: string; status: "placeholder" | "ready" }[];
+  pages?: readonly {
+    path: string;
+    entrypoint: string;
+    access: AccessRule;
+    status: 'prototype' | 'implemented';
+  }[];
+  staticFiles?: readonly {
+    path: string;
+    source: string;
+    status: 'placeholder' | 'ready';
+  }[];
   capabilityPaths: Readonly<Record<string, string>>;
   structure: Readonly<Record<string, string>>;
   entrypoints: readonly string[];

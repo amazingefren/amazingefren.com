@@ -18,17 +18,32 @@ function defaultWindow() {
 }
 
 function DashboardError({ message }: { message: string }) {
-  return <main className="dashboard-error" id="dashboard-main"><p className="eyebrow">GUEST DASHBOARD <span>/</span> REQUEST ERROR</p><h1>That window cannot be read.</h1><p>{message}</p><a className="text-link" href="/guest/dashboard">Try the default window <span aria-hidden="true">↗</span></a></main>;
+  return (
+    <main className="dashboard-error" id="dashboard-main">
+      <p className="eyebrow">
+        GUEST DASHBOARD <span>/</span> REQUEST ERROR
+      </p>
+      <h1>That window cannot be read.</h1>
+      <p>{message}</p>
+      <a className="text-link" href="/guest/dashboard">
+        Try the default window <span aria-hidden="true">↗</span>
+      </a>
+    </main>
+  );
 }
 
 export async function GuestDashboardRoute({ request, response }: RequestInfo) {
   const defaults = defaultWindow();
   const url = new URL(request.url);
-  if (!url.searchParams.has('from')) url.searchParams.set('from', defaults.from);
+  if (!url.searchParams.has('from'))
+    url.searchParams.set('from', defaults.from);
   if (!url.searchParams.has('to')) url.searchParams.set('to', defaults.to);
   const parsed = parseSummaryQuery(url.href);
   const result = parsed.ok
-    ? await readGuestSummary({ telemetry: guestTelemetry, now: Date.now }, { input: parsed.value, sessionId: 'public-guest-preview' })
+    ? await readGuestSummary(
+        { telemetry: guestTelemetry, now: Date.now },
+        { input: parsed.value, sessionId: 'public-guest-preview' },
+      )
     : parsed;
   if (!result.ok) {
     response.status = result.error.code === 'invalid_input' ? 400 : 503;

@@ -4,7 +4,9 @@
   "additionalProperties": false,
   "required": ["code", "message"],
   "properties": {
-    "code": { "enum": ["invalid", "denied", "missing", "conflict", "unavailable"] },
+    "code": {
+      "enum": ["invalid", "denied", "missing", "conflict", "unavailable"]
+    },
     "message": { "type": "string" }
   }
 }

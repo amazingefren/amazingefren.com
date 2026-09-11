@@ -15,11 +15,24 @@ test('approved light surface stays flat and system dark has its own theme', () =
 test('consumer styles reject invented colors, fonts, and token overrides', () => {
   assert.deepEqual(inspectStyles('.x { color: #ffffff; }'), ['Raw color']);
   assert.deepEqual(inspectStyles('.x { color: orange; }'), ['Raw color']);
-  assert.deepEqual(inspectStyles('.x { color: rgba(0,0,0,.2); }'), ['Raw color']);
-  assert.deepEqual(inspectStyles('.x { font-family: Arial; }'), ['Local font family']);
-  assert.deepEqual(inspectStyles('.x { --ae-ink: pink; }'), ['Canonical token override']);
-  assert.deepEqual(inspectStyles('.x { color: var(--ae-invented); }'), ['Unknown token --ae-invented']);
-  assert.deepEqual(inspectStyles('.x { color: var(--ae-ink); font-family: var(--ae-font-sans); }'), []);
+  assert.deepEqual(inspectStyles('.x { color: rgba(0,0,0,.2); }'), [
+    'Raw color',
+  ]);
+  assert.deepEqual(inspectStyles('.x { font-family: Arial; }'), [
+    'Local font family',
+  ]);
+  assert.deepEqual(inspectStyles('.x { --ae-ink: pink; }'), [
+    'Canonical token override',
+  ]);
+  assert.deepEqual(inspectStyles('.x { color: var(--ae-invented); }'), [
+    'Unknown token --ae-invented',
+  ]);
+  assert.deepEqual(
+    inspectStyles(
+      '.x { color: var(--ae-ink); font-family: var(--ae-font-sans); }',
+    ),
+    [],
+  );
 });
 
 test('generated assets, manifest references, and consumer styles agree', async () => {
@@ -27,15 +40,33 @@ test('generated assets, manifest references, and consumer styles agree', async (
 });
 
 test('hover checks reject valid tokens used for the wrong state', () => {
-  assert.deepEqual(inspectStyles('.action:hover { background: var(--ae-theme-accent-soft); }'), ['Wrong hover token --ae-theme-accent-soft']);
-  assert.deepEqual(inspectStyles('.action:hover { background: var(--ae-action-primary-hover); color: var(--ae-action-primary-ink); }'), []);
-  assert.deepEqual(inspectStyles('.selected { background: var(--ae-theme-ambient); }'), []);
+  assert.deepEqual(
+    inspectStyles('.action:hover { background: var(--ae-theme-accent-soft); }'),
+    ['Wrong hover token --ae-theme-accent-soft'],
+  );
+  assert.deepEqual(
+    inspectStyles(
+      '.action:hover { background: var(--ae-action-primary-hover); color: var(--ae-action-primary-ink); }',
+    ),
+    [],
+  );
+  assert.deepEqual(
+    inspectStyles('.selected { background: var(--ae-theme-ambient); }'),
+    [],
+  );
 });
 
 test('copy checks reject known filler while keeping useful errors', () => {
   assert.equal(inspectCopy('<p>Select a system to look inside</p>').length, 1);
-  assert.equal(inspectCopy('<p>Each agent has a task, an owned area, and a handoff.</p>').length, 1);
-  assert.deepEqual(inspectCopy('<p>Could not save. Your changes are still here.</p>'), []);
+  assert.equal(
+    inspectCopy('<p>Each agent has a task, an owned area, and a handoff.</p>')
+      .length,
+    1,
+  );
+  assert.deepEqual(
+    inspectCopy('<p>Could not save. Your changes are still here.</p>'),
+    [],
+  );
 });
 
 test('contrast uses relative luminance rather than token membership', () => {

@@ -1,0 +1,7 @@
+{
+  "singleQuote": true,
+  "printWidth": 80,
+  "htmlWhitespaceSensitivity": "strict",
+  "embeddedLanguageFormatting": "off",
+  "overrides": [{ "files": "*.jsonc", "options": { "trailingComma": "none" } }]
+}

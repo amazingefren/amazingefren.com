@@ -16,9 +16,5 @@
       "minLength": 1
     }
   },
-  "required": [
-    "id",
-    "expectedRevision",
-    "idempotencyKey"
-  ]
+  "required": ["id", "expectedRevision", "idempotencyKey"]
 }

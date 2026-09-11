@@ -1,5 +1,18 @@
 [tools]
 node = "26.3.1"
+ruff = "0.16.7"
+
+[tasks.format]
+description = "Format authored source across initialized repositories"
+run = "npm run format"
+
+[tasks.format-check]
+description = "Check source formatting without writing files"
+run = "npm run format:check"
+
+[tasks.hooks]
+description = "Enable optional formatting hooks in initialized repositories"
+run = "npm run hooks"
 
 [tasks.check]
 description = "Check the public manifest scaffold without private engines"

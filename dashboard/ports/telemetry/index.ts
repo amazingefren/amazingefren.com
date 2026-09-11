@@ -1,4 +1,7 @@
-import type { DashboardMetricId, DashboardMetricStatus } from "../../contracts/summary.ts";
+import type {
+  DashboardMetricId,
+  DashboardMetricStatus,
+} from '../../contracts/summary.ts';
 
 export interface DashboardWindow {
   from: string;
@@ -21,13 +24,19 @@ export interface TelemetrySnapshot {
 }
 
 export type TelemetryReadResult =
-  | { kind: "snapshot"; snapshot: TelemetrySnapshot }
-  | { kind: "unavailable"; source: string; observedAt: string | null };
+  | { kind: 'snapshot'; snapshot: TelemetrySnapshot }
+  | { kind: 'unavailable'; source: string; observedAt: string | null };
 
 export interface OwnerTelemetryPort {
-  read(request: { ownerId: string; window: DashboardWindow }): Promise<TelemetryReadResult>;
+  read(request: {
+    ownerId: string;
+    window: DashboardWindow;
+  }): Promise<TelemetryReadResult>;
 }
 
 export interface GuestTelemetryPort {
-  read(request: { sessionId: string; window: DashboardWindow }): Promise<TelemetryReadResult>;
+  read(request: {
+    sessionId: string;
+    window: DashboardWindow;
+  }): Promise<TelemetryReadResult>;
 }

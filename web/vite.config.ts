@@ -1,4 +1,6 @@
 import { defineConfig } from 'vite';
 import { redwood } from 'rwsdk/vite';
 
-export default defineConfig({ plugins: [redwood({ includeCloudflarePlugin: true })] });
+export default defineConfig({
+  plugins: [redwood({ includeCloudflarePlugin: true })],
+});

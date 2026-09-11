@@ -1,9 +1,9 @@
 export interface ConventionManifest {
-  kind: "convention";
+  kind: 'convention';
   id: string;
   purpose: string;
   owner: string;
-  status: "experimental" | "implemented";
+  status: 'experimental' | 'implemented';
   schemaVersion: 1;
   version: number;
   syntax: Readonly<Record<string, string | readonly string[]>>;

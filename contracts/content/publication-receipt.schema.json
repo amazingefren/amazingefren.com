@@ -10,22 +10,11 @@
       "type": "string"
     },
     "publishedRevision": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": ["string", "null"]
     },
     "state": {
-      "enum": [
-        "published",
-        "withdrawn"
-      ]
+      "enum": ["published", "withdrawn"]
     }
   },
-  "required": [
-    "id",
-    "sourceRevision",
-    "publishedRevision",
-    "state"
-  ]
+  "required": ["id", "sourceRevision", "publishedRevision", "state"]
 }

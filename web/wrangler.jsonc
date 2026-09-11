@@ -3,9 +3,7 @@
   "name": "ae-web",
   "main": "composition/worker.tsx",
   "compatibility_date": "2026-09-04",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "enabled": false
   },

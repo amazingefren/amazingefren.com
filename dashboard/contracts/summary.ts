@@ -1,16 +1,17 @@
 export const DASHBOARD_METRIC_IDS = [
-  "page-views",
-  "honeypot-triggers",
-  "honeypot-trigger-rate"
+  'page-views',
+  'honeypot-triggers',
+  'honeypot-trigger-rate',
 ] as const;
 
 export type DashboardMetricId = (typeof DASHBOARD_METRIC_IDS)[number];
 
-export type DashboardMetricUnit = "count" | "ratio";
+export type DashboardMetricUnit = 'count' | 'ratio';
 
-export type DashboardMetricStatus = "available" | "unavailable" | "stale" | "suppressed";
+export type DashboardMetricStatus =
+  'available' | 'unavailable' | 'stale' | 'suppressed';
 
-export type DashboardDataScope = "owner" | "synthetic";
+export type DashboardDataScope = 'owner' | 'synthetic';
 
 export interface DashboardSummaryInput {
   from: string;
@@ -36,7 +37,13 @@ export interface DashboardSummary {
   metrics: readonly DashboardMetric[];
 }
 
-export type DashboardErrorCode = "not_found" | "invalid_input" | "unavailable" | "forbidden" | "unauthenticated" | "conflict";
+export type DashboardErrorCode =
+  | 'not_found'
+  | 'invalid_input'
+  | 'unavailable'
+  | 'forbidden'
+  | 'unauthenticated'
+  | 'conflict';
 
 export interface DashboardError {
   code: DashboardErrorCode;
@@ -44,5 +51,4 @@ export interface DashboardError {
 }
 
 export type DashboardResult<T> =
-  | { ok: true; value: T }
-  | { ok: false; error: DashboardError };
+  { ok: true; value: T } | { ok: false; error: DashboardError };

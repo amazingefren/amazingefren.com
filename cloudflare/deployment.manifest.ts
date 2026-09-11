@@ -12,24 +12,72 @@ export default {
     'The web Worker has the sole public route. Disable workers.dev and preview URLs on both Workers; the owner service has no public routes.',
     'Use a fresh database with the consolidated initial migration. Existing local databases retain their migration history; export any needed records before choosing a new local database. Do not replay the initial migration over old tables.',
     'The owner must test 1Password enrollment, logout, repeat sign-in, and an independent backup passkey on the final domain before storing irreplaceable data.',
-    'Cloudflare resources and initial schemas were created on 2026-09-10. Both Workers are deployed on the permanent HTTPS domain; live anonymous access checks passed. First owner passkey enrollment is confirmed and the bootstrap secret is removed. Repeat sign-in acceptance and restore drills remain pending.'
+    'Cloudflare resources and initial schemas were created on 2026-09-10. Both Workers are deployed on the permanent HTTPS domain; live anonymous access checks passed. First owner passkey enrollment is confirmed and the bootstrap secret is removed. Repeat sign-in acceptance and restore drills remain pending.',
   ],
   capabilities: ['web', 'owner-auth', 'private-storage', 'deployment'],
-  governance: { release: 'Deployed with private access protected. First owner enrolled; repeat sign-in acceptance remains pending.', deploymentsAuthorized: true },
-  risks: ['Local tests do not prove provider configuration, backup recovery, or 1Password behavior.'],
+  governance: {
+    release:
+      'Deployed with private access protected. First owner enrolled; repeat sign-in acceptance remains pending.',
+    deploymentsAuthorized: true,
+  },
+  risks: [
+    'Local tests do not prove provider configuration, backup recovery, or 1Password behavior.',
+  ],
   contracts: {
     accountId: '9a90a6a9b628c0261f3882373dde0439',
     pipeline: {
-      web: { config: 'web/wrangler.jsonc', builtConfig: 'web/dist/worker/wrangler.json', name: 'ae-web' },
-      owner: { config: 'ae-studio-engine/wrangler.jsonc', name: 'ae-studio-engine-owner-service' },
-      databases: [{ name: 'ae-auth', config: 'ae-studio-engine/wrangler.jsonc' }, { name: 'ae-workspace', config: 'ae-studio-engine/wrangler.jsonc' }]
+      web: {
+        config: 'web/wrangler.jsonc',
+        builtConfig: 'web/dist/worker/wrangler.json',
+        name: 'ae-web',
+      },
+      owner: {
+        config: 'ae-studio-engine/wrangler.jsonc',
+        name: 'ae-studio-engine-owner-service',
+      },
+      databases: [
+        { name: 'ae-auth', config: 'ae-studio-engine/wrangler.jsonc' },
+        { name: 'ae-workspace', config: 'ae-studio-engine/wrangler.jsonc' },
+      ],
     },
-    builds: { root: '/', nodeVersionFile: '.node-version', buildCommand: 'npm run build:deploy', deployCommand: 'npm run migrate && npm run deploy', previewBuilds: false },
+    builds: {
+      root: '/',
+      nodeVersionFile: '.node-version',
+      buildCommand: 'npm run build:deploy',
+      deployCommand: 'npm run migrate && npm run deploy',
+      previewBuilds: false,
+    },
     origin: 'https://amazingefren.com',
-    web: { config: 'web/wrangler.jsonc', database: 'AUTH_DB', service: 'WORKSPACE_OWNER_SERVICE', serviceName: 'ae-studio-engine-owner-service' },
-    owner: { config: 'ae-studio-engine/wrangler.jsonc', databases: ['AUTH_DB', 'WORKSPACE_OWNER_DB'], bucket: 'WRITING_ASSETS' },
-    migrations: { auth: 'auth/migrations', owner: 'ae-studio-engine/migrations' }
+    web: {
+      config: 'web/wrangler.jsonc',
+      database: 'AUTH_DB',
+      service: 'WORKSPACE_OWNER_SERVICE',
+      serviceName: 'ae-studio-engine-owner-service',
+    },
+    owner: {
+      config: 'ae-studio-engine/wrangler.jsonc',
+      databases: ['AUTH_DB', 'WORKSPACE_OWNER_DB'],
+      bucket: 'WRITING_ASSETS',
+    },
+    migrations: {
+      auth: 'auth/migrations',
+      owner: 'ae-studio-engine/migrations',
+    },
   },
-  bindings: { preflight: 'npm run launch:check', build: 'npm run build:deploy', migrate: 'npm run migrate', deploy: 'npm run deploy', dryRun: 'npm run deploy:dry-run' },
-  paths: { deployment: 'cloudflare/deployment/index.ts', deploymentContracts: 'cloudflare/deployment/contracts.ts', deploymentTypecheck: 'cloudflare/deployment/tsconfig.json', deploymentPlan: 'cloudflare/deployment/plan.ts', deploymentTests: 'cloudflare/deployment/plan.test.ts', check: 'cloudflare/check-launch.ts', review: 'ae-workbench/auth-launch-review/review.json' }
+  bindings: {
+    preflight: 'npm run launch:check',
+    build: 'npm run build:deploy',
+    migrate: 'npm run migrate',
+    deploy: 'npm run deploy',
+    dryRun: 'npm run deploy:dry-run',
+  },
+  paths: {
+    deployment: 'cloudflare/deployment/index.ts',
+    deploymentContracts: 'cloudflare/deployment/contracts.ts',
+    deploymentTypecheck: 'cloudflare/deployment/tsconfig.json',
+    deploymentPlan: 'cloudflare/deployment/plan.ts',
+    deploymentTests: 'cloudflare/deployment/plan.test.ts',
+    check: 'cloudflare/check-launch.ts',
+    review: 'ae-workbench/auth-launch-review/review.json',
+  },
 } as const;

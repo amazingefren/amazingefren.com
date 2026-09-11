@@ -2,590 +2,639 @@ import { ownerWritingOperations } from './authoring/manifest.ts';
 import type { SystemManifest } from '../manifests/schema/system.schema.ts';
 
 export default {
-  kind: "system",
-  "id": "studio",
-  "name": "AE Studio",
-  "purpose": "My notes, tasks, experiments, relationships, and writing.",
-  "owner": "amazingefren",
-  "status": "declared",
-  "scope": "required",
-  "visibility": "public",
-  "context": {
-    "decisions": [
-      "2026-09-09: Owner approved quick Notes and a separate quiet Publications application. Notes stay private; publication manuscripts are independent of source notes.",
-      "Writing operations use the configured private passkey-authenticated service and D1/R2. The guest writing port is session-only. Prototype storage is not imported.",
-      "Personal workspace is the owner product. Preserve the Commonplace sidebar; replace Overview with Dashboard owned by dashboard.",
-      "Guest workspace mirrors the navigation and workflows with synthetic records only. Never fetch owner records and redact them in the UI.",
-      "Guest writes, publish previews, exports, tasks, and experiments remain session-isolated simulations with no production side effects.",
-      "Server adapters select the data store and enforce operation access before reads. Client route, role switch, or record ID never grants owner access.",
-      "Start with Markdown, metadata, and adjacent assets.",
-      "Vim bindings and Neovim integration are separate options.",
-      "Private drafts stay outside public Git.",
-      "Support Vim counts, motions, operators, and registers. Listed bindings are acceptance examples, not a full emulator. Draft saving needs an authorized operation.",
-      "UI commands grant no server permissions. Allow shortcut remapping and disabling; never capture unrelated text inputs.",
-      "Write through authenticated Studio operations; wire publish controls to publishing.",
-      "Autosave and Vim :w invoke studio.save-document; saving never publishes.",
-      "Publishing an article does not publish its ideation or evidence.",
-      "Runtime needs private ae-studio-engine; public scaffold checks do not.",
-      "Documents, tasks, experiments, relationships, and working revisions belong to Studio. Publishing owns public snapshots.",
-      "Task and experiment contracts are undefined. Their folders are scaffolds, not APIs.",
-      "Apply privacy/policy.json; never expose private material through analytics."
+  kind: 'system',
+  id: 'studio',
+  name: 'AE Studio',
+  purpose: 'My notes, tasks, experiments, relationships, and writing.',
+  owner: 'amazingefren',
+  status: 'declared',
+  scope: 'required',
+  visibility: 'public',
+  context: {
+    decisions: [
+      '2026-09-09: Owner approved quick Notes and a separate quiet Publications application. Notes stay private; publication manuscripts are independent of source notes.',
+      'Writing operations use the configured private passkey-authenticated service and D1/R2. The guest writing port is session-only. Prototype storage is not imported.',
+      'Personal workspace is the owner product. Preserve the Commonplace sidebar; replace Overview with Dashboard owned by dashboard.',
+      'Guest workspace mirrors the navigation and workflows with synthetic records only. Never fetch owner records and redact them in the UI.',
+      'Guest writes, publish previews, exports, tasks, and experiments remain session-isolated simulations with no production side effects.',
+      'Server adapters select the data store and enforce operation access before reads. Client route, role switch, or record ID never grants owner access.',
+      'Start with Markdown, metadata, and adjacent assets.',
+      'Vim bindings and Neovim integration are separate options.',
+      'Private drafts stay outside public Git.',
+      'Support Vim counts, motions, operators, and registers. Listed bindings are acceptance examples, not a full emulator. Draft saving needs an authorized operation.',
+      'UI commands grant no server permissions. Allow shortcut remapping and disabling; never capture unrelated text inputs.',
+      'Write through authenticated Studio operations; wire publish controls to publishing.',
+      'Autosave and Vim :w invoke studio.save-document; saving never publishes.',
+      'Publishing an article does not publish its ideation or evidence.',
+      'Runtime needs private ae-studio-engine; public scaffold checks do not.',
+      'Documents, tasks, experiments, relationships, and working revisions belong to Studio. Publishing owns public snapshots.',
+      'Task and experiment contracts are undefined. Their folders are scaffolds, not APIs.',
+      'Apply privacy/policy.json; never expose private material through analytics.',
     ],
-    "openQuestions": [
-      "Guest mutation operations and their HTTP/MCP/CLI contracts must be declared before enabling guest commands.",
-      "Task model, experiment workflow, search, and synchronization contracts.",
-      "Database migration ownership, workbench import mapping, and restore checks."
-    ]
+    openQuestions: [
+      'Guest mutation operations and their HTTP/MCP/CLI contracts must be declared before enabling guest commands.',
+      'Task model, experiment workflow, search, and synchronization contracts.',
+      'Database migration ownership, workbench import mapping, and restore checks.',
+    ],
   },
-  "capabilities": [
-    "writing-application",
-    "editing",
-    "preview",
-    "administration",
-    "documents",
-    "tasks",
-    "experiments",
-    "relationships",
-    "private-material",
-    "revision-history",
-    "workbench-import"
+  capabilities: [
+    'writing-application',
+    'editing',
+    'preview',
+    'administration',
+    'documents',
+    'tasks',
+    'experiments',
+    'relationships',
+    'private-material',
+    'revision-history',
+    'workbench-import',
   ],
-  "governance": {
-    "permissionsDefined": [],
-    "dataClassification": "private"
+  governance: {
+    permissionsDefined: [],
+    dataClassification: 'private',
   },
-  "risks": [],
-  "dependencies": [
-    "design",
-    "auth",
-    "privacy",
-    "dashboard"
-  ],
-  "schemaVersion": 5,
+  risks: [],
+  dependencies: ['design', 'auth', 'privacy', 'dashboard'],
+  schemaVersion: 5,
   views: [
-    { id: "owner", directory: "studio/ui/owner", testsDirectory: "studio/tests/views/owner", implementation: null, path: "/workspace", status: "declared", audience: "owner", access: { kind: "authenticated", permissions: ["studio.read"], ownership: "caller" }, data: "owner", operations: ["studio.create-document", "studio.list-documents", "studio.read-document", "studio.save-document"], verification: [{ expectation: "Deny unauthenticated and cross-owner access before any private read or write.", tests: [] }] },
-    { id: "guest", directory: "studio/ui/guest", testsDirectory: "studio/tests/views/guest", implementation: null, path: "/guest", status: "declared", audience: "guest", access: { kind: "public" }, data: "synthetic", replicaOf: "owner", isolation: "session", sideEffects: "sandbox-only", productionAccess: "denied", fallback: "fail-closed", operations: [], verification: [{ expectation: "Guest sessions cannot read owner data or each other, invoke owner APIs, publish live content, or send external requests. Missing fixtures fail closed.", tests: [] }] }
+    {
+      id: 'owner',
+      directory: 'studio/ui/owner',
+      testsDirectory: 'studio/tests/views/owner',
+      implementation: null,
+      path: '/workspace',
+      status: 'declared',
+      audience: 'owner',
+      access: {
+        kind: 'authenticated',
+        permissions: ['studio.read'],
+        ownership: 'caller',
+      },
+      data: 'owner',
+      operations: [
+        'studio.create-document',
+        'studio.list-documents',
+        'studio.read-document',
+        'studio.save-document',
+      ],
+      verification: [
+        {
+          expectation:
+            'Deny unauthenticated and cross-owner access before any private read or write.',
+          tests: [],
+        },
+      ],
+    },
+    {
+      id: 'guest',
+      directory: 'studio/ui/guest',
+      testsDirectory: 'studio/tests/views/guest',
+      implementation: null,
+      path: '/guest',
+      status: 'declared',
+      audience: 'guest',
+      access: { kind: 'public' },
+      data: 'synthetic',
+      replicaOf: 'owner',
+      isolation: 'session',
+      sideEffects: 'sandbox-only',
+      productionAccess: 'denied',
+      fallback: 'fail-closed',
+      operations: [],
+      verification: [
+        {
+          expectation:
+            'Guest sessions cannot read owner data or each other, invoke owner APIs, publish live content, or send external requests. Missing fixtures fail closed.',
+          tests: [],
+        },
+      ],
+    },
   ],
-  "contracts": [
-    "contracts/writing/index.ts",
-    "contracts/api/errors.schema.json",
-    "contracts/api/list-input.schema.json",
-    "contracts/api/read-input.schema.json",
-    "contracts/studio/create-document.schema.json",
-    "contracts/studio/document-list.schema.json",
-    "contracts/studio/document.schema.json",
-    "contracts/studio/save-document.schema.json"
+  contracts: [
+    'contracts/writing/index.ts',
+    'contracts/api/errors.schema.json',
+    'contracts/api/list-input.schema.json',
+    'contracts/api/read-input.schema.json',
+    'contracts/studio/create-document.schema.json',
+    'contracts/studio/document-list.schema.json',
+    'contracts/studio/document.schema.json',
+    'contracts/studio/save-document.schema.json',
   ],
-  "operations": [
+  operations: [
     ...ownerWritingOperations,
     {
-      "id": "studio.create-document",
-      dataScope: "owner",
-      "access": {
-        "kind": "authenticated",
-        "permissions": [
-          "studio.write"
-        ],
-        "ownership": "caller"
+      id: 'studio.create-document',
+      dataScope: 'owner',
+      access: {
+        kind: 'authenticated',
+        permissions: ['studio.write'],
+        ownership: 'caller',
       },
-      "bindings": [
+      bindings: [
         {
-          "id": "studio.create-document.http",
-          "surface": {
-            "kind": "http",
-            "method": "POST",
-            "path": "/api/studio/documents"
+          id: 'studio.create-document.http',
+          surface: {
+            kind: 'http',
+            method: 'POST',
+            path: '/api/studio/documents',
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/http",
-          "testsDirectory": "studio/tests/adapters/http"
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/http',
+          testsDirectory: 'studio/tests/adapters/http',
         },
         {
-          "id": "studio.create-document.mcp-tool",
-          "surface": {
-            "kind": "mcp-tool",
-            "name": "studio_create_document",
-            "description": "Create document for the authenticated owner.",
-            "readOnly": false
+          id: 'studio.create-document.mcp-tool',
+          surface: {
+            kind: 'mcp-tool',
+            name: 'studio_create_document',
+            description: 'Create document for the authenticated owner.',
+            readOnly: false,
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/mcp",
-          "testsDirectory": "studio/tests/adapters/mcp"
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/mcp',
+          testsDirectory: 'studio/tests/adapters/mcp',
         },
         {
-          "id": "studio.create-document.cli",
-          "surface": {
-            "kind": "cli",
-            "command": "ae studio create-document",
-            "output": "json"
+          id: 'studio.create-document.cli',
+          surface: {
+            kind: 'cli',
+            command: 'ae studio create-document',
+            output: 'json',
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/cli",
-          "testsDirectory": "studio/tests/adapters/cli"
-        }
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/cli',
+          testsDirectory: 'studio/tests/adapters/cli',
+        },
       ],
-      "status": "declared",
-      "input": "contracts/studio/create-document.schema.json",
-      "output": "contracts/studio/document.schema.json",
-      "errors": "contracts/api/errors.schema.json",
-      "directory": "studio/operations/create-document",
-      "testsDirectory": "studio/tests/operations/create-document",
-      "implementation": null,
-      "verification": [
+      status: 'declared',
+      input: 'contracts/studio/create-document.schema.json',
+      output: 'contracts/studio/document.schema.json',
+      errors: 'contracts/api/errors.schema.json',
+      directory: 'studio/operations/create-document',
+      testsDirectory: 'studio/tests/operations/create-document',
+      implementation: null,
+      verification: [
         {
-          "id": "studio.create-document.contract",
-          "category": "contract",
-          "expectation": "Request and response match schemas; ownerId comes from the authenticated identity.",
-          "tests": []
+          id: 'studio.create-document.contract',
+          category: 'contract',
+          expectation:
+            'Request and response match schemas; ownerId comes from the authenticated identity.',
+          tests: [],
         },
         {
-          "id": "studio.create-document.access",
-          "category": "access",
-          "expectation": "Anonymous callers and non-owners cannot read or change private material.",
-          "tests": []
+          id: 'studio.create-document.access',
+          category: 'access',
+          expectation:
+            'Anonymous callers and non-owners cannot read or change private material.',
+          tests: [],
         },
         {
-          "id": "studio.create-document.behavior",
-          "category": "behavior",
-          "expectation": "Saving a document changes its private working revision and never publishes it.",
-          "tests": []
+          id: 'studio.create-document.behavior',
+          category: 'behavior',
+          expectation:
+            'Saving a document changes its private working revision and never publishes it.',
+          tests: [],
         },
         {
-          "id": "studio.create-document.failure",
-          "category": "failure",
-          "expectation": "Conflicting revisions and retry failures do not overwrite work or expose drafts.",
-          "tests": []
-        }
-      ]
+          id: 'studio.create-document.failure',
+          category: 'failure',
+          expectation:
+            'Conflicting revisions and retry failures do not overwrite work or expose drafts.',
+          tests: [],
+        },
+      ],
     },
     {
-      "id": "studio.list-documents",
-      dataScope: "owner",
-      "access": {
-        "kind": "authenticated",
-        "permissions": [
-          "studio.read"
-        ],
-        "ownership": "caller"
+      id: 'studio.list-documents',
+      dataScope: 'owner',
+      access: {
+        kind: 'authenticated',
+        permissions: ['studio.read'],
+        ownership: 'caller',
       },
-      "bindings": [
+      bindings: [
         {
-          "id": "studio.list-documents.http",
-          "surface": {
-            "kind": "http",
-            "method": "GET",
-            "path": "/api/studio/documents"
+          id: 'studio.list-documents.http',
+          surface: {
+            kind: 'http',
+            method: 'GET',
+            path: '/api/studio/documents',
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/http",
-          "testsDirectory": "studio/tests/adapters/http"
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/http',
+          testsDirectory: 'studio/tests/adapters/http',
         },
         {
-          "id": "studio.list-documents.mcp-tool",
-          "surface": {
-            "kind": "mcp-tool",
-            "name": "studio_list_documents",
-            "description": "List documents for the authenticated owner.",
-            "readOnly": true
+          id: 'studio.list-documents.mcp-tool',
+          surface: {
+            kind: 'mcp-tool',
+            name: 'studio_list_documents',
+            description: 'List documents for the authenticated owner.',
+            readOnly: true,
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/mcp",
-          "testsDirectory": "studio/tests/adapters/mcp"
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/mcp',
+          testsDirectory: 'studio/tests/adapters/mcp',
         },
         {
-          "id": "studio.list-documents.cli",
-          "surface": {
-            "kind": "cli",
-            "command": "ae studio list-documents",
-            "output": "json"
+          id: 'studio.list-documents.cli',
+          surface: {
+            kind: 'cli',
+            command: 'ae studio list-documents',
+            output: 'json',
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/cli",
-          "testsDirectory": "studio/tests/adapters/cli"
-        }
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/cli',
+          testsDirectory: 'studio/tests/adapters/cli',
+        },
       ],
-      "status": "declared",
-      "input": "contracts/api/list-input.schema.json",
-      "output": "contracts/studio/document-list.schema.json",
-      "errors": "contracts/api/errors.schema.json",
-      "directory": "studio/operations/list-documents",
-      "testsDirectory": "studio/tests/operations/list-documents",
-      "implementation": null,
-      "verification": [
+      status: 'declared',
+      input: 'contracts/api/list-input.schema.json',
+      output: 'contracts/studio/document-list.schema.json',
+      errors: 'contracts/api/errors.schema.json',
+      directory: 'studio/operations/list-documents',
+      testsDirectory: 'studio/tests/operations/list-documents',
+      implementation: null,
+      verification: [
         {
-          "id": "studio.list-documents.contract",
-          "category": "contract",
-          "expectation": "Request and response match schemas; ownerId comes from the authenticated identity.",
-          "tests": []
+          id: 'studio.list-documents.contract',
+          category: 'contract',
+          expectation:
+            'Request and response match schemas; ownerId comes from the authenticated identity.',
+          tests: [],
         },
         {
-          "id": "studio.list-documents.access",
-          "category": "access",
-          "expectation": "Anonymous callers and non-owners cannot read or change private material.",
-          "tests": []
+          id: 'studio.list-documents.access',
+          category: 'access',
+          expectation:
+            'Anonymous callers and non-owners cannot read or change private material.',
+          tests: [],
         },
         {
-          "id": "studio.list-documents.behavior",
-          "category": "behavior",
-          "expectation": "Saving a document changes its private working revision and never publishes it.",
-          "tests": []
+          id: 'studio.list-documents.behavior',
+          category: 'behavior',
+          expectation:
+            'Saving a document changes its private working revision and never publishes it.',
+          tests: [],
         },
         {
-          "id": "studio.list-documents.failure",
-          "category": "failure",
-          "expectation": "Conflicting revisions and retry failures do not overwrite work or expose drafts.",
-          "tests": []
-        }
-      ]
+          id: 'studio.list-documents.failure',
+          category: 'failure',
+          expectation:
+            'Conflicting revisions and retry failures do not overwrite work or expose drafts.',
+          tests: [],
+        },
+      ],
     },
     {
-      "id": "studio.read-document",
-      dataScope: "owner",
-      "access": {
-        "kind": "authenticated",
-        "permissions": [
-          "studio.read"
-        ],
-        "ownership": "caller"
+      id: 'studio.read-document',
+      dataScope: 'owner',
+      access: {
+        kind: 'authenticated',
+        permissions: ['studio.read'],
+        ownership: 'caller',
       },
-      "bindings": [
+      bindings: [
         {
-          "id": "studio.read-document.http",
-          "surface": {
-            "kind": "http",
-            "method": "GET",
-            "path": "/api/studio/documents/{id}"
+          id: 'studio.read-document.http',
+          surface: {
+            kind: 'http',
+            method: 'GET',
+            path: '/api/studio/documents/{id}',
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/http",
-          "testsDirectory": "studio/tests/adapters/http"
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/http',
+          testsDirectory: 'studio/tests/adapters/http',
         },
         {
-          "id": "studio.read-document.mcp-tool",
-          "surface": {
-            "kind": "mcp-tool",
-            "name": "studio_read_document",
-            "description": "Read document for the authenticated owner.",
-            "readOnly": true
+          id: 'studio.read-document.mcp-tool',
+          surface: {
+            kind: 'mcp-tool',
+            name: 'studio_read_document',
+            description: 'Read document for the authenticated owner.',
+            readOnly: true,
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/mcp",
-          "testsDirectory": "studio/tests/adapters/mcp"
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/mcp',
+          testsDirectory: 'studio/tests/adapters/mcp',
         },
         {
-          "id": "studio.read-document.cli",
-          "surface": {
-            "kind": "cli",
-            "command": "ae studio read-document <id>",
-            "output": "json"
+          id: 'studio.read-document.cli',
+          surface: {
+            kind: 'cli',
+            command: 'ae studio read-document <id>',
+            output: 'json',
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/cli",
-          "testsDirectory": "studio/tests/adapters/cli"
-        }
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/cli',
+          testsDirectory: 'studio/tests/adapters/cli',
+        },
       ],
-      "status": "declared",
-      "input": "contracts/api/read-input.schema.json",
-      "output": "contracts/studio/document.schema.json",
-      "errors": "contracts/api/errors.schema.json",
-      "directory": "studio/operations/read-document",
-      "testsDirectory": "studio/tests/operations/read-document",
-      "implementation": null,
-      "verification": [
+      status: 'declared',
+      input: 'contracts/api/read-input.schema.json',
+      output: 'contracts/studio/document.schema.json',
+      errors: 'contracts/api/errors.schema.json',
+      directory: 'studio/operations/read-document',
+      testsDirectory: 'studio/tests/operations/read-document',
+      implementation: null,
+      verification: [
         {
-          "id": "studio.read-document.contract",
-          "category": "contract",
-          "expectation": "Request and response match schemas; ownerId comes from the authenticated identity.",
-          "tests": []
+          id: 'studio.read-document.contract',
+          category: 'contract',
+          expectation:
+            'Request and response match schemas; ownerId comes from the authenticated identity.',
+          tests: [],
         },
         {
-          "id": "studio.read-document.access",
-          "category": "access",
-          "expectation": "Anonymous callers and non-owners cannot read or change private material.",
-          "tests": []
+          id: 'studio.read-document.access',
+          category: 'access',
+          expectation:
+            'Anonymous callers and non-owners cannot read or change private material.',
+          tests: [],
         },
         {
-          "id": "studio.read-document.behavior",
-          "category": "behavior",
-          "expectation": "Saving a document changes its private working revision and never publishes it.",
-          "tests": []
+          id: 'studio.read-document.behavior',
+          category: 'behavior',
+          expectation:
+            'Saving a document changes its private working revision and never publishes it.',
+          tests: [],
         },
         {
-          "id": "studio.read-document.failure",
-          "category": "failure",
-          "expectation": "Conflicting revisions and retry failures do not overwrite work or expose drafts.",
-          "tests": []
-        }
-      ]
+          id: 'studio.read-document.failure',
+          category: 'failure',
+          expectation:
+            'Conflicting revisions and retry failures do not overwrite work or expose drafts.',
+          tests: [],
+        },
+      ],
     },
     {
-      "id": "studio.save-document",
-      dataScope: "owner",
-      "access": {
-        "kind": "authenticated",
-        "permissions": [
-          "studio.write"
-        ],
-        "ownership": "caller"
+      id: 'studio.save-document',
+      dataScope: 'owner',
+      access: {
+        kind: 'authenticated',
+        permissions: ['studio.write'],
+        ownership: 'caller',
       },
-      "bindings": [
+      bindings: [
         {
-          "id": "studio.save-document.http",
-          "surface": {
-            "kind": "http",
-            "method": "PUT",
-            "path": "/api/studio/documents/{id}"
+          id: 'studio.save-document.http',
+          surface: {
+            kind: 'http',
+            method: 'PUT',
+            path: '/api/studio/documents/{id}',
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/http",
-          "testsDirectory": "studio/tests/adapters/http"
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/http',
+          testsDirectory: 'studio/tests/adapters/http',
         },
         {
-          "id": "studio.save-document.mcp-tool",
-          "surface": {
-            "kind": "mcp-tool",
-            "name": "studio_save_document",
-            "description": "Save document for the authenticated owner.",
-            "readOnly": false
+          id: 'studio.save-document.mcp-tool',
+          surface: {
+            kind: 'mcp-tool',
+            name: 'studio_save_document',
+            description: 'Save document for the authenticated owner.',
+            readOnly: false,
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/mcp",
-          "testsDirectory": "studio/tests/adapters/mcp"
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/mcp',
+          testsDirectory: 'studio/tests/adapters/mcp',
         },
         {
-          "id": "studio.save-document.cli",
-          "surface": {
-            "kind": "cli",
-            "command": "ae studio save-document <id>",
-            "output": "json"
+          id: 'studio.save-document.cli',
+          surface: {
+            kind: 'cli',
+            command: 'ae studio save-document <id>',
+            output: 'json',
           },
-          "scope": "required",
-          "status": "declared",
-          "implementation": null,
-          "tests": [],
-          "directory": "studio/adapters/cli",
-          "testsDirectory": "studio/tests/adapters/cli"
-        }
+          scope: 'required',
+          status: 'declared',
+          implementation: null,
+          tests: [],
+          directory: 'studio/adapters/cli',
+          testsDirectory: 'studio/tests/adapters/cli',
+        },
       ],
-      "status": "declared",
-      "input": "contracts/studio/save-document.schema.json",
-      "output": "contracts/studio/document.schema.json",
-      "errors": "contracts/api/errors.schema.json",
-      "directory": "studio/operations/save-document",
-      "testsDirectory": "studio/tests/operations/save-document",
-      "implementation": null,
-      "verification": [
+      status: 'declared',
+      input: 'contracts/studio/save-document.schema.json',
+      output: 'contracts/studio/document.schema.json',
+      errors: 'contracts/api/errors.schema.json',
+      directory: 'studio/operations/save-document',
+      testsDirectory: 'studio/tests/operations/save-document',
+      implementation: null,
+      verification: [
         {
-          "id": "studio.save-document.contract",
-          "category": "contract",
-          "expectation": "Request and response match schemas; ownerId comes from the authenticated identity.",
-          "tests": []
+          id: 'studio.save-document.contract',
+          category: 'contract',
+          expectation:
+            'Request and response match schemas; ownerId comes from the authenticated identity.',
+          tests: [],
         },
         {
-          "id": "studio.save-document.access",
-          "category": "access",
-          "expectation": "Anonymous callers and non-owners cannot read or change private material.",
-          "tests": []
+          id: 'studio.save-document.access',
+          category: 'access',
+          expectation:
+            'Anonymous callers and non-owners cannot read or change private material.',
+          tests: [],
         },
         {
-          "id": "studio.save-document.behavior",
-          "category": "behavior",
-          "expectation": "Saving a document changes its private working revision and never publishes it.",
-          "tests": []
+          id: 'studio.save-document.behavior',
+          category: 'behavior',
+          expectation:
+            'Saving a document changes its private working revision and never publishes it.',
+          tests: [],
         },
         {
-          "id": "studio.save-document.failure",
-          "category": "failure",
-          "expectation": "Conflicting revisions and retry failures do not overwrite work or expose drafts.",
-          "tests": []
-        }
-      ]
-    }
+          id: 'studio.save-document.failure',
+          category: 'failure',
+          expectation:
+            'Conflicting revisions and retry failures do not overwrite work or expose drafts.',
+          tests: [],
+        },
+      ],
+    },
   ],
-  "events": [],
-  "keyboard": {
-    "preset": "vim",
-    "scope": "required",
-    "status": "declared",
-    "modes": [
-      "normal",
-      "insert",
-      "visual"
+  events: [],
+  keyboard: {
+    preset: 'vim',
+    scope: 'required',
+    status: 'declared',
+    modes: ['normal', 'insert', 'visual'],
+    remappable: true,
+    disableSingleCharacterShortcuts: true,
+    preserveBrowserShortcuts: true,
+    ignoreEditableTargetsOutsideEditor: true,
+    implementation: null,
+    tests: [],
+    bindings: [
+      {
+        mode: 'normal',
+        keys: 'j',
+        action: 'move-down',
+      },
+      {
+        mode: 'normal',
+        keys: 'k',
+        action: 'move-up',
+      },
+      {
+        mode: 'normal',
+        keys: 'h',
+        action: 'move-left',
+      },
+      {
+        mode: 'normal',
+        keys: 'l',
+        action: 'move-right',
+      },
+      {
+        mode: 'normal',
+        keys: 'gg',
+        action: 'go-start',
+      },
+      {
+        mode: 'normal',
+        keys: 'G',
+        action: 'go-end',
+      },
+      {
+        mode: 'normal',
+        keys: '/',
+        action: 'search',
+      },
+      {
+        mode: 'normal',
+        keys: 'n',
+        action: 'next-match',
+      },
+      {
+        mode: 'normal',
+        keys: 'N',
+        action: 'previous-match',
+      },
+      {
+        mode: 'normal',
+        keys: '?',
+        action: 'show-bindings',
+      },
+      {
+        mode: 'normal',
+        keys: 'Escape',
+        action: 'clear-mode',
+      },
+      {
+        mode: 'normal',
+        keys: 'i',
+        action: 'enter-insert',
+      },
+      {
+        mode: 'normal',
+        keys: 'v',
+        action: 'enter-visual',
+      },
+      {
+        mode: 'normal',
+        keys: 'w',
+        action: 'next-word',
+      },
+      {
+        mode: 'normal',
+        keys: 'b',
+        action: 'previous-word',
+      },
+      {
+        mode: 'normal',
+        keys: 'dd',
+        action: 'delete-line',
+      },
+      {
+        mode: 'normal',
+        keys: 'yy',
+        action: 'yank-line',
+      },
+      {
+        mode: 'normal',
+        keys: 'p',
+        action: 'paste',
+      },
+      {
+        mode: 'normal',
+        keys: 'u',
+        action: 'undo',
+      },
+      {
+        mode: 'normal',
+        keys: ':w',
+        action: 'save-document',
+      },
+      {
+        mode: 'insert',
+        keys: 'Escape',
+        action: 'enter-normal',
+      },
+      {
+        mode: 'visual',
+        keys: 'Escape',
+        action: 'enter-normal',
+      },
     ],
-    "remappable": true,
-    "disableSingleCharacterShortcuts": true,
-    "preserveBrowserShortcuts": true,
-    "ignoreEditableTargetsOutsideEditor": true,
-    "implementation": null,
-    "tests": [],
-    "bindings": [
-      {
-        "mode": "normal",
-        "keys": "j",
-        "action": "move-down"
-      },
-      {
-        "mode": "normal",
-        "keys": "k",
-        "action": "move-up"
-      },
-      {
-        "mode": "normal",
-        "keys": "h",
-        "action": "move-left"
-      },
-      {
-        "mode": "normal",
-        "keys": "l",
-        "action": "move-right"
-      },
-      {
-        "mode": "normal",
-        "keys": "gg",
-        "action": "go-start"
-      },
-      {
-        "mode": "normal",
-        "keys": "G",
-        "action": "go-end"
-      },
-      {
-        "mode": "normal",
-        "keys": "/",
-        "action": "search"
-      },
-      {
-        "mode": "normal",
-        "keys": "n",
-        "action": "next-match"
-      },
-      {
-        "mode": "normal",
-        "keys": "N",
-        "action": "previous-match"
-      },
-      {
-        "mode": "normal",
-        "keys": "?",
-        "action": "show-bindings"
-      },
-      {
-        "mode": "normal",
-        "keys": "Escape",
-        "action": "clear-mode"
-      },
-      {
-        "mode": "normal",
-        "keys": "i",
-        "action": "enter-insert"
-      },
-      {
-        "mode": "normal",
-        "keys": "v",
-        "action": "enter-visual"
-      },
-      {
-        "mode": "normal",
-        "keys": "w",
-        "action": "next-word"
-      },
-      {
-        "mode": "normal",
-        "keys": "b",
-        "action": "previous-word"
-      },
-      {
-        "mode": "normal",
-        "keys": "dd",
-        "action": "delete-line"
-      },
-      {
-        "mode": "normal",
-        "keys": "yy",
-        "action": "yank-line"
-      },
-      {
-        "mode": "normal",
-        "keys": "p",
-        "action": "paste"
-      },
-      {
-        "mode": "normal",
-        "keys": "u",
-        "action": "undo"
-      },
-      {
-        "mode": "normal",
-        "keys": ":w",
-        "action": "save-document"
-      },
-      {
-        "mode": "insert",
-        "keys": "Escape",
-        "action": "enter-normal"
-      },
-      {
-        "mode": "visual",
-        "keys": "Escape",
-        "action": "enter-normal"
-      }
-    ],
-    "directory": "studio/ui/keyboard",
-    "testsDirectory": "studio/tests/keyboard"
+    directory: 'studio/ui/keyboard',
+    testsDirectory: 'studio/tests/keyboard',
   },
-  "capabilityPaths": {
-    "writing-application": "studio/authoring",
-    "editing": "studio/ui/editor",
-    "preview": "studio/ui/preview",
-    "administration": "studio/ui/administration",
-    "documents": "studio/ui/editor",
-    "tasks": "studio/ui/tasks",
-    "experiments": "studio/ui/experiments",
-    "relationships": "studio/ui/relationships",
-    "private-material": "studio/ui/material",
-    "revision-history": "studio/ui/revisions",
-    "workbench-import": "studio/adapters/workbench-import"
+  capabilityPaths: {
+    'writing-application': 'studio/authoring',
+    editing: 'studio/ui/editor',
+    preview: 'studio/ui/preview',
+    administration: 'studio/ui/administration',
+    documents: 'studio/ui/editor',
+    tasks: 'studio/ui/tasks',
+    experiments: 'studio/ui/experiments',
+    relationships: 'studio/ui/relationships',
+    'private-material': 'studio/ui/material',
+    'revision-history': 'studio/ui/revisions',
+    'workbench-import': 'studio/adapters/workbench-import',
   },
-  "structure": {
-    "domain": "studio/domain",
-    "operations": "studio/operations",
-    "ports": "studio/ports",
-    "adapters": "studio/adapters",
-    "tests": "studio/tests",
-    "composition": "studio/composition"
+  structure: {
+    domain: 'studio/domain',
+    operations: 'studio/operations',
+    ports: 'studio/ports',
+    adapters: 'studio/adapters',
+    tests: 'studio/tests',
+    composition: 'studio/composition',
   },
-  "entrypoints": []
+  entrypoints: [],
 } as const satisfies SystemManifest;

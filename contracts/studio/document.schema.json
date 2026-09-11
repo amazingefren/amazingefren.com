@@ -13,11 +13,7 @@
       "type": "string"
     },
     "kind": {
-      "enum": [
-        "note",
-        "article",
-        "publication"
-      ]
+      "enum": ["note", "article", "publication"]
     },
     "id": {
       "type": "string",
@@ -32,10 +28,7 @@
       "minLength": 1
     },
     "state": {
-      "enum": [
-        "active",
-        "archived"
-      ]
+      "enum": ["active", "archived"]
     }
   },
   "required": [

@@ -13,22 +13,12 @@
       "type": "string"
     },
     "kind": {
-      "enum": [
-        "note",
-        "article",
-        "publication"
-      ]
+      "enum": ["note", "article", "publication"]
     },
     "idempotencyKey": {
       "type": "string",
       "minLength": 1
     }
   },
-  "required": [
-    "title",
-    "markdown",
-    "privateNotes",
-    "kind",
-    "idempotencyKey"
-  ]
+  "required": ["title", "markdown", "privateNotes", "kind", "idempotencyKey"]
 }

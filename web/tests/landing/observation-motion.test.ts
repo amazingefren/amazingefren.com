@@ -3,7 +3,12 @@ import assert from 'node:assert/strict';
 import { runInNewContext } from 'node:vm';
 import { observationMotionBootstrap } from '../../ui/landing/observation-motion.ts';
 
-function fixture(reduced = false, mounted = true, theme: string | null = null, systemDark = false) {
+function fixture(
+  reduced = false,
+  mounted = true,
+  theme: string | null = null,
+  systemDark = false,
+) {
   const attributes = new Map<string, string>();
   if (theme) attributes.set('data-theme', theme);
   const listeners = new Map<string, (event?: unknown) => void>();
@@ -13,26 +18,66 @@ function fixture(reduced = false, mounted = true, theme: string | null = null, s
   const scene = {};
   const document = {
     hidden: false,
-    documentElement: { getAttribute: (key: string) => attributes.get(key) ?? null, setAttribute: (key: string, value: string) => attributes.set(key, value), removeAttribute: (key: string) => attributes.delete(key) },
-    querySelector: () => mounted ? scene : null,
-    addEventListener: (name: string, handler: (event?: unknown) => void) => listeners.set(name, handler)
+    documentElement: {
+      getAttribute: (key: string) => attributes.get(key) ?? null,
+      setAttribute: (key: string, value: string) => attributes.set(key, value),
+      removeAttribute: (key: string) => attributes.delete(key),
+    },
+    querySelector: () => (mounted ? scene : null),
+    addEventListener: (name: string, handler: (event?: unknown) => void) =>
+      listeners.set(name, handler),
   };
-  const media = { matches: reduced, addEventListener: (_name: string, handler: () => void) => { change = handler; } };
-  const scheme = { matches: systemDark, addEventListener: (_name: string, handler: () => void) => { schemeChange = handler; } };
+  const media = {
+    matches: reduced,
+    addEventListener: (_name: string, handler: () => void) => {
+      change = handler;
+    },
+  };
+  const scheme = {
+    matches: systemDark,
+    addEventListener: (_name: string, handler: () => void) => {
+      schemeChange = handler;
+    },
+  };
   runInNewContext(observationMotionBootstrap(), {
     document,
-    window: { matchMedia: (query: string) => query.includes('color-scheme') ? scheme : media },
-    MutationObserver: class { constructor(callback: () => void) { observe = callback; } observe() {} }
+    window: {
+      matchMedia: (query: string) =>
+        query.includes('color-scheme') ? scheme : media,
+    },
+    MutationObserver: class {
+      constructor(callback: () => void) {
+        observe = callback;
+      }
+      observe() {}
+    },
   });
   return {
-    theme: (value: string | null) => { if (value) attributes.set('data-theme', value); else attributes.delete('data-theme'); observe(); },
-    systemDark: (value: boolean) => { scheme.matches = value; schemeChange(); },
+    theme: (value: string | null) => {
+      if (value) attributes.set('data-theme', value);
+      else attributes.delete('data-theme');
+      observe();
+    },
+    systemDark: (value: boolean) => {
+      scheme.matches = value;
+      schemeChange();
+    },
     state: () => attributes.get('data-observation-motion'),
     birds: () => attributes.get('data-observation-birds'),
-    visibility: (hidden: boolean) => { document.hidden = hidden; listeners.get('visibilitychange')?.(); },
-    preference: (value: boolean) => { media.matches = value; change(); },
-    finish: (name: string) => listeners.get('animationend')?.({ animationName: name }),
-    mount: (value: boolean) => { mounted = value; observe(); }
+    visibility: (hidden: boolean) => {
+      document.hidden = hidden;
+      listeners.get('visibilitychange')?.();
+    },
+    preference: (value: boolean) => {
+      media.matches = value;
+      change();
+    },
+    finish: (name: string) =>
+      listeners.get('animationend')?.({ animationName: name }),
+    mount: (value: boolean) => {
+      mounted = value;
+      observe();
+    },
   };
 }
 
@@ -85,7 +130,6 @@ test('reduced motion stays visible even before the streamed scene mounts', () =>
   assert.equal(page.state(), 'static');
   assert.equal(page.birds(), 'settled');
 });
-
 
 test('dark startup waits for light before consuming the bird entrance', () => {
   const page = fixture(false, true, 'dark');

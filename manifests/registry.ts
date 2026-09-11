@@ -18,6 +18,23 @@ import privacy from '../privacy/privacy.manifest.ts';
 import commits from './commits/commits.manifest.ts';
 import prototype from './prototypes/prototype.manifest.ts';
 
-export const systems = [work, workspace, design, web, dashboard, studio, auth, publishing, system_explorer, manifests, api, mcp, integrations, resume, evidence, privacy] as const;
+export const systems = [
+  work,
+  workspace,
+  design,
+  web,
+  dashboard,
+  studio,
+  auth,
+  publishing,
+  system_explorer,
+  manifests,
+  api,
+  mcp,
+  integrations,
+  resume,
+  evidence,
+  privacy,
+] as const;
 export const conventions = [commits, prototype] as const;
 export const catalog = [...systems, ...conventions] as const;

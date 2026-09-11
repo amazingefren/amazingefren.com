@@ -10,14 +10,8 @@
       }
     },
     "nextCursor": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": ["string", "null"]
     }
   },
-  "required": [
-    "items",
-    "nextCursor"
-  ]
+  "required": ["items", "nextCursor"]
 }

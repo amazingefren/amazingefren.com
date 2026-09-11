@@ -16,10 +16,7 @@
       "type": "string"
     },
     "implementationVisibility": {
-      "enum": [
-        "public",
-        "private"
-      ]
+      "enum": ["public", "private"]
     },
     "capabilities": {
       "type": "array",
