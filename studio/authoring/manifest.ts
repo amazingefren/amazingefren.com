@@ -13,7 +13,7 @@ function authoring(operation: Operation): Operation {
     access: reset ? { kind: 'public' } : { kind: 'authenticated', permissions: [permission], ownership: 'caller' },
     status: 'declared', directory, testsDirectory, implementation: null,
     bindings: operation.bindings.map(binding => ({ ...binding, status: 'declared', directory, testsDirectory, implementation: reset ? null : `${directory}/adapters.ts`, surface: binding.surface.kind === 'http' ? { kind: 'http', method: 'POST', path: reset ? '/api/guest/writing/reset' : `/api/writing/operations/${operation.id}` } : binding.surface })),
-    verification: operation.verification.map(item => ({ ...item, expectation: item.category === 'access' ? reset ? 'Guest reset never invokes owner storage.' : 'The private service verifies the configured owner Access identity before each protected read or write.' : item.expectation }))
+    verification: operation.verification.map(item => ({ ...item, expectation: item.category === 'access' ? reset ? 'Guest reset never invokes owner storage.' : 'The private service verifies the configured owner passkey session before each protected read or write.' : item.expectation }))
   };
 }
 

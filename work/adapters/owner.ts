@@ -1,3 +1,4 @@
+import { sessionCookieHeader } from '../../web/domain/access/index.ts';
 import { maxWorkCommandBytes } from '../../contracts/work/index.ts';
 import type { Result } from '../../contracts/work/index.ts';
 import { isState, parseCommand } from '../../work/operations/validation.ts';
@@ -8,7 +9,7 @@ export function createWorkGateway(service: OwnerWorkspaceService | undefined) {
     async operation(request: Request): Promise<Response> {
       if (request.method !== 'POST') return json({ ok: false, error: 'invalid', message: 'Use POST.' }, 405);
       if (request.headers.get('origin') !== new URL(request.url).origin) return json({ ok: false, error: 'denied', message: 'Sign in to continue.' }, 403);
-      const assertion = request.headers.get('Cf-Access-Jwt-Assertion');
+      const assertion = sessionCookieHeader(request);
       if (!assertion) return json({ ok: false, error: 'denied', message: 'Sign in to continue.' }, 401);
       if (!service) return unavailable();
       const body = await boundedJson(request, maxWorkCommandBytes);
@@ -16,7 +17,7 @@ export function createWorkGateway(service: OwnerWorkspaceService | undefined) {
       if (!command || command.operation !== new URL(request.url).pathname.split('/').at(-1)) return json({ ok: false, error: 'invalid', message: 'Invalid work request.' }, 400);
       try {
         const response = await service.fetch(new Request('https://workspace-owner.internal/api/work/operation', {
-          method: 'POST', headers: { 'content-type': 'application/json', 'Cf-Access-Jwt-Assertion': assertion }, body: JSON.stringify(command)
+          method: 'POST', headers: { 'content-type': 'application/json', cookie: assertion }, body: JSON.stringify(command)
         }));
         const result = await boundedJson(response, 8 * 1024 * 1024);
         if (!validResult(result)) return unavailable();

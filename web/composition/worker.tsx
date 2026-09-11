@@ -1,3 +1,4 @@
+import { AuthDocument, createAuthRoute } from './auth.tsx';
 import { defineApp } from 'rwsdk/worker';
 import { render, route } from 'rwsdk/router';
 import manifest from '../web.manifest.ts';
@@ -13,6 +14,9 @@ import { createOwnerWorkspaceGateway, OWNER_WORKSPACE_OPERATION_PATH, type Owner
 import { createWorkGateway } from '../../work/adapters/owner.ts';
 import { createWritingGateway } from './writing.ts';
 import { createPublicationRoutes } from '../adapters/http/publications.tsx';
+import { handleAuthRequest, type AuthEnvironment } from '../../auth/composition/index.ts';
+import { readOwnerSession } from '../../auth/adapters/d1/session.ts';
+import { canonicalPath, guardLaunchRequest, protectedPath, secureResponse } from '../domain/access/index.ts';
 
 const pages = { 'web/adapters/http/public.tsx': PublicRoute } as const;
 const guestDashboard = dashboard.views.find((view) => view.id === 'guest');
@@ -42,15 +46,18 @@ function httpPath(operationId: string) {
   return binding.surface.path;
 }
 
-type PublicWorkerEnv = Env & { WORKSPACE_OWNER_SERVICE?: OwnerWorkspaceService };
+type PublicWorkerEnv = Env & AuthEnvironment & { WORKSPACE_OWNER_SERVICE?: OwnerWorkspaceService };
 
-function createApplication(ownerService: OwnerWorkspaceService | undefined) {
+function createApplication(environment: PublicWorkerEnv) {
+  const ownerService = environment.WORKSPACE_OWNER_SERVICE;
+  const AuthRoute = createAuthRoute(environment.AUTH_DB);
   const ownerGateway = createOwnerWorkspaceGateway(ownerService);
   const OwnerWorkspaceRoute = createOwnerWorkspaceRoute(ownerGateway);
   const work = createWorkGateway(ownerService);
   const writing = createWritingGateway(ownerService);
   const publications = createPublicationRoutes(writing, !!ownerService);
   return defineApp([
+  render(AuthDocument, [route('/auth/me', AuthRoute)], { rscPayload: true }),
   route('/api/work/operations/:operation', { post: ({ request }) => work.operation(request) }),
   route('/api/writing/operations/:operation', { post: ({ request }) => writing.operation(request) }),
   route('/api/writing/assets/:id', { get: ({ request }) => writing.privateAsset(request) }),
@@ -74,7 +81,21 @@ function createApplication(ownerService: OwnerWorkspaceService | undefined) {
 }
 
 export default {
-  fetch(request: Request, env: PublicWorkerEnv, context: Parameters<ReturnType<typeof defineApp>["fetch"]>[2]) {
-    return createApplication(env.WORKSPACE_OWNER_SERVICE).fetch(request, env, context);
+  async fetch(request: Request, env: PublicWorkerEnv, context: Parameters<ReturnType<typeof defineApp>["fetch"]>[2]) {
+    const path = canonicalPath(new URL(request.url));
+    const privateResponse = path === null || protectedPath(path) || path.startsWith('/auth/') || path.startsWith('/api/auth/');
+    try {
+      const denied = await guardLaunchRequest(request, env.AUTH_ORIGIN, async () => !!await readOwnerSession(request, env.AUTH_DB));
+      if (denied) return secureResponse(denied, privateResponse);
+      if (path?.startsWith('/api/auth/')) return secureResponse(await handleAuthRequest(request, env), true);
+      if (path?.startsWith('/api/writing/assets/') || path?.startsWith('/api/publications/assets/')) {
+        if (request.method !== 'GET') return secureResponse(new Response(null, { status: 405, headers: { allow: 'GET' } }), true);
+        const writing = createWritingGateway(env.WORKSPACE_OWNER_SERVICE);
+        return secureResponse(await (path.startsWith('/api/writing/') ? writing.privateAsset(request) : writing.publicAsset(request)), privateResponse);
+      }
+      return secureResponse(await createApplication(env).fetch(request, env, context), privateResponse);
+    } catch {
+      return secureResponse(new Response('Service unavailable.', { status: 503 }), true);
+    }
   }
 };

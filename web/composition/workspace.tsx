@@ -45,7 +45,7 @@ export function createOwnerWorkspaceRoute(gateway: OwnerWorkspaceGateway) {
   response.headers.set('Cache-Control', 'private, no-store');
   if (!result.ok) {
     response.status = result.error.code === 'denied' ? 401 : 503;
-    return <main className="ae-workspace ws-main"><BrandMark variant="theme" /><h1>Owner workspace unavailable</h1><p>{result.error.code === 'denied' ? 'Owner sign-in is required.' : 'Private workspace storage is unavailable.'}</p><a href="/guest/dashboard">Explore the guest workspace</a></main>;
+    return <main className="ae-workspace ws-main"><BrandMark variant="theme" /><h1>Owner workspace unavailable</h1><p>{result.error.code === 'denied' ? 'Owner sign-in is required.' : 'Private workspace storage is unavailable.'}</p><a href="/">Back home</a></main>;
   }
   const path = new URL(request.url).pathname;
   if (path === '/workspace') return Response.redirect(new URL('/workspace/dashboard', request.url), 302);

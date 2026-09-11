@@ -7,14 +7,14 @@ export default {
   design: {
     system: "design/design.manifest.ts",
     sdk: "Generate clients from versioned contracts.",
-    infrastructure: "Cloudflare; service ownership, Workers/Pages, D1, and R2 design pending.",
+    infrastructure: "Cloudflare; first launch configuration and acceptance: cloudflare/deployment.manifest.ts.",
     deployment: "External CI proposed for selective submodule checkout; not configured.",
     prototypes: ["public-landing", "writing-studio", "dashboard", "guest-workspace", "system-explorer"],
     prototypeConvention: "manifests/prototypes/prototype.manifest.ts",
     direction: "Approved workspace composition and sun/moon themes follow AE Design. Public page composition stays in web/web.manifest.ts.",
     landing: "Public composition belongs to web/web.manifest.ts. Visual language, brand, tokens, and shared behavior belong to design/design.manifest.ts.",
     entry: "Public site first. Separate public navigation and workspace sidebar. Owner workspace opens on Dashboard.",
-    guest: "A synthetic guest replica demonstrates the workspace; APIs deny all owner data access.",
+    guest: "First deployment protects guest and owner workspaces with the single owner passkey session. Public guest access is deferred.",
   },
   risks: [
   {

@@ -114,7 +114,7 @@ const ownerExecuteOperation = {
   directory: 'workspace/operations',
   testsDirectory: 'workspace/tests/operations',
   implementation: null,
-  verification: [{ id: 'workspace.owner-execute.access', category: 'access', expectation: 'The public gateway forwards an Access assertion only to a configured private service. The service authorizes each declared command before storage reads.', tests: ['workspace/tests/adapters/owner-gateway.test.ts'] }]
+  verification: [{ id: 'workspace.owner-execute.access', category: 'access', expectation: 'The public gateway forwards an passkey session only to a configured private service. The service authorizes each declared command before storage reads.', tests: ['workspace/tests/adapters/owner-gateway.test.ts'] }]
 } as const satisfies Operation & { allowedCommands: readonly { operation: string; permission: 'workspace.read' | 'workspace.write' | 'workspace.publish' }[] };
 const pageNames = ["dashboard", "documents", "tasks", "experiments", "relationships", "publishing", "systems", "connections", "access"] as const;
 
@@ -141,6 +141,7 @@ export default {
   visibility: "public",
   context: {
     decisions: [
+      "First deployment adds the web launch access boundary to all guest views and HTTP APIs. Public guest operation contracts describe the retained synthetic capability; anonymous hosting is disabled until a later release.",
       "AE Work application build authorized on 2026-09-09. Work routes, operations and storage contracts belong to work/work.manifest.ts; the workspace shell links Work alongside existing sections.",
       "AE Design owns copy and interaction rules. Keep a single 32px page gutter, compact forms, one status label, and no implementation prose. Dark workspace background uses the shared public radial gradient.",
       "Route navigation focuses the main region through the shared ae-focus-target behavior without a content outline. Interactive controls retain visible keyboard focus.",
@@ -152,7 +153,7 @@ export default {
     ],
     openQuestions: [
       "Configure the optional Cloudflare Worker service binding before enabling owner routes in a deployment.",
-      "Private service deployment, Access application configuration, and D1 migration remain separate private-engine work."
+      "Private service deployment, passkey enrollment configuration, and D1 migration remain separate private-engine work."
     ]
   },
   capabilities: ["domain", "operations", "guest-boundary", "owner-boundary", "transports"],
@@ -190,7 +191,7 @@ export default {
       access: { kind: "authenticated" as const, permissions: ["workspace.read", "workspace.write", "workspace.publish"], ownership: "caller" as const },
       data: "owner" as const,
       operations: ["workspace.owner-execute"],
-      verification: [{ expectation: "Owner route forwards the Access assertion to a configured private service and renders only after its authorized workspace read succeeds.", tests: ["workspace/tests/adapters/owner-gateway.test.ts"] }]
+      verification: [{ expectation: "Owner route forwards the passkey session to a configured private service and renders only after its authorized workspace read succeeds.", tests: ["workspace/tests/adapters/owner-gateway.test.ts"] }]
     }))
   ],
   contracts: ["workspace/contracts/index.ts", commandContract, ownerCommandContract, stateContract, errorContract],

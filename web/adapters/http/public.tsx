@@ -14,7 +14,6 @@ const navigation = (page: Page) => (
   <nav className="site-nav" aria-label="Primary navigation">
     <a href="/readings" aria-current={page === 'readings' || page === 'reading' ? 'page' : undefined}>Readings</a>
     <a href="/about" aria-current={page === 'about' ? 'page' : undefined}>About me</a>
-    <a href="/guest/dashboard">Workbench</a>
   </nav>
 );
 

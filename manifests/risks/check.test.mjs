@@ -19,6 +19,7 @@ test('a proposed design cannot resolve a risk', async () => {
 test('verified treatments require evidence and resolve their references', async () => {
   const risk = structuredClone(auth.risks[0]);
   risk.treatment.status = 'verified';
+  risk.treatment.evidence = [];
   risk.treatment.implementations = ['auth/implementation.ts'];
   await assert.rejects(checkRisks([risk], 'auth', new Set(), async () => {}), /needs evidence/);
   risk.treatment.evidence = ['auth/verification.json'];

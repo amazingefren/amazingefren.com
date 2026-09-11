@@ -13,7 +13,7 @@ export default {
   "context": {
     "decisions": [
       "2026-09-09: Owner approved quick Notes and a separate quiet Publications application. Notes stay private; publication manuscripts are independent of source notes.",
-      "Writing operations use the configured private Access-authenticated service and D1/R2. The guest writing port is session-only. Prototype storage is not imported.",
+      "Writing operations use the configured private passkey-authenticated service and D1/R2. The guest writing port is session-only. Prototype storage is not imported.",
       "Personal workspace is the owner product. Preserve the Commonplace sidebar; replace Overview with Dashboard owned by dashboard.",
       "Guest workspace mirrors the navigation and workflows with synthetic records only. Never fetch owner records and redact them in the UI.",
       "Guest writes, publish previews, exports, tasks, and experiments remain session-isolated simulations with no production side effects.",
