@@ -8,7 +8,7 @@ export default {
     system: "design/design.manifest.ts",
     sdk: "Generate clients from versioned contracts.",
     infrastructure: "Cloudflare; first launch configuration and acceptance: cloudflare/deployment.manifest.ts.",
-    deployment: "Cloudflare Workers Builds selected. Builds require pinned private submodule checkout; first successful automated build remains pending.",
+    deployment: "Cloudflare Workers Builds checks pinned private submodules and builds both Workers. Root migration and deploy commands follow cloudflare/deployment.manifest.ts; first complete automated release remains pending.",
     prototypes: ["public-landing", "writing-studio", "dashboard", "guest-workspace", "system-explorer"],
     prototypeConvention: "manifests/prototypes/prototype.manifest.ts",
     direction: "Approved workspace composition and sun/moon themes follow AE Design. Public page composition stays in web/web.manifest.ts.",
