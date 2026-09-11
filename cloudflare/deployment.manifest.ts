@@ -8,10 +8,10 @@ export default {
     'The web Worker has the sole public route. Disable workers.dev and preview URLs on both Workers; the owner service has no public routes.',
     'Use a fresh database with the consolidated initial migration. Existing local databases retain their migration history; export any needed records before choosing a new local database. Do not replay the initial migration over old tables.',
     'The owner must test 1Password enrollment, logout, repeat sign-in, and an independent backup passkey on the final domain before storing irreplaceable data.',
-    'Cloudflare resources and initial schemas were created on 2026-09-10. Both Workers are deployed on the permanent HTTPS domain; live anonymous access checks passed. Real passkey acceptance and restore drills remain pending.'
+    'Cloudflare resources and initial schemas were created on 2026-09-10. Both Workers are deployed on the permanent HTTPS domain; live anonymous access checks passed. First owner passkey enrollment is confirmed and the bootstrap secret is removed. Repeat sign-in acceptance and restore drills remain pending.'
   ],
   capabilities: ['web', 'owner-auth', 'private-storage'],
-  governance: { release: 'Deployed with private access protected. Final-domain owner passkey acceptance remains pending.', deploymentsAuthorized: true },
+  governance: { release: 'Deployed with private access protected. First owner enrolled; repeat sign-in acceptance remains pending.', deploymentsAuthorized: true },
   risks: ['Local tests do not prove provider configuration, backup recovery, or 1Password behavior.'],
   contracts: {
     origin: 'https://amazingefren.com',
