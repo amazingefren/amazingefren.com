@@ -4,6 +4,7 @@ import { lightTheme, darkTheme } from '../../../design/foundations/tokens.ts';
 import type { DocumentProps } from 'rwsdk/router';
 import type { ReactNode } from 'react';
 import stylesUrl from './public.css?url';
+import readingsStylesUrl from '../../ui/readings/readings.css?url';
 import dashboardStylesUrl from '../../../dashboard/ui/guest/dashboard.css?url';
 
 function DocumentContent({
@@ -38,6 +39,7 @@ function DocumentContent({
           dangerouslySetInnerHTML={{ __html: observationMotionBootstrap() }}
         />
         <link rel="stylesheet" href={stylesUrl} />
+        <link rel="stylesheet" href={readingsStylesUrl} />
         <link rel="stylesheet" href={dashboardStylesUrl} />
         <title>Efren Castro — Public research</title>
       </head>
