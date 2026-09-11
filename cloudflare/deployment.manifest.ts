@@ -1,6 +1,7 @@
 export default {
   purpose: 'Govern first-deployment configuration and owner acceptance.',
   decisions: [
+    'Owner requires Cloudflare-hosted builds with access to private submodules for application functionality. Keep pinned revisions and use HTTPS GitHub URLs for CI checkout. Push submodule commits before the parent revision. Validate checkout in Cloudflare before claiming automation is ready.',
     '2026-09-10: Owner marks this first deployment as initialization. First publication: https://amazingefren.com/readings/ae-intro.',
     'Owner requested continued first-deployment setup on 2026-09-10 and connected Wrangler. Account and active amazingefren.com zone verified before resource creation. Keep Worker observability disabled until collection is approved.',
     'Public web and private owner service use a shared dedicated AUTH_DB for passkeys and sessions. Content uses a separate WORKSPACE_OWNER_DB and private WRITING_ASSETS bucket.',
