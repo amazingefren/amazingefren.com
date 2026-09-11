@@ -14,6 +14,12 @@
   ::view-transition-group(*) {
     animation-duration: 0s;
   }
+  ::view-transition-group(public-content) {
+    overflow: visible;
+  }
+  ::view-transition-image-pair(public-content) {
+    overflow: visible;
+  }
   ::view-transition-old(root),
   ::view-transition-old(public-header),
   ::view-transition-old(public-footer) {
