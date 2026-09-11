@@ -24,10 +24,10 @@ export interface DeliveryBinding {
       }
     | {
         kind: 'export';
-        format: 'markdown' | 'json' | 'offline-bundle';
+        format: 'markdown' | 'json' | 'offline-bundle' | 'opml';
         path: string;
       }
-    | { kind: 'cli'; command: string; output: 'json' | 'text' }
+    | { kind: 'cli'; command: string; output: 'json' | 'text' | 'zip' | 'opml' }
     | {
         kind: 'mirror';
         network: 'onion' | 'ipfs';

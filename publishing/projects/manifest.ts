@@ -144,6 +144,36 @@ const publicOperation = (
             itemId: 'id',
             updatedAt: 'publishedAt',
           }),
+          publicBinding(`${id}.offline.mcp-resource`, {
+            kind: 'mcp-resource',
+            uriTemplate: 'ae://publications/offline-bundle',
+            mimeType: 'application/zip',
+          }),
+          publicBinding(`${id}.offline.cli`, {
+            kind: 'cli',
+            command: 'ae publications download',
+            output: 'zip',
+          }),
+          publicBinding(`${id}.offline.export`, {
+            kind: 'export',
+            format: 'offline-bundle',
+            path: '/exports/publications.zip',
+          }),
+          publicBinding(`${id}.opml.mcp-resource`, {
+            kind: 'mcp-resource',
+            uriTemplate: 'ae://publications/subscriptions.opml',
+            mimeType: 'text/x-opml',
+          }),
+          publicBinding(`${id}.opml.cli`, {
+            kind: 'cli',
+            command: 'ae publications subscriptions',
+            output: 'opml',
+          }),
+          publicBinding(`${id}.opml.export`, {
+            kind: 'export',
+            format: 'opml',
+            path: '/readings/subscriptions.opml',
+          }),
         ]
       : [
           publicBinding(`${id}.http`, {
@@ -186,7 +216,7 @@ const publicOperation = (
       id: `${id}.behavior`,
       category: 'behavior',
       expectation:
-        'JSON, HTML, Markdown, and feeds use the same active snapshot.',
+        'JSON, HTML, Markdown, feeds, and offline bundles use the same active snapshot.',
       tests: [],
     },
     {

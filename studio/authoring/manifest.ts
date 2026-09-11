@@ -90,7 +90,8 @@ export const publicProjectOperations: Operation[] = publicationProjectOperations
                     : '/readings/atom.xml',
                 itemId: 'slug',
               }
-            : binding.surface.kind === 'export'
+            : binding.surface.kind === 'export' &&
+                binding.surface.format === 'markdown'
               ? { ...binding.surface, path: '/readings/{slug}/download.md' }
               : binding.surface,
       })),

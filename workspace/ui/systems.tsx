@@ -130,6 +130,10 @@ export function SystemsPage({ catalog, execute, audience }: SystemsPageProps) {
     <section className="ws-systems" aria-labelledby="systems-title">
       <header className="ws-page-heading">
         <h1 id="systems-title">Systems</h1>
+        <div>
+          <a href="/exports/systems/index.json">JSON</a> ·{' '}
+          <a href="/exports/systems.zip">Offline bundle</a>
+        </div>
       </header>
       <div className="ws-explorer">
         <aside className="ws-catalog" aria-label="System catalog">

@@ -5,6 +5,7 @@ export type WorkspacePage =
   | 'documents'
   | 'tasks'
   | 'experiments'
+  | 'benchmarks'
   | 'relationships'
   | 'publishing'
   | 'systems'
@@ -142,6 +143,7 @@ export const workspacePages: readonly WorkspacePage[] = [
   'documents',
   'tasks',
   'experiments',
+  'benchmarks',
   'relationships',
   'publishing',
   'systems',

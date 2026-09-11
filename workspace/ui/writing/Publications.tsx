@@ -375,16 +375,28 @@ export function PublicationsView(props: StudioProps) {
               Chapters
             </button>
           )}
-          <button aria-pressed={preview} onClick={() => setPreview(!preview)}>
-            {preview ? 'Write' : 'Preview'}
+          <button aria-pressed={!preview} onClick={() => setPreview(false)}>
+            Write
           </button>
-          <button onClick={() => options.current?.showModal()}>Options</button>
+          <button aria-pressed={preview} onClick={() => setPreview(true)}>
+            Preview
+          </button>
+          <button
+            aria-expanded={tools}
+            onClick={() => {
+              setTools(!tools);
+              setPreview(false);
+            }}
+          >
+            Tools
+          </button>
+          <button onClick={() => options.current?.showModal()}>Details</button>
           <button
             className="ws-primary"
             disabled={props.busy || saving || dirty || !chapter}
             onClick={() => release.current?.showModal()}
           >
-            {project.live ? 'Update' : 'Publish'}
+            {project.live ? 'Update' : 'Release'}
           </button>
         </div>
       </header>
@@ -466,10 +478,10 @@ export function PublicationsView(props: StudioProps) {
           <button
             onClick={() => {
               options.current?.close();
-              setTools(!tools);
+              setTools(true);
             }}
           >
-            Images and writing tools
+            Writing tools
           </button>
           <button
             onClick={() => {

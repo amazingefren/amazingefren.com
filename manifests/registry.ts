@@ -13,6 +13,7 @@ import mcp from '../mcp/mcp.manifest.ts';
 import integrations from '../integrations/integrations.manifest.ts';
 import resume from '../resume/resume.manifest.ts';
 import evidence from '../evidence/evidence.manifest.ts';
+import evaluation from '../evaluation/evaluation.manifest.ts';
 
 import privacy from '../privacy/privacy.manifest.ts';
 import commits from './commits/commits.manifest.ts';
@@ -34,6 +35,7 @@ export const systems = [
   integrations,
   resume,
   evidence,
+  evaluation,
   privacy,
 ] as const;
 export const conventions = [commits, prototype] as const;

@@ -25,6 +25,14 @@ import {
 import { createWorkGateway } from '../../work/adapters/owner.ts';
 import { createWritingGateway } from './writing.ts';
 import { createPublicationRoutes } from '../adapters/http/publications.tsx';
+import { createPortablePublicationHttpHandler } from '../../publishing/adapters/http/portable-publications.ts';
+import { createPublicationAssetPort } from './publication-assets.ts';
+import { createPublicMcpHttpHandler } from '../../mcp/composition/index.ts';
+import { createEvaluationGateway } from '../../evaluation/adapters/owner.ts';
+import {
+  createSystemExplorer,
+  createSystemExplorerHttpHandler,
+} from '../../system-explorer/composition/index.ts';
 import {
   handleAuthRequest,
   type AuthEnvironment,
@@ -97,8 +105,28 @@ function createApplication(environment: PublicWorkerEnv) {
   const work = createWorkGateway(ownerService);
   const writing = createWritingGateway(ownerService);
   const publications = createPublicationRoutes(writing, !!ownerService);
+  const publicationExports = createPortablePublicationHttpHandler({
+    publications: { list: () => writing.read() },
+    assets: createPublicationAssetPort(writing),
+    origin: 'https://amazingefren.com',
+  });
+  const systems = createSystemExplorerHttpHandler(createSystemExplorer());
+  const evaluation = createEvaluationGateway(ownerService);
   return defineApp([
     render(AuthDocument, [route('/auth/me', AuthRoute)], { rscPayload: true }),
+    route('/api/systems', { get: ({ request }) => systems(request) }),
+    route('/api/evaluation/operations/:operation', {
+      post: ({ request }) => evaluation(request),
+    }),
+    route('/api/systems/:id', { get: ({ request }) => systems(request) }),
+    route('/exports/systems.zip', { get: ({ request }) => systems(request) }),
+    route('/exports/systems/:file', { get: ({ request }) => systems(request) }),
+    route('/exports/publications.zip', {
+      get: ({ request }) => publicationExports(request),
+    }),
+    route('/readings/subscriptions.opml', {
+      get: ({ request }) => publicationExports(request),
+    }),
     route('/api/work/operations/:operation', {
       post: ({ request }) => work.operation(request),
     }),
@@ -197,6 +225,23 @@ export default {
       if (denied) return secureResponse(denied, privateResponse);
       if (path?.startsWith('/api/auth/'))
         return secureResponse(await handleAuthRequest(request, env), true);
+      if (path === '/mcp') {
+        const writing = createWritingGateway(env.WORKSPACE_OWNER_SERVICE);
+        return secureResponse(
+          await createPublicMcpHttpHandler(createSystemExplorer(), {
+            allowedOrigins: [
+              'https://amazingefren.com',
+              ...(env.AUTH_ORIGIN ? [env.AUTH_ORIGIN] : []),
+            ],
+            publications: {
+              publications: { list: () => writing.read() },
+              assets: createPublicationAssetPort(writing),
+              origin: 'https://amazingefren.com',
+            },
+          })(request),
+          false,
+        );
+      }
       if (
         path?.startsWith('/api/writing/assets/') ||
         path?.startsWith('/api/publications/assets/')

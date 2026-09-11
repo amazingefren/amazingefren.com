@@ -23,6 +23,7 @@ import { SystemsPage, ConnectionsPage, AccessPage } from './systems.tsx';
 import { resetGuestWork } from '../../work/adapters/guest.ts';
 import { WorkPage } from './work-page.tsx';
 import { WritingPage } from './writing-page.tsx';
+import { BenchmarkPage } from './benchmark-page.tsx';
 
 const labels = {
   dashboard: 'Dashboard',
@@ -30,13 +31,14 @@ const labels = {
   documents: 'Notes',
   tasks: 'Tasks',
   experiments: 'Experiments',
+  benchmarks: 'Benchmarks',
   relationships: 'Relationships',
   publishing: 'Publications',
   systems: 'Systems',
   connections: 'Connections',
   access: 'Access',
 };
-const symbols = ['▦', '◇', '▤', '☷', '◉', '⇄', '↗', '⌘', '⊞', '⌑'];
+const symbols = ['▦', '◇', '▤', '☷', '◉', '∷', '⇄', '↗', '⌘', '⊞', '⌑'];
 export function WorkspaceApp({
   initialPage,
   catalog,
@@ -269,6 +271,7 @@ export function WorkspaceApp({
         documents: <WritingPage {...props} section="documents" />,
         tasks: <TasksPage {...props} />,
         experiments: <ExperimentsPage {...props} />,
+        benchmarks: <BenchmarkPage audience={audience} />,
         relationships: <RelationshipsPage {...props} />,
         publishing: <WritingPage {...props} section="publishing" />,
         systems: <SystemsPage {...props} catalog={catalog} />,

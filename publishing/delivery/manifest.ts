@@ -5,7 +5,15 @@ export default {
     'No authoring state, source notes, or private revision histories cross this boundary.',
     'No shared response cache is used until withdrawal and cache invalidation are verified.',
   ],
-  capabilities: ['reading', 'json', 'markdown', 'rss', 'atom'],
+  capabilities: [
+    'reading',
+    'json',
+    'markdown',
+    'rss',
+    'atom',
+    'offline-bundle',
+    'opml',
+  ],
   governance: {
     access: 'published-only',
     activation: 'explicit-owner-publish',
@@ -13,12 +21,16 @@ export default {
   },
   risks: [
     'Publish transaction defects must be resolved before live configuration.',
-    'Scheduling, offline bundles, EPUB/PDF, mirrors, and backup restoration are not enabled.',
+    'Scheduling, EPUB/PDF, mirrors, and backup restoration are not enabled.',
   ],
   contracts: ['contracts/writing/index.ts'],
   bindings: [
     'web/composition/writing.ts',
     'web/adapters/http/publications.tsx',
+    'publishing/adapters/http/portable-publications.ts',
+    'publishing/adapters/cli/portable-publications.ts',
+    'publishing/adapters/cli/main.ts',
+    'publishing/adapters/mcp/portable-publications.ts',
   ],
   paths: [
     '/readings',
@@ -28,5 +40,7 @@ export default {
     '/readings/{slug}/download.md',
     '/readings/feed.xml',
     '/readings/atom.xml',
+    '/exports/publications.zip',
+    '/readings/subscriptions.opml',
   ],
 } as const;

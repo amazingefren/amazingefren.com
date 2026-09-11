@@ -9,6 +9,12 @@
     "revision": {
       "type": "string"
     },
+    "catalogRevision": {
+      "type": "string"
+    },
+    "sourceRevision": {
+      "type": "string"
+    },
     "name": {
       "type": "string"
     },
@@ -23,11 +29,37 @@
       "items": {
         "type": "string"
       }
+    },
+    "status": {
+      "enum": ["declared", "prototype", "implemented"]
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "contracts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "access", "status", "bindings", "verification"],
+        "properties": {
+          "id": { "type": "string" },
+          "access": { "const": "public" },
+          "status": { "enum": ["declared", "implemented"] },
+          "bindings": { "type": "array" },
+          "verification": { "type": "array" }
+        }
+      }
     }
   },
   "required": [
     "id",
-    "revision",
+    "sourceRevision",
     "name",
     "purpose",
     "implementationVisibility",

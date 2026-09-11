@@ -1,0 +1,55 @@
+.evaluation-workbench {
+  display: grid;
+  gap: var(--ae-space-24);
+}
+.evaluation-workbench header,
+.evaluation-review {
+  display: flex;
+  gap: var(--ae-space-16);
+  justify-content: space-between;
+  align-items: center;
+}
+.evaluation-form {
+  display: grid;
+  gap: var(--ae-space-12);
+  max-width: 720px;
+  padding: var(--ae-space-16);
+}
+.evaluation-form fieldset {
+  display: grid;
+  gap: var(--ae-space-8);
+  border: 1px solid var(--ae-line);
+  padding: var(--ae-space-12);
+}
+.evaluation-form label {
+  display: grid;
+  gap: var(--ae-space-8);
+}
+.evaluation-run {
+  overflow: auto;
+  border-top: 1px solid var(--ae-line);
+  padding-top: var(--ae-space-16);
+}
+.evaluation-run table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.evaluation-run th,
+.evaluation-run td {
+  padding: var(--ae-space-8);
+  border-bottom: 1px solid var(--ae-line);
+  text-align: left;
+}
+.evaluation-run pre {
+  white-space: pre-wrap;
+}
+.evaluation-review {
+  flex-wrap: wrap;
+}
+@media (max-width: 600px) {
+  .evaluation-workbench header,
+  .evaluation-review {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

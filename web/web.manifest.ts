@@ -12,6 +12,8 @@ export default {
   visibility: 'public',
   context: {
     decisions: [
+      '2026-09-10: Readings uses web/ui/readings/readings.manifest.ts for the searchable editorial index and publication reader. Benchmark workspaces use the existing protected shell and evaluation operation routes.',
+      '2026-09-10: System Explorer serves its public catalog through /api/systems, JSON exports, and an offline ZIP. Workspace Systems links to these exports. Publication downloads and subscriptions extend the current public reading routes; protected workspace access stays governed by launchAccess.',
       'First deployment: workspace, guest pages, guest APIs, owner APIs, and framework actions require the single owner passkey session. /auth/me stays unlinked. The synthetic guest implementation remains available only to the owner until a later release.',
       'Public / is the entry even for a workspace-shaped product. Use a hero-led page with immediate paths into readings and About me.',
       'Readings is the primary public destination, including while its publishing system is built. Keep the home reading action prominent. Public refinements use web/ui/shared/public-shell.css: 14px navigation and actions, 12px metadata, footer theme selection, and shared mobile margins. Owner rejected the compact reading empty state on 2026-09-09: retain the large title, editorial reading-room composition, decorative circles, and layout-demo link.',
@@ -81,6 +83,7 @@ export default {
       '/api/work',
       '/api/writing',
       '/api/dashboard',
+      '/api/evaluation',
     ],
     signInPath: '/auth/me',
     frameworkActions: 'denied',

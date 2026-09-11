@@ -3,6 +3,12 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "catalogRevision": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object"
+    },
     "items": {
       "type": "array",
       "items": {
@@ -13,5 +19,5 @@
       "type": ["string", "null"]
     }
   },
-  "required": ["items", "nextCursor"]
+  "required": ["catalogRevision", "provenance", "items", "nextCursor"]
 }

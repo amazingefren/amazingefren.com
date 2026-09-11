@@ -179,6 +179,19 @@
   padding: var(--ae-space-16);
   border: 1px solid var(--ae-line);
 }
+.studio-format-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ae-space-8);
+  padding-bottom: var(--ae-space-12);
+  border-bottom: 1px solid var(--ae-line);
+}
+.studio-tools details button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin-top: var(--ae-space-8);
+}
 .studio-page {
   max-width: 880px;
   margin: 0 auto;

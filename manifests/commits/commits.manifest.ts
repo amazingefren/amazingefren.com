@@ -5,7 +5,7 @@ export default {
   id: 'commits',
   purpose: 'Write searchable commit messages tied to manifest changes.',
   owner: 'amazingefren',
-  status: 'experimental',
+  status: 'implemented',
   schemaVersion: 1,
   version: 0,
   syntax: {
@@ -46,12 +46,16 @@ export default {
     'Future parsers validate syntax and references, not truth. Diff checks and independent tests verify claims.',
     'Angle-bracket placeholders show grammar only. Replace them with verified diff facts; they grant no action scope.',
     'Messages retrieve known explanations; unknown bugs still need diffs, reproduction, and sometimes bisection.',
-    'No commit parser or generator exists yet.',
+    'The local parser validates syntax and optional references. It does not generate messages or prove their claims.',
   ],
   examples: [
     '<type>(<scope>): <description>\n\nManifest-Commit: 0\n\nManifest: <repository-relative-manifest-path>\n\n<change-key>: <stable-target-id> | <observed-change>',
   ],
   sources: ['https://www.conventionalcommits.org/en/v1.0.0/'],
-  implementations: [],
-  tests: [],
+  implementations: [
+    'manifests/commits/contracts.ts',
+    'manifests/commits/check.ts',
+    'manifests/commits/cli.mjs',
+  ],
+  tests: ['manifests/commits/check.test.mjs'],
 } as const satisfies ConventionManifest;

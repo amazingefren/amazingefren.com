@@ -7,6 +7,11 @@ import { vim, Vim } from '@replit/codemirror-vim';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { EditorProps } from '../../../contracts/writing/index.ts';
+import {
+  countWords,
+  manuscriptOutline,
+  markdownInsertion,
+} from './editor-helpers.ts';
 
 const assetId = (url: string) =>
   url.startsWith('asset:') ? url.slice(6) : null;
@@ -74,10 +79,8 @@ export function Editor({
     [asset, setAsset] = useState('');
   const preview = previewMode ?? localPreview,
     tools = toolsMode ?? localTools;
-  const words = useMemo(
-    () => (value.trim() ? value.trim().split(/\s+/).length : 0),
-    [value],
-  );
+  const words = useMemo(() => countWords(value), [value]);
+  const outline = useMemo(() => manuscriptOutline(value), [value]);
   useEffect(() => {
     changeRef.current = onChange;
     saveRef.current = onSave;
@@ -145,6 +148,18 @@ export function Editor({
     editor.focus();
     setTools(false);
   };
+  const apply = (command: Parameters<typeof markdownInsertion>[0]) => {
+    const editor = view.current;
+    if (!editor || readOnly || preview) return;
+    const selection = editor.state.selection.main;
+    const selected = editor.state.sliceDoc(selection.from, selection.to);
+    const text = markdownInsertion(command, selected);
+    editor.dispatch({
+      changes: { from: selection.from, to: selection.to, insert: text },
+      selection: { anchor: selection.from + text.length },
+    });
+    editor.focus();
+  };
   return (
     <section className="studio-editor" aria-label="Writing editor">
       {!quiet && (
@@ -169,8 +184,35 @@ export function Editor({
           </button>
         </div>
       )}
-      {tools && (
+      {tools && !preview && (
         <section className="studio-tools">
+          <div
+            className="studio-format-toolbar"
+            role="toolbar"
+            aria-label="Markdown formatting"
+          >
+            {(
+              [
+                ['bold', 'Bold'],
+                ['italic', 'Italic'],
+                ['heading', 'Heading'],
+                ['link', 'Link'],
+                ['code', 'Code'],
+                ['list', 'List'],
+                ['quote', 'Quote'],
+                ['table', 'Table'],
+              ] as const
+            ).map(([command, label]) => (
+              <button
+                key={command}
+                type="button"
+                disabled={preview || readOnly}
+                onClick={() => apply(command)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
           <div className="studio-tool-row">
             <label className="studio-check">
               <input
@@ -191,6 +233,30 @@ export function Editor({
               </label>
             )}
           </div>
+          {outline.length > 0 && (
+            <details>
+              <summary>Manuscript outline</summary>
+              {outline.map((item) => (
+                <button
+                  key={item.line}
+                  disabled={preview}
+                  onClick={() => {
+                    const editor = view.current;
+                    if (!editor) return;
+                    editor.dispatch({
+                      selection: {
+                        anchor: editor.state.doc.line(item.line + 1).from,
+                      },
+                      scrollIntoView: true,
+                    });
+                    editor.focus();
+                  }}
+                >
+                  {'—'.repeat(item.depth - 1)} {item.title}
+                </button>
+              ))}
+            </details>
+          )}
           <div className="studio-tool-row">
             <select
               aria-label="Image to insert"
@@ -217,6 +283,7 @@ export function Editor({
       )}
       <footer className="studio-editor-status">
         <span>{words} words</span>
+        <span>{Math.max(1, Math.ceil(words / 200))} min read</span>
         <span>{vimEnabled ? 'Vim / :w to save' : 'Markdown'}</span>
       </footer>
     </section>

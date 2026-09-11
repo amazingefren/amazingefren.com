@@ -4,13 +4,16 @@ import remarkGfm from 'remark-gfm';
 import type { Snapshot } from '../../../contracts/writing/index.ts';
 import type { WritingGateway } from '../../composition/writing.ts';
 import { Shell, Readings, NotFound } from './public.tsx';
+import { ReadingArticle } from '../../ui/readings/ReadingArticle.tsx';
+import { ReadingList } from '../../ui/readings/ReadingList.tsx';
+import '../../ui/readings/readings.css';
 
 export function createPublicationRoutes(
   gateway: WritingGateway,
   configured: boolean,
 ) {
   return {
-    async listing({ response }: RequestInfo) {
+    async listing({ request, response }: RequestInfo) {
       response.headers.set('Cache-Control', 'no-store');
       if (!configured) return <Readings />;
       const result = await gateway.read();
@@ -26,30 +29,14 @@ export function createPublicationRoutes(
         );
       }
       if (!result.value.length) return <Readings />;
+      const url = new URL(request.url);
       return (
         <Shell page="readings">
-          <section className="page-heading">
-            <h1>Readings.</h1>
-          </section>
-          <section className="prose">
-            {result.value.map((snapshot) => (
-              <article key={snapshot.id}>
-                <h2>
-                  <a href={`/readings/${snapshot.slug}`}>{snapshot.title}</a>
-                </h2>
-                <p>{snapshot.summary}</p>
-                <p>
-                  <time dateTime={snapshot.publishedAt}>
-                    {snapshot.publishedAt.slice(0, 10)}
-                  </time>
-                </p>
-              </article>
-            ))}
-          </section>
-          <p>
-            <a href="/readings/feed.xml">RSS</a> ·{' '}
-            <a href="/readings/atom.xml">Atom</a>
-          </p>
+          <ReadingList
+            snapshots={result.value}
+            query={url.searchParams.get('q') ?? ''}
+            tag={url.searchParams.get('tag') ?? ''}
+          />
         </Shell>
       );
     },
@@ -74,34 +61,9 @@ export function createPublicationRoutes(
             rel="canonical"
             href={`https://amazingefren.com/readings/${snapshot.slug}`}
           />
-          <div className="reader-layout">
-            <aside className="reader-aside">
-              <a href="/readings">Readings</a>
-              {snapshot.kind === 'book' && (
-                <nav aria-label="Chapters">
-                  {snapshot.chapters.map((chapter, index) => (
-                    <p key={chapter.documentId}>
-                      <a href={`#chapter-${index + 1}`}>{chapter.title}</a>
-                    </p>
-                  ))}
-                </nav>
-              )}
-            </aside>
-            <article className="reader">
-              <header>
-                <h1>{snapshot.title}</h1>
-                <p>{snapshot.summary}</p>
-                <time dateTime={snapshot.publishedAt}>
-                  {snapshot.publishedAt.slice(0, 10)}
-                </time>
-              </header>
-              <SnapshotBody snapshot={snapshot} />
-              <footer>
-                <a href={`/readings/${snapshot.slug}/download.md`}>Markdown</a>
-                <a href={`/api/publications/${snapshot.slug}`}>JSON</a>
-              </footer>
-            </article>
-          </div>
+          <ReadingArticle snapshot={snapshot}>
+            <SnapshotBody snapshot={snapshot} />
+          </ReadingArticle>
         </Shell>
       );
     },

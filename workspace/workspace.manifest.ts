@@ -238,6 +238,7 @@ export default {
   visibility: 'public',
   context: {
     decisions: [
+      '2026-09-10: Benchmarks opens the Evaluation workbench. Owner operations use passkey-protected private storage; guest imports and comparisons use isolated synthetic state.',
       'First deployment adds the web launch access boundary to all guest views and HTTP APIs. Public guest operation contracts describe the retained synthetic capability; anonymous hosting is disabled until a later release.',
       'AE Work application build authorized on 2026-09-09. Work routes, operations and storage contracts belong to work/work.manifest.ts; the workspace shell links Work alongside existing sections.',
       'AE Design owns copy and interaction rules. Keep a single 32px page gutter, compact forms, one status label, and no implementation prose. Dark workspace background uses the shared public radial gradient.',

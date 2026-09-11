@@ -12,6 +12,7 @@ export default {
   visibility: 'public',
   context: {
     decisions: [
+      '2026-09-10: Publications exposes Write, Preview, Tools, Details, and Release. Editor tools provide Markdown formatting, document outline, local asset insertion, and remappable Vim behavior through workspace/ui/writing/Editor.tsx. workspace/tests/writing-editor.test.ts checks text transformations; browser review checks insertion, autosave, and preview.',
       '2026-09-09: Owner approved quick Notes and a separate quiet Publications application. Notes stay private; publication manuscripts are independent of source notes.',
       'Writing operations use the configured private passkey-authenticated service and D1/R2. The guest writing port is session-only. Prototype storage is not imported.',
       'Personal workspace is the owner product. Preserve the Commonplace sidebar; replace Overview with Dashboard owned by dashboard.',

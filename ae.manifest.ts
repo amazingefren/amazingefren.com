@@ -3,7 +3,7 @@ import type { Risk } from './manifests/schema/risk.schema.ts';
 export default {
   id: 'ae',
   purpose:
-    'My personal workspace, with a public site for sharing work and methods.',
+    'My research workspace: define benchmarks, run tests, document evidence, and publish reviewed findings.',
   status: 'prototype',
   design: {
     system: 'design/design.manifest.ts',
@@ -125,6 +125,17 @@ export default {
     contracts: 'contracts/writing/index.ts',
     notes: 'workspace/ui/writing/Notes.tsx',
     writer: 'workspace/ui/writing/Publications.tsx',
+  },
+  evaluation: {
+    system: 'evaluation/evaluation.manifest.ts',
+    runtime: 'ae-eval-engine',
+    ownerStorage: 'ae-studio-engine/src/evaluation',
+    scope:
+      'Text benchmarks, frozen definitions, imported attempts, manual review, and private observation reports.',
+    execution:
+      'Model subjects use an injected private provider port. Live provider configuration and sandboxed code-agent execution remain pending.',
+    publication:
+      'Reports remain private until the owner selects and reviews material in Studio.',
   },
   contentStorage: {
     sourceOfTruth: 'D1',
