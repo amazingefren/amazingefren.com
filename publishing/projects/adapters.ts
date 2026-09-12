@@ -16,6 +16,13 @@ export const createPublicationProjectHttpAdapter = (port: StudioPort) => ({
 });
 
 export const createPublicationProjectMcpTools = (port: StudioPort) => ({
+  publishing_projects_create_revision: (
+    input: Extract<
+      ProjectCommand,
+      { operation: 'publishing.projects.create-revision' }
+    >['input'],
+  ) =>
+    port.execute({ operation: 'publishing.projects.create-revision', input }),
   publishing_projects_create: (
     input: Extract<
       ProjectCommand,

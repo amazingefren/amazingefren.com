@@ -4,6 +4,21 @@ import {
 } from '../../../auth/domain/sessions/index.ts';
 import manifest from '../../web.manifest.ts';
 
+const workspacePreviewPaths = new Set([
+  '/workspace/dashboard',
+  '/workspace/work',
+  '/workspace/documents',
+  '/workspace/tasks',
+  '/workspace/experiments',
+  '/workspace/benchmarks',
+  '/workspace/evidence',
+  '/workspace/relationships',
+  '/workspace/publishing',
+  '/workspace/systems',
+  '/workspace/connections',
+  '/workspace/access',
+]);
+
 export function protectedPath(path: string): boolean {
   return manifest.launchAccess.ownerPrefixes.some(
     (prefix) => path === prefix || path.startsWith(`${prefix}/`),
@@ -33,10 +48,30 @@ export function sessionCookieHeader(request: Request): string | null {
     : null;
 }
 
+export function localWorkspacePreview(
+  request: Request,
+  enabled: string | undefined,
+): boolean {
+  if (enabled !== 'true') return false;
+  const url = new URL(request.url);
+  return (
+    url.protocol === 'http:' &&
+    (url.hostname === 'localhost' ||
+      url.hostname === '127.0.0.1' ||
+      url.hostname === '[::1]')
+  );
+}
+
+export function workspacePreviewPath(path: string): boolean {
+  if (path === '/workspace') return true;
+  return workspacePreviewPaths.has(path);
+}
+
 export async function guardLaunchRequest(
   request: Request,
   origin: string | undefined,
   hasOwnerSession: () => Promise<boolean>,
+  preview = false,
 ): Promise<Response | null> {
   const url = new URL(request.url);
   const path = canonicalPath(url);
@@ -44,6 +79,7 @@ export async function guardLaunchRequest(
   if (url.searchParams.has('__rsc_action_id'))
     return new Response(null, { status: 403 });
   if (!protectedPath(path)) return null;
+  if (preview && workspacePreviewPath(path)) return null;
   const headers = {
     'cache-control': 'private, no-store',
     'x-robots-tag': 'noindex, nofollow',

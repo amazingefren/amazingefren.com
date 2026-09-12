@@ -14,7 +14,7 @@ export default {
   context: {
     decisions: [
       '2026-09-11: Owner authorized the replacement publication editor and Emacs workspace build. External draft operations use studio/external with scoped, revocable credentials approved through the passkey owner session. Org source stays private and saves with derived Markdown under one revision precondition. Local synthetic editor, Workers and Emacs checks passed; no deployment authorized.',
-      '2026-09-10: Saved Notes can create independent publication manuscripts with source revision provenance. Markdown import uses workspace/ui/writing/markdown-import.ts and the existing autosave/revision operations; it rejects oversized, empty, invalid, or stale reads and requires a saved draft.',
+      'Saved Notes can create independent publication manuscripts with source revision provenance. Markdown import rejects oversized, empty, invalid, or stale reads and requires a saved draft.',
       'Publication authoring uses workspace/ui/writing/Publications.tsx and Editor.tsx with persistent settings, Markdown formatting, optimized image insertion and remappable Vim. PublicPreview.tsx renders unsaved snapshots through the shared public shell, ReadingArticle and PublicationMarkdown without saving or publishing. Split view follows source positions; switching modes preserves editor history.',
       '2026-09-09: Owner approved quick Notes and a separate quiet Publications application. Notes stay private; publication manuscripts are independent of source notes.',
       'Writing operations use the configured private passkey-authenticated service and D1/R2. The guest writing port is session-only. Prototype storage is not imported.',
@@ -28,7 +28,8 @@ export default {
       'Support Vim counts, motions, operators, and registers. Listed bindings are acceptance examples, not a full emulator. Draft saving needs an authorized operation.',
       'UI commands grant no server permissions. Allow shortcut remapping and disabling; never capture unrelated text inputs.',
       'Write through authenticated Studio operations; wire publish controls to publishing.',
-      'Autosave and Vim :w invoke studio.save-document; saving never publishes.',
+      'Publication draft and metadata saves require the Save button, explicit retry or Vim :w. Typing never schedules a save; saving never publishes.',
+      'Publication revision numbers are distinct from conflict counters. Saves replace the current draft without manuscript history. Review captures the current revision; Create revision preserves a checkpoint and advances the draft. Editing a published release starts the next draft and never changes the live snapshot. Shared rules are in studio/writing/revisions.ts.',
       'Publishing an article does not publish its ideation or evidence.',
       'Runtime needs private ae-studio-engine; public scaffold checks do not.',
       'Documents, tasks, experiments, relationships, and working revisions belong to Studio. Publishing owns public snapshots.',
@@ -673,5 +674,5 @@ export default {
     tests: 'studio/tests',
     composition: 'studio/composition',
   },
-  entrypoints: [],
+  entrypoints: ['studio/writing/revisions.ts'],
 } as const satisfies SystemManifest;

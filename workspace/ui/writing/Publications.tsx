@@ -58,19 +58,18 @@ export function PublicationsView(props: StudioProps) {
   const [importing, setImporting] = useState(false);
   const importTarget = useRef('');
   const [tagText, setTagText] = useState<string | null>(null);
-  const [retry, setRetry] = useState(0);
   const [publicationAt, setPublicationAt] = useState('');
   const [timezone, setTimezone] = useState('America/Denver');
   const [reviewed, setReviewed] = useState<{
     version: number;
-    chapters: { revision: number; title: string; body: string }[];
+    revision: number;
+    chapters: { title: string; body: string }[];
     assets: Asset[];
   } | null>(null);
   const createDialog = useRef<HTMLDialogElement>(null);
   const chapters = useRef<HTMLDialogElement>(null);
   const release = useRef<HTMLDialogElement>(null);
   const locked = useRef(false);
-  const attempted = useRef('');
   const reviewFromRoute = useRef(false);
   useEffect(() => setState(props.state), [props.state]);
   useEffect(() => {
@@ -84,6 +83,9 @@ export function PublicationsView(props: StudioProps) {
     setReviewed(null);
   }, [props.recordId]);
   const project = state.publications.find((item) => item.id === props.recordId);
+  const publicationRevision = project
+    ? (project.revision ?? Math.max(1, project.releases.length))
+    : 1;
   const source = project
     ? project.chapterIds
         .map((id) => state.documents.find((item) => item.id === id))
@@ -100,7 +102,6 @@ export function PublicationsView(props: StudioProps) {
     props.recordId,
     changed,
     project && metas[project.id],
-    retry,
   ]);
   importTarget.current = JSON.stringify([
     props.recordId,
@@ -248,15 +249,6 @@ export function PublicationsView(props: StudioProps) {
       setSaving(false);
     }
   }
-  useEffect(() => {
-    if (!dirty || saving || props.busy || attempted.current === signature)
-      return;
-    const timer = setTimeout(() => {
-      attempted.current = signature;
-      void save();
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [signature, dirty, saving, props.busy]);
   async function create(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -333,7 +325,6 @@ export function PublicationsView(props: StudioProps) {
         .map((id) => next.documents.find((item) => item.id === id))
         .filter((item): item is StudioDocument => Boolean(item))
         .map((item) => ({
-          revision: item.revision,
           title: item.title,
           body: item.body,
         }));
@@ -348,9 +339,26 @@ export function PublicationsView(props: StudioProps) {
       if (fields?.coverAssetId) assetIds.add(fields.coverAssetId);
       setReviewed({
         version: reviewedProject.version,
+        revision: reviewedProject.revision ?? publicationRevision,
         chapters: reviewedChapters,
         assets: next.assets.filter((asset) => assetIds.has(asset.id)),
       });
+    } finally {
+      locked.current = false;
+      setSaving(false);
+    }
+  }
+  async function createRevision() {
+    if (!project || !chapter || dirty || locked.current || props.busy) return;
+    locked.current = true;
+    setSaving(true);
+    setMessage('');
+    try {
+      const next = await run({
+        operation: 'publishing.projects.create-revision',
+        input: { id: project.id, expectedVersion: project.version },
+      });
+      if (next) setReviewed(null);
     } finally {
       locked.current = false;
       setSaving(false);
@@ -434,6 +442,7 @@ export function PublicationsView(props: StudioProps) {
       chapters: previewChapters,
       assets: state.assets.filter((asset) => assetIds.has(asset.id)),
       projectVersion: project.version,
+      revision: publicationRevision,
     });
   }
   if (!props.recordId) {
@@ -605,6 +614,7 @@ export function PublicationsView(props: StudioProps) {
                 {project.kind === 'book' && chapter
                   ? `Chapter ${project.chapterIds.indexOf(chapter.id) + 1}`
                   : project.stage}
+                {` · Revision ${publicationRevision}`}
               </span>
               <span className="publication-save-state" role="status">
                 {saving ? 'Saving…' : dirty ? 'Unsaved changes' : 'Saved'}
@@ -671,7 +681,10 @@ export function PublicationsView(props: StudioProps) {
               <p className="studio-notice" role="alert">
                 {message}
                 {dirty && (
-                  <button onClick={() => setRetry((value) => value + 1)}>
+                  <button
+                    disabled={saving || props.busy}
+                    onClick={() => void save()}
+                  >
                     Retry save
                   </button>
                 )}
@@ -801,6 +814,17 @@ export function PublicationsView(props: StudioProps) {
             >
               {project.live ? 'Review update' : 'Review release'}
             </button>
+            <button
+              disabled={props.busy || saving || dirty || !chapter}
+              title={
+                dirty
+                  ? 'Save your draft before creating a revision.'
+                  : undefined
+              }
+              onClick={() => void createRevision()}
+            >
+              Create revision
+            </button>
             {project.kind === 'book' && (
               <label>
                 Book title
@@ -882,14 +906,14 @@ export function PublicationsView(props: StudioProps) {
             </details>
             {chapter && (
               <details>
-                <summary>Version history</summary>
+                <summary>Revision checkpoints</summary>
                 {chapter.revisions
                   .slice()
                   .reverse()
                   .map((item) => (
                     <button
                       key={item.number}
-                      disabled={dirty || props.busy}
+                      disabled={dirty || saving || props.busy}
                       onClick={() =>
                         void run({
                           operation: 'studio.notes.restore',
@@ -1041,16 +1065,16 @@ export function PublicationsView(props: StudioProps) {
             onChange={(event) => setTimezone(event.target.value)}
           />
         </label>
-        {reviewed && (
+        {reviewed && reviewed.version === project.version && (
           <section
             className="studio-review-preview"
             aria-label="Saved revision preview"
           >
             <h3>Saved revision preview</h3>
-            {reviewed.chapters.map((item) => (
-              <section key={`${item.title}-${item.revision}`}>
+            {reviewed.chapters.map((item, index) => (
+              <section key={index}>
                 <h4>
-                  {item.title} / Revision {item.revision}
+                  {item.title} / Revision {reviewed.revision}
                 </h4>
                 <MarkdownPreview assets={reviewed.assets} value={item.body} />
               </section>
@@ -1063,7 +1087,12 @@ export function PublicationsView(props: StudioProps) {
           </button>
           <button
             className="ws-primary"
-            disabled={dirty || saving || props.busy || Boolean(reviewed)}
+            disabled={
+              dirty ||
+              saving ||
+              props.busy ||
+              reviewed?.version === project.version
+            }
             onClick={() => void reviewSavedRevision()}
           >
             {saving ? 'Reviewing...' : 'Review saved revision'}

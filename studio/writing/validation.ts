@@ -123,9 +123,11 @@ export const isSnapshot = (value: unknown): value is Snapshot =>
       'assets',
       'projectVersion',
     ],
-    ['updatedAt', 'timezone'],
+    ['updatedAt', 'timezone', 'revision'],
   ) &&
   isString(value.id) &&
+  (value.revision === undefined ||
+    (isNumber(value.revision) && value.revision > 0)) &&
   isIsoDate(value.publishedAt) &&
   (value.updatedAt === undefined ||
     value.updatedAt === null ||
@@ -155,26 +157,32 @@ export const isSnapshot = (value: unknown): value is Snapshot =>
 
 const isPublication = (value: unknown): value is Publication =>
   isRecord(value) &&
-  hasOnly(value, [
-    'id',
-    'kind',
-    'title',
-    'slug',
-    'summary',
-    'tags',
-    'seoTitle',
-    'seoDescription',
-    'coverAssetId',
-    'chapterIds',
-    'stage',
-    'version',
-    'updatedAt',
-    'scheduledAt',
-    'live',
-    'releases',
-    'sourceId',
-  ]) &&
+  hasRequiredAndOptional(
+    value,
+    [
+      'id',
+      'kind',
+      'title',
+      'slug',
+      'summary',
+      'tags',
+      'seoTitle',
+      'seoDescription',
+      'coverAssetId',
+      'chapterIds',
+      'stage',
+      'version',
+      'updatedAt',
+      'scheduledAt',
+      'live',
+      'releases',
+      'sourceId',
+    ],
+    ['revision'],
+  ) &&
   isString(value.id) &&
+  (value.revision === undefined ||
+    (isNumber(value.revision) && value.revision > 0)) &&
   ['article', 'page', 'book'].includes(value.kind as string) &&
   isString(value.title) &&
   isString(value.slug) &&

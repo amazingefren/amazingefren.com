@@ -386,6 +386,22 @@ em {
   font: 400 clamp(50px, 6vw, 78px)/0.99 var(--ae-font-serif);
   letter-spacing: -0.07em;
 }
+.reader > header > h1,
+.reader .publication-markdown h1 {
+  color: var(--ae-theme-accent);
+}
+.reader .publication-markdown h2 {
+  color: var(--ae-theme-accent-soft);
+}
+.reader .publication-markdown h3 {
+  color: var(--ae-muted);
+}
+.reader .publication-markdown :not(pre) > code {
+  color: var(--ae-theme-accent-soft);
+  font-family: var(--ae-font-serif);
+  font-style: italic;
+  font-size: 1em;
+}
 .reader-deck {
   max-width: 520px;
   margin: 0;

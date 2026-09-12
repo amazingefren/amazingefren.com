@@ -39,6 +39,7 @@ export type Asset = {
 };
 export type Snapshot = {
   id: string;
+  revision?: number;
   publishedAt: string;
   updatedAt?: string | null;
   timezone?: string;
@@ -61,6 +62,7 @@ export type Snapshot = {
 };
 export type Publication = {
   id: string;
+  revision?: number;
   kind: PublicationKind;
   title: string;
   slug: string;
@@ -147,6 +149,10 @@ export type Command =
   | {
       operation: 'publishing.projects.reorder';
       input: { id: string; expectedVersion: number; chapterIds: string[] };
+    }
+  | {
+      operation: 'publishing.projects.create-revision';
+      input: { id: string; expectedVersion: number };
     }
   | {
       operation: 'publishing.projects.review';

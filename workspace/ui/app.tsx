@@ -48,13 +48,15 @@ export function WorkspaceApp({
   catalog,
   audience = 'guest',
   initialState,
+  basePath,
 }: {
   initialPage: WorkspacePage;
   catalog: CatalogEntry[];
   audience?: WorkspaceAudience;
   initialState?: WorkspaceState;
+  basePath?: '/guest' | '/workspace';
 }) {
-  const base = audience === 'owner' ? '/workspace' : '/guest';
+  const base = basePath ?? (audience === 'owner' ? '/workspace' : '/guest');
   const dirty = useRef(false);
   const currentPath = useRef('');
   const onDirtyChange = (value: boolean) => {

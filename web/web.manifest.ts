@@ -12,6 +12,7 @@ export default {
   visibility: 'public',
   context: {
     decisions: [
+      'Local UI preview is opt-in through LOCAL_WORKSPACE_PREVIEW=true and works only for HTTP loopback requests. It renders synthetic workspace data at /workspace; production and all non-loopback origins retain the owner session boundary.',
       '2026-09-11: /api/v1/studio draft routes accept only scoped external bearer credentials and forward to the private service binding. Client credential management requires a verified passkey owner session and same-origin mutations. The owner-only Emacs setup page is /workspace/connections/emacs; Emacs review opens /workspace/publishing/{projectId}/review. No private response enters public caches.',
       '2026-09-10: Readings uses web/ui/readings/readings.manifest.ts for the searchable editorial index and publication reader. Benchmark workspaces use the existing protected shell and evaluation operation routes.',
       '2026-09-10: System Explorer serves its public catalog through /api/systems, JSON exports, and an offline ZIP. Workspace Systems links to these exports. Publication downloads and subscriptions extend the current public reading routes; protected workspace access stays governed by launchAccess.',

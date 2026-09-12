@@ -107,6 +107,30 @@ export function GuestWorkspaceRoute({ request, response }: RequestInfo) {
   );
 }
 
+export function LocalWorkspacePreviewRoute({ request, response }: RequestInfo) {
+  response.headers.set('Cache-Control', 'private, no-store');
+  const path = new URL(request.url).pathname;
+  if (path === '/workspace')
+    return Response.redirect(new URL('/workspace/dashboard', request.url), 302);
+  const requested = path.split('/')[2] || 'dashboard';
+  if (!workspacePages.includes(requested as WorkspacePage)) {
+    response.status = 404;
+    return (
+      <main className="ae-workspace ws-main">
+        <h1>Page not found</h1>
+        <a href="/workspace/dashboard">Open Dashboard</a>
+      </main>
+    );
+  }
+  return (
+    <WorkspaceApp
+      initialPage={requested as WorkspacePage}
+      catalog={publicCatalog()}
+      basePath="/workspace"
+    />
+  );
+}
+
 export function createOwnerWorkspaceRoute(gateway: OwnerWorkspaceGateway) {
   return async function OwnerWorkspaceRoute({
     request,

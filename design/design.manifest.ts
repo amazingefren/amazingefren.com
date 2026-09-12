@@ -363,6 +363,7 @@ export default {
       implementation: 'web/adapters/http/public.tsx',
       rules: [
         'Use the existing serif reading column and semantic article structure. Keep published content usable without JavaScript.',
+        'Public inline backtick spans use italic serif emphasis; fenced code remains monospace. Reuse the theme accents and muted text for heading hierarchy.',
       ],
     },
     {

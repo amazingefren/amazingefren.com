@@ -3,9 +3,11 @@ import assert from 'node:assert/strict';
 import {
   canonicalPath,
   guardLaunchRequest,
+  localWorkspacePreview,
   protectedPath,
   secureResponse,
   sessionCookieHeader,
+  workspacePreviewPath,
 } from '../../domain/access/index.ts';
 
 const origin = 'https://amazingefren.com';
@@ -35,6 +37,54 @@ test('launch denies anonymous workspace pages, APIs, and encoded routes before a
     assert.equal(response?.status, path.startsWith('/api/') ? 401 : 303, path);
     assert.equal(response?.headers.get('cache-control'), 'private, no-store');
   }
+});
+
+test('local workspace preview is opt-in and limited to HTTP loopback requests', async () => {
+  for (const url of [
+    'http://localhost:5173/workspace',
+    'http://127.0.0.1:5173/workspace',
+    'http://[::1]:5173/workspace',
+  ]) {
+    const request = new Request(url);
+    assert.equal(localWorkspacePreview(request, 'true'), true, url);
+    assert.equal(
+      await guardLaunchRequest(request, origin, async () => false, true),
+      null,
+      url,
+    );
+  }
+  for (const url of [
+    'https://localhost/workspace',
+    'http://preview.test/workspace',
+  ])
+    assert.equal(localWorkspacePreview(new Request(url), 'true'), false, url);
+  assert.equal(
+    localWorkspacePreview(
+      new Request('http://localhost:5173/workspace'),
+      undefined,
+    ),
+    false,
+  );
+  for (const path of [
+    '/workspace/connections/emacs',
+    '/workspace/publishing/example/review',
+    '/api/workspace/operation',
+  ]) {
+    assert.equal(workspacePreviewPath(path), false, path);
+    assert.equal(
+      (
+        await guardLaunchRequest(
+          new Request(`http://localhost:5173${path}`),
+          origin,
+          async () => false,
+          true,
+        )
+      )?.status,
+      503,
+      path,
+    );
+  }
+  assert.equal(workspacePreviewPath('/workspace/dashboard'), true);
 });
 
 test('launch permits owner sessions and public reading while denying undeclared framework actions', async () => {

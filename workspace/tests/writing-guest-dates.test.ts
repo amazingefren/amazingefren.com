@@ -2,6 +2,64 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createGuestWritingPort } from '../../studio/writing/guest.ts';
 
+test('guest manuscript saves stay in one draft revision and deliberate checkpoints preserve history', async () => {
+  const port = createGuestWritingPort(memoryStorage());
+  let state = await execute(port, {
+    operation: 'publishing.projects.create',
+    input: { kind: 'article', title: 'Draft lifecycle' },
+  });
+  const id = state.publications[0].id;
+  for (const body of ['First', 'Second']) {
+    const document = state.documents[0];
+    state = await execute(port, {
+      operation: 'studio.notes.save',
+      input: {
+        id: document.id,
+        expectedRevision: document.revision,
+        title: document.title,
+        body,
+        tags: [],
+        collection: '',
+        pinned: false,
+      },
+    });
+  }
+  assert.equal(state.publications[0].revision, 1);
+  assert.equal(state.documents[0].revisions.length, 0);
+  state = await execute(port, {
+    operation: 'publishing.projects.create-revision',
+    input: { id, expectedVersion: state.publications[0].version },
+  });
+  assert.equal(state.publications[0].revision, 2);
+  assert.equal(state.documents[0].revisions[0].number, 1);
+  state = await execute(port, {
+    operation: 'publishing.projects.review',
+    input: { id, expectedVersion: state.publications[0].version },
+  });
+  state = await execute(port, {
+    operation: 'publishing.projects.publish',
+    input: { id, expectedVersion: state.publications[0].version },
+  });
+  const live = JSON.stringify(state.publications[0].live);
+  const document = state.documents[0];
+  state = await execute(port, {
+    operation: 'studio.notes.save',
+    input: {
+      id: document.id,
+      expectedRevision: document.revision,
+      title: document.title,
+      body: 'Third',
+      tags: [],
+      collection: '',
+      pinned: false,
+    },
+  });
+  assert.equal(state.publications[0].revision, 3);
+  assert.equal(state.publications[0].stage, 'draft');
+  assert.equal(JSON.stringify(state.publications[0].live), live);
+  assert.equal(state.documents[0].revisions.length, 2);
+});
+
 test('guest releases retain their first publication instant, timezone, and slug', async () => {
   const port = createGuestWritingPort(memoryStorage());
   let state = await execute(port, {

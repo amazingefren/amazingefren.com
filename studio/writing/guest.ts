@@ -9,6 +9,11 @@ import type {
   StudioState,
 } from '../../contracts/writing/index.ts';
 import { isStudioState } from './validation.ts';
+import {
+  beginPublicationDraft,
+  checkpointPublication,
+  publicationRevision,
+} from './revisions.ts';
 
 const storageKey = 'ae-writing-guest-v1';
 const unavailable = <T>(message: string): Result<T> => ({
@@ -118,6 +123,7 @@ const snapshot = (
     ok: true,
     value: {
       id: id('snapshot'),
+      revision: publicationRevision(value),
       publishedAt,
       ...(timezone ? { timezone } : {}),
       title: value.title,
@@ -212,6 +218,14 @@ export const createGuestWritingPort = (
             return conflict('Document revision does not match.');
           if (!command.input.title.trim())
             return invalid('Document title is required.');
+          if (
+            item.title === command.input.title &&
+            item.body === command.input.body &&
+            JSON.stringify(item.tags) === JSON.stringify(command.input.tags) &&
+            item.collection === command.input.collection &&
+            item.pinned === command.input.pinned
+          )
+            return { ok: true, value: undefined };
           const revision = item.revision + 1;
           Object.assign(item, {
             title: command.input.title,
@@ -223,12 +237,13 @@ export const createGuestWritingPort = (
             updatedAt: changedAt,
           });
           invalidate(state, item.id, changedAt);
-          item.revisions.push({
-            number: revision,
-            title: item.title,
-            body: item.body,
-            savedAt: changedAt,
-          });
+          if (item.kind !== 'manuscript')
+            item.revisions.push({
+              number: revision,
+              title: item.title,
+              body: item.body,
+              savedAt: changedAt,
+            });
           return { ok: true, value: undefined };
         }
         case 'studio.notes.restore': {
@@ -240,20 +255,24 @@ export const createGuestWritingPort = (
             (entry) => entry.number === command.input.revision,
           );
           if (!revision) return missing('Document revision does not exist.');
+          if (item.source && !revision.source)
+            return invalid('Org source cannot be replaced implicitly.');
           const number = item.revision + 1;
           Object.assign(item, {
             title: revision.title,
             body: revision.body,
+            ...(revision.source ? { source: { ...revision.source } } : {}),
             revision: number,
             updatedAt: changedAt,
           });
           invalidate(state, item.id, changedAt);
-          item.revisions.push({
-            number,
-            title: item.title,
-            body: item.body,
-            savedAt: changedAt,
-          });
+          if (item.kind !== 'manuscript')
+            item.revisions.push({
+              number,
+              title: item.title,
+              body: item.body,
+              savedAt: changedAt,
+            });
           return { ok: true, value: undefined };
         }
         case 'studio.notes.archive': {
@@ -280,6 +299,12 @@ export const createGuestWritingPort = (
             (item) => item.id === command.input.id,
           );
           if (!asset) return missing('Asset does not exist.');
+          if (
+            asset.alt === command.input.alt &&
+            asset.caption === command.input.caption &&
+            asset.rights === command.input.rights
+          )
+            return { ok: true, value: undefined };
           state.publications.forEach((item) => {
             if (
               item.coverAssetId === asset.id ||
@@ -287,7 +312,7 @@ export const createGuestWritingPort = (
                 document(state, chapterId)?.body.includes('asset:' + asset.id),
               )
             ) {
-              item.stage = 'draft';
+              beginPublicationDraft(item);
               item.version++;
               item.updatedAt = changedAt;
               item.scheduledAt = null;
@@ -331,6 +356,7 @@ export const createGuestWritingPort = (
           }
           state.publications.push({
             id: id('publication'),
+            revision: 1,
             kind: command.input.kind,
             title,
             slug,
@@ -358,6 +384,14 @@ export const createGuestWritingPort = (
           );
           if (!found.ok) return found;
           if (
+            Object.entries(command.input.fields).every(
+              ([key, value]) =>
+                JSON.stringify(found.value[key as keyof Publication]) ===
+                JSON.stringify(value),
+            )
+          )
+            return { ok: true, value: undefined };
+          if (
             !command.input.fields.title.trim() ||
             !command.input.fields.slug.trim()
           )
@@ -367,6 +401,7 @@ export const createGuestWritingPort = (
             command.input.fields.slug !== found.value.slug
           )
             return invalid('A released publication slug cannot change.');
+          beginPublicationDraft(found.value);
           Object.assign(found.value, clone(command.input.fields), {
             version: found.value.version + 1,
             updatedAt: changedAt,
@@ -400,6 +435,7 @@ export const createGuestWritingPort = (
             revisions: [],
           };
           state.documents.push(chapter);
+          beginPublicationDraft(found.value);
           found.value.chapterIds.push(chapter.id);
           found.value.version += 1;
           found.value.stage = 'draft';
@@ -416,7 +452,7 @@ export const createGuestWritingPort = (
           if (!found.ok) return found;
           if (found.value.kind !== 'book')
             return invalid('Only books have ordered chapters.');
-          found.value.stage = 'draft';
+          beginPublicationDraft(found.value);
           found.value.scheduledAt = null;
           const existing = found.value.chapterIds;
           const proposed = command.input.chapterIds;
@@ -440,11 +476,32 @@ export const createGuestWritingPort = (
             command.input.expectedVersion,
           );
           if (!found.ok) return found;
+          if (found.value.stage === 'published')
+            return invalid(
+              'Create a draft revision before reviewing a live publication.',
+            );
           const reviewed = snapshot(state, found.value);
           if (!reviewed.ok) return reviewed;
+          checkpointPublication(state, found.value, changedAt);
           found.value.stage = 'review';
           found.value.scheduledAt = null;
           found.value.version += 1;
+          found.value.updatedAt = changedAt;
+          return { ok: true, value: undefined };
+        }
+        case 'publishing.projects.create-revision': {
+          const found = requireProject(
+            state,
+            command.input.id,
+            command.input.expectedVersion,
+          );
+          if (!found.ok) return found;
+          if (found.value.stage !== 'published')
+            checkpointPublication(state, found.value, changedAt);
+          found.value.revision = publicationRevision(found.value) + 1;
+          found.value.stage = 'draft';
+          found.value.scheduledAt = null;
+          found.value.version++;
           found.value.updatedAt = changedAt;
           return { ok: true, value: undefined };
         }
@@ -561,7 +618,7 @@ function invalidate(state: StudioState, documentId: string, at: string) {
     .filter((item) => item.chapterIds.includes(documentId))
     .forEach((item) => {
       item.version++;
-      item.stage = 'draft';
+      beginPublicationDraft(item);
       item.updatedAt = at;
       item.scheduledAt = null;
     });

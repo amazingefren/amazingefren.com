@@ -6,6 +6,7 @@ export const publicationProjectOperationIds = [
   'publishing.projects.add-chapter',
   'publishing.projects.reorder',
   'publishing.projects.review',
+  'publishing.projects.create-revision',
   'publishing.projects.publish',
   'publishing.projects.schedule',
   'publishing.projects.cancel-schedule',
@@ -89,7 +90,10 @@ const authoringOperation = (id: PublicationProjectOperationId): Operation => ({
       id: `${id}.behavior`,
       category: 'behavior',
       expectation: 'Project transitions use the expected project version.',
-      tests: [],
+      tests:
+        id === 'publishing.projects.create-revision'
+          ? ['workspace/tests/writing-guest-dates.test.ts']
+          : [],
     },
     {
       id: `${id}.failure`,

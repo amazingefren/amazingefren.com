@@ -13,6 +13,7 @@ import { Document } from '../adapters/http/document.tsx';
 import { GuestDashboardRoute } from './dashboard.tsx';
 import {
   GuestWorkspaceRoute,
+  LocalWorkspacePreviewRoute,
   createOwnerWorkspaceRoute,
   WorkspaceDocument,
 } from './workspace.tsx';
@@ -46,8 +47,10 @@ import { readOwnerSession } from '../../auth/adapters/d1/session.ts';
 import {
   canonicalPath,
   guardLaunchRequest,
+  localWorkspacePreview,
   protectedPath,
   secureResponse,
+  workspacePreviewPath,
 } from '../domain/access/index.ts';
 
 const pages = { 'web/adapters/http/public.tsx': PublicRoute } as const;
@@ -100,9 +103,12 @@ function httpPath(operationId: string) {
 }
 
 type PublicWorkerEnv = Env &
-  AuthEnvironment & { WORKSPACE_OWNER_SERVICE?: OwnerWorkspaceService };
+  AuthEnvironment & {
+    LOCAL_WORKSPACE_PREVIEW?: string;
+    WORKSPACE_OWNER_SERVICE?: OwnerWorkspaceService;
+  };
 
-function createApplication(environment: PublicWorkerEnv) {
+function createApplication(environment: PublicWorkerEnv, preview: boolean) {
   const ownerService = environment.WORKSPACE_OWNER_SERVICE;
   const AuthRoute = createAuthRoute(environment.AUTH_DB);
   const ownerGateway = createOwnerWorkspaceGateway(ownerService);
@@ -190,9 +196,15 @@ function createApplication(environment: PublicWorkerEnv) {
         ...workspacePages.map((page) =>
           route(`/guest/${page}`, GuestWorkspaceRoute),
         ),
-        route('/workspace', OwnerWorkspaceRoute),
+        route(
+          '/workspace',
+          preview ? LocalWorkspacePreviewRoute : OwnerWorkspaceRoute,
+        ),
         ...workspacePages.map((page) =>
-          route(`/workspace/${page}`, OwnerWorkspaceRoute),
+          route(
+            `/workspace/${page}`,
+            preview ? LocalWorkspacePreviewRoute : OwnerWorkspaceRoute,
+          ),
         ),
       ],
       { rscPayload: true },
@@ -236,11 +248,16 @@ export default {
       protectedPath(path) ||
       path.startsWith('/auth/') ||
       path.startsWith('/api/auth/');
+    const preview =
+      path !== null &&
+      localWorkspacePreview(request, env.LOCAL_WORKSPACE_PREVIEW) &&
+      workspacePreviewPath(path);
     try {
       const denied = await guardLaunchRequest(
         request,
         env.AUTH_ORIGIN,
         async () => !!(await readOwnerSession(request, env.AUTH_DB)),
+        preview,
       );
       if (denied) return secureResponse(denied, privateResponse);
       if (path?.startsWith('/api/auth/'))
@@ -289,7 +306,7 @@ export default {
         );
       }
       return secureResponse(
-        await createApplication(env).fetch(request, env, context),
+        await createApplication(env, preview).fetch(request, env, context),
         privateResponse,
       );
     } catch {
