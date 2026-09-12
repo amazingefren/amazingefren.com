@@ -16,6 +16,7 @@ import studioStyles from '../../workspace/ui/studio.css?url';
 import systemsStyles from '../../workspace/ui/systems.css?url';
 import workStyles from '../../work/ui/styles.css?url';
 import writingStyles from '../../workspace/ui/writing/styles.css?url';
+import publicationStyles from '../../publishing/rendering/styles.css?url';
 
 function publicCatalog(): CatalogEntry[] {
   return systems
@@ -69,6 +70,7 @@ export function WorkspaceDocument({ children }: DocumentProps) {
         <link rel="stylesheet" href={studioStyles} />
         <link rel="stylesheet" href={systemsStyles} />
         <link rel="stylesheet" href={writingStyles} />
+        <link rel="stylesheet" href={publicationStyles} />
         <link rel="stylesheet" href={workStyles} />
         <style>{'body{margin:0;background:var(--ae-background)}'}</style>
       </head>

@@ -1,6 +1,7 @@
 import type { Snapshot } from '../../../contracts/writing/index.ts';
 import type { ReactNode } from 'react';
 import { ReadingMeta } from './ReadingList.tsx';
+import { formatPublicationDate } from '../../../publishing/projects/dates.ts';
 
 export function ReadingArticle({
   snapshot,
@@ -32,9 +33,20 @@ export function ReadingArticle({
           <h1>{snapshot.title}</h1>
           <p className="reader-deck">{snapshot.summary}</p>
           <div className="reader-byline">
-            <time dateTime={snapshot.publishedAt}>
-              {formatDate(snapshot.publishedAt)}
-            </time>
+            <span>
+              Published{' '}
+              <time dateTime={snapshot.publishedAt}>
+                {formatPublicationDate(snapshot.publishedAt, snapshot.timezone)}
+              </time>
+            </span>
+            {snapshot.updatedAt && (
+              <span>
+                Updated{' '}
+                <time dateTime={snapshot.updatedAt}>
+                  {formatPublicationDate(snapshot.updatedAt, snapshot.timezone)}
+                </time>
+              </span>
+            )}
             <ReadingMeta snapshot={snapshot} />
           </div>
         </header>
@@ -58,14 +70,4 @@ export function ReadingArticle({
       </article>
     </div>
   );
-}
-
-function formatDate(value: string) {
-  const date = new Date(value);
-  return Number.isNaN(date.valueOf())
-    ? value.slice(0, 10)
-    : new Intl.DateTimeFormat('en-US', {
-        timeZone: 'UTC',
-        dateStyle: 'medium',
-      }).format(date);
 }

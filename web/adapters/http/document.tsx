@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import stylesUrl from './public.css?url';
 import readingsStylesUrl from '../../ui/readings/readings.css?url';
 import dashboardStylesUrl from '../../../dashboard/ui/guest/dashboard.css?url';
+import publicationStylesUrl from '../../../publishing/rendering/styles.css?url';
 
 function DocumentContent({
   children,
@@ -40,6 +41,7 @@ function DocumentContent({
         />
         <link rel="stylesheet" href={stylesUrl} />
         <link rel="stylesheet" href={readingsStylesUrl} />
+        <link rel="stylesheet" href={publicationStylesUrl} />
         <link rel="stylesheet" href={dashboardStylesUrl} />
         <title>Efren Castro — Public research</title>
       </head>

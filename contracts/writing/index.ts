@@ -6,6 +6,13 @@ export type Revision = {
   title: string;
   body: string;
   savedAt: string;
+  source?: DocumentSource;
+};
+export type DocumentSource = {
+  format: 'org';
+  text: string;
+  exportProfileVersion: string;
+  sourceHash?: string;
 };
 export type StudioDocument = {
   id: string;
@@ -19,6 +26,7 @@ export type StudioDocument = {
   revision: number;
   updatedAt: string;
   revisions: Revision[];
+  source?: DocumentSource;
 };
 export type Asset = {
   id: string;
@@ -32,6 +40,8 @@ export type Asset = {
 export type Snapshot = {
   id: string;
   publishedAt: string;
+  updatedAt?: string | null;
+  timezone?: string;
   title: string;
   slug: string;
   summary: string;
@@ -144,7 +154,12 @@ export type Command =
     }
   | {
       operation: 'publishing.projects.publish';
-      input: { id: string; expectedVersion: number };
+      input: {
+        id: string;
+        expectedVersion: number;
+        publicationAt?: string;
+        timezone?: string;
+      };
     }
   | {
       operation: 'publishing.projects.schedule';

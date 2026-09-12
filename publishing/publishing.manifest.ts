@@ -15,6 +15,7 @@ export default {
   visibility: 'public',
   context: {
     decisions: [
+      '2026-09-11: Owner authorized focused Markdown/Vim writing, shared syntax highlighting and beautiful-mermaid rendering, inline optimized images, and separate release review. Preserve existing slugs, snapshots, and original publication instants; show publication and update times in America/Denver unless explicitly selected. Private source and external draft credentials cannot publish implicitly.',
       '2026-09-09: Owner approved a separate zen publication writer for articles, pages, and books. Projects, ordered manuscripts, and explicit release review are distinct from quick personal notes.',
       'Application authoring and delivery use contracts/writing/index.ts. Launch integration verifies private persistence, approved publication, asset isolation, and withdrawal; evidence: ae-workbench/auth-launch-review/integration.json. First owner publication is live at /readings/ae-intro. Declared-only bindings remain unverified.',
       'HTTP, MCP, and studio invoke the same domain operations.',
@@ -40,6 +41,7 @@ export default {
     ],
   },
   capabilities: [
+    'markdown-rendering',
     'publication-projects',
     'application-delivery',
     'publication',
@@ -548,6 +550,7 @@ export default {
   ],
   events: [],
   capabilityPaths: {
+    'markdown-rendering': 'publishing/rendering',
     'publication-projects': 'publishing/projects',
     'application-delivery': 'publishing/delivery',
     publication: 'publishing/domain/publication',

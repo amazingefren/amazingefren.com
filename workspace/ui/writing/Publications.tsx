@@ -2,7 +2,10 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { ThemeControl } from '../../../design/ui/index.ts';
 import { Editor, MarkdownPreview } from './Editor.tsx';
 import { readMarkdownImport } from './markdown-import.ts';
+import { prepareImage } from './image-compression.ts';
+import { publicationInstant } from './editor-helpers.ts';
 import type {
+  Asset,
   Command,
   Publication,
   PublicationFields,
@@ -21,6 +24,12 @@ const fieldsOf = (item: Publication): PublicationFields => ({
   coverAssetId: item.coverAssetId,
 });
 const stamp = (value: string) => new Date(value).toLocaleDateString();
+const publicationStamp = (value: string, timezone?: string) =>
+  new Intl.DateTimeFormat('en-US', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone: timezone || 'America/Denver',
+  }).format(new Date(value));
 function download(name: string, content: string, type: string) {
   const url = URL.createObjectURL(new Blob([content], { type }));
   const link = document.createElement('a');
@@ -38,6 +47,7 @@ export function PublicationsView(props: StudioProps) {
   const [filter, setFilter] = useState('all');
   const [active, setActive] = useState('');
   const [preview, setPreview] = useState(false);
+  const [split, setSplit] = useState(false);
   const [tools, setTools] = useState(false);
   const [message, setMessage] = useState('');
   const [saving, setSaving] = useState(false);
@@ -45,19 +55,29 @@ export function PublicationsView(props: StudioProps) {
   const importTarget = useRef('');
   const [tagText, setTagText] = useState<string | null>(null);
   const [retry, setRetry] = useState(0);
+  const [publicationAt, setPublicationAt] = useState('');
+  const [timezone, setTimezone] = useState('America/Denver');
+  const [reviewed, setReviewed] = useState<{
+    version: number;
+    chapters: { revision: number; title: string; body: string }[];
+    assets: Asset[];
+  } | null>(null);
   const createDialog = useRef<HTMLDialogElement>(null);
   const options = useRef<HTMLDialogElement>(null);
   const chapters = useRef<HTMLDialogElement>(null);
   const release = useRef<HTMLDialogElement>(null);
   const locked = useRef(false);
   const attempted = useRef('');
+  const reviewFromRoute = useRef(false);
   useEffect(() => setState(props.state), [props.state]);
   useEffect(() => {
     setActive('');
     setPreview(false);
+    setSplit(false);
     setTools(false);
     setTagText(null);
     setMessage('');
+    setReviewed(null);
   }, [props.recordId]);
   const project = state.publications.find((item) => item.id === props.recordId);
   const source = project
@@ -115,6 +135,34 @@ export function PublicationsView(props: StudioProps) {
     setMessage(result.error.message);
     return null;
   }
+  async function uploadInlineImage(
+    file: File,
+    metadata: { alt: string; caption: string; rights: string },
+  ) {
+    try {
+      const image = await prepareImage(file);
+      const next = await run({
+        operation: 'studio.assets.add',
+        input: {
+          name: image.name,
+          mime: image.mime,
+          dataUrl: image.dataUrl,
+          alt: metadata.alt,
+          caption: metadata.caption,
+          rights: metadata.rights,
+        },
+      });
+      if (!next) return null;
+      return next.assets.at(-1) ?? null;
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : 'This image could not be uploaded.',
+      );
+      return null;
+    }
+  }
   function updateChapter(patch: Partial<StudioDocument>) {
     if (stored)
       setDrafts((all) => ({
@@ -128,7 +176,11 @@ export function PublicationsView(props: StudioProps) {
       ...all,
       [project.id]: { ...(all[project.id] ?? fieldsOf(project)), ...patch },
     }));
-    if (patch.title !== undefined && project.kind !== 'book')
+    if (
+      patch.title !== undefined &&
+      project.kind !== 'book' &&
+      stored?.source?.format !== 'org'
+    )
       updateChapter({ title: patch.title });
   }
   async function save() {
@@ -217,24 +269,35 @@ export function PublicationsView(props: StudioProps) {
     }
   }
   async function publish() {
-    if (!project || dirty || locked.current || props.busy) return;
+    if (
+      !project ||
+      !reviewed ||
+      reviewed.version !== project.version ||
+      dirty ||
+      locked.current ||
+      props.busy
+    )
+      return;
     locked.current = true;
     setSaving(true);
     setMessage('');
     try {
-      let current = project;
-      if (current.stage !== 'review') {
-        const reviewed = await run({
-          operation: 'publishing.projects.review',
-          input: { id: current.id, expectedVersion: current.version },
-        });
-        if (!reviewed) return;
-        current = reviewed.publications.find((item) => item.id === project.id)!;
+      const selectedInstant = publicationAt
+        ? publicationInstant(publicationAt, timezone)
+        : undefined;
+      if (publicationAt && !selectedInstant) {
+        setMessage('Use a valid publication date, time, and timezone.');
+        return;
       }
       if (
         await run({
           operation: 'publishing.projects.publish',
-          input: { id: current.id, expectedVersion: current.version },
+          input: {
+            id: project.id,
+            expectedVersion: project.version,
+            publicationAt: selectedInstant ?? undefined,
+            timezone,
+          },
         })
       ) {
         release.current?.close();
@@ -247,6 +310,65 @@ export function PublicationsView(props: StudioProps) {
       setSaving(false);
     }
   }
+  async function reviewSavedRevision() {
+    if (!project || !chapter || dirty || locked.current || props.busy) return;
+    locked.current = true;
+    setSaving(true);
+    setMessage('');
+    try {
+      const next = await run({
+        operation: 'publishing.projects.review',
+        input: { id: project.id, expectedVersion: project.version },
+      });
+      if (!next) return;
+      const reviewedProject = next.publications.find(
+        (item) => item.id === project.id,
+      );
+      if (!reviewedProject) return;
+      const reviewedChapters = reviewedProject.chapterIds
+        .map((id) => next.documents.find((item) => item.id === id))
+        .filter((item): item is StudioDocument => Boolean(item))
+        .map((item) => ({
+          revision: item.revision,
+          title: item.title,
+          body: item.body,
+        }));
+      if (reviewedChapters.length !== reviewedProject.chapterIds.length) return;
+      const assetIds = new Set(
+        reviewedChapters.flatMap((item) =>
+          [...item.body.matchAll(/!\[[^\]]*]\(asset:([^\s)]+)\)/g)].map(
+            (match) => match[1],
+          ),
+        ),
+      );
+      if (fields?.coverAssetId) assetIds.add(fields.coverAssetId);
+      setReviewed({
+        version: reviewedProject.version,
+        chapters: reviewedChapters,
+        assets: next.assets.filter((asset) => assetIds.has(asset.id)),
+      });
+    } finally {
+      locked.current = false;
+      setSaving(false);
+    }
+  }
+  useEffect(() => {
+    if (
+      !project ||
+      reviewFromRoute.current ||
+      !window.location.search.includes('review=1')
+    )
+      return;
+    reviewFromRoute.current = true;
+    release.current?.showModal();
+    const url = new URL(window.location.href);
+    url.searchParams.delete('review');
+    window.history.replaceState(
+      {},
+      '',
+      `${url.pathname}${url.search}${url.hash}`,
+    );
+  }, [project]);
   async function importMarkdown(file: File | undefined) {
     if (!file || !chapter || dirty || importing || saving || props.busy) return;
     const target = importTarget.current;
@@ -407,17 +529,39 @@ export function PublicationsView(props: StudioProps) {
               Chapters
             </button>
           )}
-          <button aria-pressed={!preview} onClick={() => setPreview(false)}>
+          <button
+            aria-pressed={!preview && !split}
+            onClick={() => {
+              setPreview(false);
+              setSplit(false);
+            }}
+          >
             Write
           </button>
-          <button aria-pressed={preview} onClick={() => setPreview(true)}>
-            Preview
+          <button
+            aria-pressed={split}
+            onClick={() => {
+              setSplit(true);
+              setPreview(false);
+            }}
+          >
+            Split
+          </button>
+          <button
+            aria-pressed={preview}
+            onClick={() => {
+              setPreview(true);
+              setSplit(false);
+            }}
+          >
+            Read
           </button>
           <button
             aria-expanded={tools}
             onClick={() => {
               setTools(!tools);
               setPreview(false);
+              setSplit(false);
             }}
           >
             Tools
@@ -460,6 +604,7 @@ export function PublicationsView(props: StudioProps) {
                 className="zen-title"
                 aria-label="Publication title"
                 value={project.kind === 'book' ? chapter.title : fields.title}
+                disabled={chapter.source?.format === 'org'}
                 onChange={(event) =>
                   project.kind === 'book'
                     ? updateChapter({ title: event.target.value })
@@ -475,9 +620,17 @@ export function PublicationsView(props: StudioProps) {
               assets={state.assets}
               busy={saving || props.busy}
               quiet
-              previewMode={preview}
+              viewMode={preview ? 'reading' : split ? 'split' : 'markdown'}
               toolsMode={tools}
+              onUploadImage={uploadInlineImage}
+              readOnly={chapter.source?.format === 'org'}
             />
+            {chapter.source?.format === 'org' && (
+              <p className="studio-notice">
+                This org-sourced manuscript is read-only here. Edit it in the
+                Emacs workspace.
+              </p>
+            )}
           </>
         ) : (
           <>
@@ -521,7 +674,13 @@ export function PublicationsView(props: StudioProps) {
               <input
                 type="file"
                 accept=".md,text/markdown,text/plain"
-                disabled={props.busy || saving || dirty || importing}
+                disabled={
+                  props.busy ||
+                  saving ||
+                  dirty ||
+                  importing ||
+                  chapter.source?.format === 'org'
+                }
                 onChange={(event) => {
                   const file = event.currentTarget.files?.[0];
                   event.currentTarget.value = '';
@@ -536,7 +695,7 @@ export function PublicationsView(props: StudioProps) {
               props.navigate('media');
             }}
           >
-            Media library
+            Image library and details
           </button>
           <ThemeControl />
           {project.kind === 'book' && (
@@ -748,16 +907,68 @@ export function PublicationsView(props: StudioProps) {
             : 'This makes the saved manuscripts and referenced images public.'}
         </p>
         {message && <p role="alert">{message}</p>}
+        {project.live && (
+          <p>
+            Published{' '}
+            {publicationStamp(project.live.publishedAt, project.live.timezone)}
+            {project.live.updatedAt &&
+              ` / Updated ${publicationStamp(project.live.updatedAt, project.live.timezone)}`}
+          </p>
+        )}
+        <label>
+          Publish date and time
+          <input
+            type="datetime-local"
+            value={publicationAt}
+            onChange={(event) => setPublicationAt(event.target.value)}
+          />
+        </label>
+        <label>
+          Publication timezone
+          <input
+            value={timezone}
+            onChange={(event) => setTimezone(event.target.value)}
+          />
+        </label>
+        {reviewed && (
+          <section
+            className="studio-review-preview"
+            aria-label="Saved revision preview"
+          >
+            <h3>Saved revision preview</h3>
+            {reviewed.chapters.map((item) => (
+              <section key={`${item.title}-${item.revision}`}>
+                <h4>
+                  {item.title} / Revision {item.revision}
+                </h4>
+                <MarkdownPreview assets={reviewed.assets} value={item.body} />
+              </section>
+            ))}
+          </section>
+        )}
         <div className="studio-actions">
           <button disabled={saving} onClick={() => release.current?.close()}>
             Cancel
           </button>
           <button
             className="ws-primary"
-            disabled={dirty || saving || props.busy}
+            disabled={dirty || saving || props.busy || Boolean(reviewed)}
+            onClick={() => void reviewSavedRevision()}
+          >
+            {saving ? 'Reviewing...' : 'Review saved revision'}
+          </button>
+          <button
+            className="ws-primary"
+            disabled={
+              dirty ||
+              saving ||
+              props.busy ||
+              !reviewed ||
+              reviewed.version !== project.version
+            }
             onClick={() => void publish()}
           >
-            {saving ? 'Publishing...' : 'Publish now'}
+            {saving ? 'Publishing...' : 'Publish reviewed revision'}
           </button>
         </div>
       </dialog>

@@ -74,7 +74,12 @@ const requireProject = (
     return conflict('Publication project version does not match.');
   return { ok: true, value };
 };
-const snapshot = (state: StudioState, value: Publication): Result<Snapshot> => {
+const snapshot = (
+  state: StudioState,
+  value: Publication,
+  publishedAt = now(),
+  timezone?: string,
+): Result<Snapshot> => {
   const chapters: Snapshot['chapters'] = [];
   for (const documentId of value.chapterIds) {
     const chapter = document(state, documentId);
@@ -113,7 +118,8 @@ const snapshot = (state: StudioState, value: Publication): Result<Snapshot> => {
     ok: true,
     value: {
       id: id('snapshot'),
-      publishedAt: now(),
+      publishedAt,
+      ...(timezone ? { timezone } : {}),
       title: value.title,
       slug: value.slug,
       summary: value.summary,
@@ -356,6 +362,11 @@ export const createGuestWritingPort = (
             !command.input.fields.slug.trim()
           )
             return invalid('Publication title and slug are required.');
+          if (
+            found.value.releases.length > 0 &&
+            command.input.fields.slug !== found.value.slug
+          )
+            return invalid('A released publication slug cannot change.');
           Object.assign(found.value, clone(command.input.fields), {
             version: found.value.version + 1,
             updatedAt: changedAt,
@@ -446,8 +457,37 @@ export const createGuestWritingPort = (
           if (!found.ok) return found;
           if (found.value.stage !== 'review')
             return invalid('Review this publication before publishing.');
-          const released = snapshot(state, found.value);
+          const publicationAt = publicationTime(
+            command.input.publicationAt,
+            changedAt,
+          );
+          if (!publicationAt)
+            return invalid('Publication time is invalid or in the future.');
+          const timezone = publicationTimezone(command.input.timezone);
+          if (!timezone) return invalid('Publication timezone is invalid.');
+          const firstRelease = found.value.releases.reduce<Snapshot | null>(
+            (earliest, release) =>
+              !earliest ||
+              Date.parse(release.publishedAt) < Date.parse(earliest.publishedAt)
+                ? release
+                : earliest,
+            null,
+          );
+          if (
+            firstRelease &&
+            Date.parse(publicationAt) < Date.parse(firstRelease.publishedAt)
+          )
+            return invalid(
+              'Publication updates cannot predate the original release.',
+            );
+          const released = snapshot(
+            state,
+            found.value,
+            firstRelease?.publishedAt ?? publicationAt,
+            firstRelease?.timezone ?? timezone,
+          );
           if (!released.ok) return released;
+          if (firstRelease) released.value.updatedAt = publicationAt;
           found.value.live = released.value;
           found.value.releases.push(released.value);
           found.value.stage = 'published';
@@ -525,4 +565,29 @@ function invalidate(state: StudioState, documentId: string, at: string) {
       item.updatedAt = at;
       item.scheduledAt = null;
     });
+}
+
+function publicationTime(value: string | undefined, current: string) {
+  if (value === undefined) return current;
+  if (
+    !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?(?:Z|[+-]\d{2}:\d{2})$/.test(
+      value,
+    )
+  )
+    return null;
+  const date = new Date(value);
+  return Number.isFinite(date.getTime()) &&
+    date.getTime() <= Date.parse(current)
+    ? date.toISOString()
+    : null;
+}
+
+function publicationTimezone(value: string | undefined) {
+  const timezone = value ?? 'America/Denver';
+  try {
+    Intl.DateTimeFormat(undefined, { timeZone: timezone });
+    return timezone;
+  } catch {
+    return null;
+  }
 }

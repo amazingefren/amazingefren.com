@@ -1,4 +1,5 @@
 import { ownerWritingOperations } from './authoring/manifest.ts';
+import { studioExternalOperations } from './external/manifest.ts';
 import type { SystemManifest } from '../manifests/schema/system.schema.ts';
 
 export default {
@@ -12,6 +13,7 @@ export default {
   visibility: 'public',
   context: {
     decisions: [
+      '2026-09-11: Owner authorized the replacement publication editor and Emacs workspace build. External draft operations use studio/external with scoped, revocable credentials approved through the passkey owner session. Org source stays private and saves with derived Markdown under one revision precondition. Local synthetic editor, Workers and Emacs checks passed; no deployment authorized.',
       '2026-09-10: Saved Notes can create independent publication manuscripts with source revision provenance. Markdown import uses workspace/ui/writing/markdown-import.ts and the existing autosave/revision operations; it rejects oversized, empty, invalid, or stale reads and requires a saved draft.',
       '2026-09-10: Publications exposes Write, Preview, Tools, Details, and Release. Editor tools provide Markdown formatting, document outline, local asset insertion, and remappable Vim behavior through workspace/ui/writing/Editor.tsx. workspace/tests/writing-editor.test.ts checks text transformations; browser review checks insertion, autosave, and preview.',
       '2026-09-09: Owner approved quick Notes and a separate quiet Publications application. Notes stay private; publication manuscripts are independent of source notes.',
@@ -51,6 +53,7 @@ export default {
     'private-material',
     'revision-history',
     'workbench-import',
+    'external-draft-workspace',
   ],
   governance: {
     permissionsDefined: [],
@@ -112,9 +115,39 @@ export default {
         },
       ],
     },
+    {
+      id: 'external-client-administration',
+      directory: 'studio/ui/administration',
+      testsDirectory: 'studio/tests/views/external-client-administration',
+      implementation: 'studio/ui/administration/ExternalClients.tsx',
+      path: '/workspace/connections/emacs',
+      status: 'implemented',
+      audience: 'owner',
+      access: {
+        kind: 'authenticated',
+        permissions: ['studio.clients.manage'],
+        ownership: 'caller',
+      },
+      data: 'owner',
+      operations: [
+        'studio.external-clients.list',
+        'studio.external-clients.issue',
+        'studio.external-clients.revoke',
+      ],
+      verification: [
+        {
+          expectation:
+            'Require an owner session before the client administration page renders.',
+          tests: [
+            'studio/tests/views/external-client-administration/access.test.ts',
+          ],
+        },
+      ],
+    },
   ],
   contracts: [
     'contracts/writing/index.ts',
+    'contracts/writing/external.ts',
     'contracts/api/errors.schema.json',
     'contracts/api/list-input.schema.json',
     'contracts/api/read-input.schema.json',
@@ -125,6 +158,7 @@ export default {
   ],
   operations: [
     ...ownerWritingOperations,
+    ...studioExternalOperations,
     {
       id: 'studio.create-document',
       dataScope: 'owner',
@@ -629,6 +663,7 @@ export default {
     'private-material': 'studio/ui/material',
     'revision-history': 'studio/ui/revisions',
     'workbench-import': 'studio/adapters/workbench-import',
+    'external-draft-workspace': 'studio/external',
   },
   structure: {
     domain: 'studio/domain',

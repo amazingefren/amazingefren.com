@@ -16,6 +16,24 @@ const isStringArray = (value: unknown): value is string[] =>
 const hasOnly = (value: Record<string, unknown>, keys: readonly string[]) =>
   Object.keys(value).every((key) => keys.includes(key)) &&
   keys.every((key) => key in value);
+const hasRequiredAndOptional = (
+  value: Record<string, unknown>,
+  required: readonly string[],
+  optional: readonly string[],
+) =>
+  Object.keys(value).every((key) => [...required, ...optional].includes(key)) &&
+  required.every((key) => key in value);
+const isSource = (value: unknown): boolean =>
+  isRecord(value) &&
+  hasRequiredAndOptional(
+    value,
+    ['format', 'text', 'exportProfileVersion'],
+    ['sourceHash'],
+  ) &&
+  value.format === 'org' &&
+  isString(value.text) &&
+  isString(value.exportProfileVersion) &&
+  (value.sourceHash === undefined || isString(value.sourceHash));
 const isIsoDate = (value: unknown): value is string =>
   isString(value) && !Number.isNaN(Date.parse(value));
 
@@ -42,19 +60,23 @@ const isAsset = (value: unknown): value is Asset =>
 
 const isDocument = (value: unknown): value is StudioDocument =>
   isRecord(value) &&
-  hasOnly(value, [
-    'id',
-    'kind',
-    'title',
-    'body',
-    'tags',
-    'collection',
-    'pinned',
-    'archived',
-    'revision',
-    'updatedAt',
-    'revisions',
-  ]) &&
+  hasRequiredAndOptional(
+    value,
+    [
+      'id',
+      'kind',
+      'title',
+      'body',
+      'tags',
+      'collection',
+      'pinned',
+      'archived',
+      'revision',
+      'updatedAt',
+      'revisions',
+    ],
+    ['source'],
+  ) &&
   isString(value.id) &&
   ['note', 'document', 'manuscript'].includes(value.kind as string) &&
   isString(value.title) &&
@@ -69,32 +91,46 @@ const isDocument = (value: unknown): value is StudioDocument =>
   value.revisions.every(
     (revision) =>
       isRecord(revision) &&
-      hasOnly(revision, ['number', 'title', 'body', 'savedAt']) &&
+      hasRequiredAndOptional(
+        revision,
+        ['number', 'title', 'body', 'savedAt'],
+        ['source'],
+      ) &&
       isNumber(revision.number) &&
       isString(revision.title) &&
       isString(revision.body) &&
-      isIsoDate(revision.savedAt),
-  );
+      isIsoDate(revision.savedAt) &&
+      (revision.source === undefined || isSource(revision.source)),
+  ) &&
+  (value.source === undefined || isSource(value.source));
 
 export const isSnapshot = (value: unknown): value is Snapshot =>
   isRecord(value) &&
-  hasOnly(value, [
-    'id',
-    'publishedAt',
-    'title',
-    'slug',
-    'summary',
-    'kind',
-    'seoTitle',
-    'seoDescription',
-    'tags',
-    'coverAssetId',
-    'chapters',
-    'assets',
-    'projectVersion',
-  ]) &&
+  hasRequiredAndOptional(
+    value,
+    [
+      'id',
+      'publishedAt',
+      'title',
+      'slug',
+      'summary',
+      'kind',
+      'seoTitle',
+      'seoDescription',
+      'tags',
+      'coverAssetId',
+      'chapters',
+      'assets',
+      'projectVersion',
+    ],
+    ['updatedAt', 'timezone'],
+  ) &&
   isString(value.id) &&
   isIsoDate(value.publishedAt) &&
+  (value.updatedAt === undefined ||
+    value.updatedAt === null ||
+    isIsoDate(value.updatedAt)) &&
+  (value.timezone === undefined || isString(value.timezone)) &&
   isString(value.title) &&
   isString(value.slug) &&
   isString(value.summary) &&

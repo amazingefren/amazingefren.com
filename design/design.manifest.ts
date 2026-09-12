@@ -278,6 +278,7 @@ export default {
       implementation: 'workspace/ui/writing/index.ts',
       rules: [
         'Owner approved the revised writing prototype for application implementation on 2026-09-09.',
+        'Owner authorized the replacement publication prototype build on 2026-09-11. Keep Write, Split, Read, and saved-revision release review; Vim is the default editing profile and remains remappable. Org source stays protected from browser Markdown edits.',
         'Notes use a quick capture field and compact entries. Publications open from a library into one centered manuscript.',
         'Hide the workspace sidebar and header during publication writing. Keep save status and exit available; reveal settings, chapters, images, and publishing controls on request.',
         'Reuse AE Design typography, tokens, theme control, native dialogs, and visible keyboard focus. Vim editing is remappable and optional.',

@@ -24,6 +24,8 @@ import {
 } from './owner-workspace.ts';
 import { createWorkGateway } from '../../work/adapters/owner.ts';
 import { createWritingGateway } from './writing.ts';
+import { createExternalWritingGateway } from './external-writing.ts';
+import { ExternalClients } from '../../studio/ui/administration/ExternalClients.tsx';
 import { createPublicationRoutes } from '../adapters/http/publications.tsx';
 import { createPortablePublicationHttpHandler } from '../../publishing/adapters/http/portable-publications.ts';
 import { createPublicationAssetPort } from './publication-assets.ts';
@@ -175,6 +177,15 @@ function createApplication(environment: PublicWorkerEnv) {
     render(
       WorkspaceDocument,
       [
+        route('/workspace/connections/emacs', () => <ExternalClients />),
+        route('/workspace/publishing/:projectId/review', ({ request }) => {
+          const url = new URL(request.url);
+          const projectId = url.pathname.split('/')[3];
+          const destination = new URL('/workspace/publishing', url);
+          destination.searchParams.set('record', projectId);
+          destination.searchParams.set('review', '1');
+          return Response.redirect(destination, 303);
+        }),
         route('/guest', GuestWorkspaceRoute),
         ...workspacePages.map((page) =>
           route(`/guest/${page}`, GuestWorkspaceRoute),
@@ -234,6 +245,15 @@ export default {
       if (denied) return secureResponse(denied, privateResponse);
       if (path?.startsWith('/api/auth/'))
         return secureResponse(await handleAuthRequest(request, env), true);
+      if (path?.startsWith('/api/v1/studio/'))
+        return secureResponse(
+          await createExternalWritingGateway({
+            service: env.WORKSPACE_OWNER_SERVICE,
+            database: env.AUTH_DB,
+            origin: env.AUTH_ORIGIN,
+          })(request),
+          true,
+        );
       if (path === '/mcp') {
         const writing = createWritingGateway(env.WORKSPACE_OWNER_SERVICE);
         return secureResponse(

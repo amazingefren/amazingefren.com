@@ -692,7 +692,7 @@ function downloadSnapshot(
   URL.revokeObjectURL(url);
 }
 
-export function ConnectionsPage(_: WorkspacePageProps) {
+export function ConnectionsPage({ audience }: WorkspacePageProps) {
   const capabilities = [
     'Adapters',
     'Webhooks',
@@ -704,9 +704,14 @@ export function ConnectionsPage(_: WorkspacePageProps) {
     <section className="ws-systems" aria-labelledby="connections-title">
       <header className="ws-page-heading">
         <h1 id="connections-title">Connections</h1>
-        <span className="ws-panel-copy">0 connected</span>
       </header>
       <section className="ws-panel">
+        {audience === 'owner' && (
+          <div className="ws-connection">
+            <h2>Emacs</h2>
+            <a href="/workspace/connections/emacs">Manage draft access</a>
+          </div>
+        )}
         <div className="ws-connection-list">
           {capabilities.map((capability) => (
             <div className="ws-connection" key={capability}>

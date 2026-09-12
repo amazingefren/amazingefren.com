@@ -125,6 +125,9 @@ export default {
     contracts: 'contracts/writing/index.ts',
     notes: 'workspace/ui/writing/Notes.tsx',
     writer: 'workspace/ui/writing/Publications.tsx',
+    externalClients: 'studio/external',
+    emacs: 'ae-studio-engine/integrations/emacs',
+    rendering: 'publishing/rendering',
   },
   evaluation: {
     system: 'evaluation/evaluation.manifest.ts',

@@ -1,5 +1,6 @@
 import type { Snapshot } from '../../../contracts/writing/index.ts';
 import { filterReadings, readingStats } from './reading-utils.ts';
+import { formatPublicationDate } from '../../../publishing/projects/dates.ts';
 
 const kindLabel: Record<Snapshot['kind'], string> = {
   article: 'Article',
@@ -66,7 +67,7 @@ export function ReadingList({
               <p className="reading-kicker">
                 {kindLabel[latest.kind]} <span aria-hidden="true">·</span>{' '}
                 <time dateTime={latest.publishedAt}>
-                  {formatDate(latest.publishedAt)}
+                  {formatPublicationDate(latest.publishedAt, latest.timezone)}
                 </time>
               </p>
               <h2 id="latest-reading">
@@ -102,7 +103,10 @@ export function ReadingList({
                   <p className="reading-kicker">
                     {kindLabel[snapshot.kind]} <span aria-hidden="true">·</span>{' '}
                     <time dateTime={snapshot.publishedAt}>
-                      {formatDate(snapshot.publishedAt)}
+                      {formatPublicationDate(
+                        snapshot.publishedAt,
+                        snapshot.timezone,
+                      )}
                     </time>
                   </p>
                   <h3>
@@ -142,16 +146,4 @@ export function ReadingMeta({ snapshot }: { snapshot: Snapshot }) {
       )}
     </div>
   );
-}
-
-function formatDate(value: string) {
-  const date = new Date(value);
-  return Number.isNaN(date.valueOf())
-    ? value.slice(0, 10)
-    : new Intl.DateTimeFormat('en-US', {
-        timeZone: 'UTC',
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      }).format(date);
 }

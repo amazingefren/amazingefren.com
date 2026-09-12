@@ -11,6 +11,7 @@ export default {
   visibility: 'public',
   context: {
     decisions: [
+      '2026-09-11: Owner authorized revocable external-client draft credentials. Passkeys remain the only interactive owner sign-in. Client credentials grant publication draft reads/writes only, never publication release permission; management requires owner passkey session. Private engine stores hashes and verifies expiry/revocation before storage access.',
       'Only amazingefren can authenticate. Passkeys require user verification and discoverable credentials. ES256, RS256, and EdDSA are accepted consistently across runtimes. Passwords and SSO have no login or recovery path.',
       'AUTH_ORIGIN is one exact HTTPS origin. Its hostname is the relying-party ID. WebAuthn registration and authentication reject cross-origin contexts.',
       'Initial enrollment requires a secret of 43 to 256 characters sent in the POST body. Provision at least 32 random bytes encoded as base64url. A persistent singleton enrollment record permanently disables bootstrap after the first credential.',
@@ -29,7 +30,14 @@ export default {
   },
   capabilities: ['identity', 'authorization', 'sessions'],
   governance: {
-    permissionsDefined: ['studio.read', 'studio.write', 'publishing.publish'],
+    permissionsDefined: [
+      'studio.read',
+      'studio.write',
+      'publishing.publish',
+      'studio.draft.read',
+      'studio.draft.write',
+      'studio.clients.manage',
+    ],
     dataClassification: 'private',
   },
   risks: [

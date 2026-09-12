@@ -11,7 +11,7 @@
     "build": "npm run build --workspace @ae/web",
     "preview": "npm run preview --workspace @ae/web",
     "check": "node scripts/check-manifests.mjs && npm run check --workspace @ae/web",
-    "test": "node --test scripts/check-manifests.test.mjs manifests/risks/check.test.mjs 'dashboard/tests/**/*.test.ts' 'design/tests/*.test.ts' 'workspace/tests/**/*.test.ts' 'web/tests/landing/*.test.ts' 'work/tests/*.test.ts' 'auth/tests/*.test.ts' 'web/tests/access/*.test.ts' 'cloudflare/deployment/*.test.ts' 'system-explorer/tests/*.test.ts' 'publishing/tests/**/*.test.ts' 'manifests/commits/*.test.mjs' 'mcp/tests/*.test.ts' 'web/tests/reading/*.test.ts' 'evaluation/tests/*.test.ts' 'api/tests/*.test.ts' 'evidence/tests/*.test.ts'",
+    "test": "node --test scripts/check-manifests.test.mjs manifests/risks/check.test.mjs 'dashboard/tests/**/*.test.ts' 'design/tests/*.test.ts' 'workspace/tests/**/*.test.ts' 'studio/tests/**/*.test.ts' 'web/tests/landing/*.test.ts' 'work/tests/*.test.ts' 'auth/tests/*.test.ts' 'web/tests/access/*.test.ts' 'cloudflare/deployment/*.test.ts' 'system-explorer/tests/*.test.ts' 'publishing/tests/**/*.test.ts' 'manifests/commits/*.test.mjs' 'mcp/tests/*.test.ts' 'web/tests/reading/*.test.ts' 'evaluation/tests/*.test.ts' 'api/tests/*.test.ts' 'evidence/tests/*.test.ts'",
     "launch:check": "node cloudflare/check-launch.ts",
     "test:launch": "npm run build && node web/tests/runtime/launch.mjs",
     "build:deploy": "node cloudflare/deployment/index.ts build",

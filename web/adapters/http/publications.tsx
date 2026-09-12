@@ -1,6 +1,7 @@
 import type { RequestInfo } from 'rwsdk/worker';
-import ReactMarkdown, { defaultUrlTransform } from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { renderToString } from 'rwsdk/worker';
+import { Children, isValidElement, type ReactNode } from 'react';
+import { PublicationMarkdown } from '../../../publishing/rendering/PublicationMarkdown.tsx';
 import type { Snapshot } from '../../../contracts/writing/index.ts';
 import type { WritingGateway } from '../../composition/writing.ts';
 import { Shell, Readings, NotFound } from './public.tsx';
@@ -115,23 +116,23 @@ export function createPublicationRoutes(
         });
       const atom = new URL(request.url).pathname.endsWith('atom.xml');
       const root = 'https://amazingefren.com';
-      const entries = result.value
-        .map((snapshot) => {
-          const link = `${root}/readings/${snapshot.slug}`;
-          const html = snapshot.chapters
-            .map(
-              (chapter) =>
-                `<section><h2>${xml(chapter.title)}</h2><pre>${xml(chapter.body)}</pre></section>`,
-            )
-            .join('');
-          return atom
-            ? `<entry><id>${xml(link)}</id><title>${xml(snapshot.title)}</title><link href="${xml(link)}"/><updated>${xml(snapshot.publishedAt)}</updated><content type="html">${xml(html)}</content></entry>`
-            : `<item><guid isPermaLink="true">${xml(link)}</guid><title>${xml(snapshot.title)}</title><link>${xml(link)}</link><pubDate>${new Date(snapshot.publishedAt).toUTCString()}</pubDate><description>${xml(html)}</description></item>`;
-        })
-        .join('');
+      const entries = (
+        await Promise.all(
+          result.value.map(async (snapshot) => {
+            const link = `${root}/readings/${snapshot.slug}`;
+            const html = await renderToString(
+              <SnapshotBody snapshot={snapshot} absolute />,
+              { injectRSCPayload: false, Document: PublicationFeedDocument },
+            );
+            return atom
+              ? `<entry><id>${xml(link)}</id><title>${xml(snapshot.title)}</title><link href="${xml(link)}"/><published>${xml(snapshot.publishedAt)}</published><updated>${xml(snapshot.updatedAt ?? snapshot.publishedAt)}</updated><content type="html">${xml(html)}</content></entry>`
+              : `<item><guid isPermaLink="true">${xml(link)}</guid><title>${xml(snapshot.title)}</title><link>${xml(link)}</link><pubDate>${new Date(snapshot.publishedAt).toUTCString()}</pubDate><description>${xml(html)}</description></item>`;
+          }),
+        )
+      ).join('');
       const updated =
         result.value
-          .map((item) => item.publishedAt)
+          .map((item) => item.updatedAt ?? item.publishedAt)
           .sort()
           .at(-1) ?? '1970-01-01T00:00:00.000Z';
       const body = atom
@@ -148,6 +149,19 @@ export function createPublicationRoutes(
       });
     },
   };
+}
+
+function PublicationFeedDocument({ children }: { children: ReactNode }) {
+  return (
+    <>
+      {Children.toArray(children).filter(
+        (child) =>
+          isValidElement<{ id?: string }>(child) &&
+          child.type === 'div' &&
+          child.props.id === 'hydrate-root',
+      )}
+    </>
+  );
 }
 
 function SnapshotBody({
@@ -180,23 +194,12 @@ function SnapshotBody({
       {snapshot.chapters.map((chapter, index) => (
         <section id={`chapter-${index + 1}`} key={chapter.documentId}>
           {snapshot.kind === 'book' && <h2>{chapter.title}</h2>}
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            skipHtml
-            urlTransform={(url, key) =>
-              key === 'src'
-                ? url.startsWith('asset:')
-                  ? assetUrl(url.slice(6))
-                  : ''
-                : defaultUrlTransform(url)
-            }
-            components={{
-              img: ({ src, alt }) =>
-                src ? <img src={src} alt={alt ?? ''} loading="lazy" /> : null,
-            }}
-          >
-            {chapter.body}
-          </ReactMarkdown>
+          <PublicationMarkdown
+            value={chapter.body}
+            assets={snapshot.assets}
+            resolveAsset={(asset) => assetUrl(asset.id)}
+            includeActions={!absolute}
+          />
         </section>
       ))}
     </div>
