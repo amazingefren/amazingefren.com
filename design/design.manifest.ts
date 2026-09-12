@@ -362,7 +362,7 @@ export default {
       purpose: 'Present readable articles.',
       implementation: 'web/adapters/http/public.tsx',
       rules: [
-        'Use the existing serif reading column and semantic article structure. Keep published content usable without JavaScript.',
+        'Use the existing serif reading column and semantic article structure. Scope display-title styling to the reader header; manuscript headings use a smaller hierarchy. Keep published content usable without JavaScript.',
         'Public inline backtick spans use italic serif emphasis; fenced code remains monospace. Reuse the theme accents and muted text for heading hierarchy.',
       ],
     },

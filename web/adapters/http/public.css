@@ -380,21 +380,28 @@ em {
   padding-bottom: 35px;
   border-bottom: 1px solid var(--ae-line);
 }
-.reader h1 {
+.reader > header > h1 {
   max-width: 640px;
   margin: 25px 0 23px;
   font: 400 clamp(50px, 6vw, 78px)/0.99 var(--ae-font-serif);
   letter-spacing: -0.07em;
 }
-.reader > header > h1,
-.reader .publication-markdown h1 {
+.reader > header > h1 {
   color: var(--ae-theme-accent);
+}
+.reader .publication-markdown h1 {
+  margin: var(--ae-space-48) 0 var(--ae-space-20);
+  color: var(--ae-theme-accent-soft);
+  font: 400 var(--ae-text-36)/1.2 var(--ae-font-serif);
+  letter-spacing: -0.03em;
 }
 .reader .publication-markdown h2 {
   color: var(--ae-theme-accent-soft);
+  font: 400 var(--ae-text-30)/1.3 var(--ae-font-serif);
 }
 .reader .publication-markdown h3 {
   color: var(--ae-muted);
+  font: 400 var(--ae-text-24)/1.4 var(--ae-font-serif);
 }
 .reader .publication-markdown :not(pre) > code {
   color: var(--ae-theme-accent-soft);
@@ -664,8 +671,17 @@ em {
   .reading-empty h2 {
     font-size: var(--ae-text-38);
   }
-  .reader h1 {
+  .reader > header > h1 {
     font-size: var(--ae-text-49);
+  }
+  .reader .publication-markdown h1 {
+    font-size: var(--ae-text-32);
+  }
+  .reader .publication-markdown h2 {
+    font-size: var(--ae-text-26);
+  }
+  .reader .publication-markdown h3 {
+    font-size: var(--ae-text-22);
   }
   .prose {
     font-size: var(--ae-text-18);
