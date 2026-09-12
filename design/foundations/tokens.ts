@@ -60,6 +60,7 @@ export const foundations = {
   '--ae-text-36': '36px',
   '--ae-text-38': '38px',
   '--ae-text-39': '39px',
+  '--ae-text-42': '42px',
   '--ae-text-49': '49px',
   '--ae-text-51': '51px',
   '--ae-text-52': '52px',

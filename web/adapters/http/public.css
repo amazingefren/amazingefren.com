@@ -392,7 +392,7 @@ em {
 .reader .publication-markdown h1 {
   margin: var(--ae-space-48) 0 var(--ae-space-20);
   color: var(--ae-theme-accent-soft);
-  font: 400 var(--ae-text-36)/1.2 var(--ae-font-serif);
+  font: 400 var(--ae-text-42)/1.2 var(--ae-font-serif);
   letter-spacing: -0.03em;
 }
 .reader .publication-markdown h2 {
@@ -675,7 +675,7 @@ em {
     font-size: var(--ae-text-49);
   }
   .reader .publication-markdown h1 {
-    font-size: var(--ae-text-32);
+    font-size: var(--ae-text-36);
   }
   .reader .publication-markdown h2 {
     font-size: var(--ae-text-26);

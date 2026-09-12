@@ -14,7 +14,7 @@ test('public display-title styles do not apply to manuscript H1 headings', async
     /\.reader > header > h1\s*\{[^}]*color: var\(--ae-theme-accent\)/,
   );
   for (const [heading, size, color] of [
-    ['h1', '36', '--ae-theme-accent-soft'],
+    ['h1', '42', '--ae-theme-accent-soft'],
     ['h2', '30', '--ae-theme-accent-soft'],
     ['h3', '24', '--ae-muted'],
   ]) {
@@ -26,7 +26,7 @@ test('public display-title styles do not apply to manuscript H1 headings', async
     );
   }
   for (const [heading, size] of [
-    ['h1', '32'],
+    ['h1', '36'],
     ['h2', '26'],
     ['h3', '22'],
   ]) {
