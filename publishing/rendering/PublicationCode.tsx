@@ -8,6 +8,8 @@ import javascript from 'shiki/langs/javascript.mjs';
 import json from 'shiki/langs/json.mjs';
 import jsx from 'shiki/langs/jsx.mjs';
 import markdown from 'shiki/langs/markdown.mjs';
+import mermaid from 'shiki/langs/mermaid.mjs';
+import type { ReactNode } from 'react';
 import python from 'shiki/langs/python.mjs';
 import sql from 'shiki/langs/sql.mjs';
 import tsx from 'shiki/langs/tsx.mjs';
@@ -54,6 +56,7 @@ const highlighter = createHighlighterCoreSync({
     sql,
     emacsLisp,
     markdown,
+    mermaid,
   ],
   themes: [theme],
 });
@@ -62,10 +65,12 @@ export function PublicationCode({
   value,
   language: requestedLanguage,
   includeActions = true,
+  headerAction,
 }: {
   value: string;
   language: string;
   includeActions?: boolean;
+  headerAction?: ReactNode;
 }) {
   const language = publicationLanguage(requestedLanguage);
   let tokens: ReturnType<typeof highlighter.codeToTokens>['tokens'] | null =
@@ -89,21 +94,29 @@ export function PublicationCode({
             ? 'org (plain text)'
             : requestedLanguage || 'plain text'}
         </span>
-        {includeActions && <PublicationCopyCode value={value} />}
+        {(includeActions || headerAction) && (
+          <span className="publication-code-actions">
+            {includeActions && <PublicationCopyCode value={value} />}
+            {headerAction}
+          </span>
+        )}
       </span>
-      <code>
-        {tokens
-          ? tokens.map((line, lineIndex) => (
-              <span className="publication-code-line" key={lineIndex}>
-                {line.map((token, index) => (
-                  <span key={index} style={{ color: token.color }}>
-                    {token.content}
-                  </span>
-                ))}
-              </span>
-            ))
-          : value}
-      </code>
+      <pre className="publication-code-source">
+        <code>
+          {tokens
+            ? tokens.map((line, lineIndex) => (
+                <span className="publication-code-line" key={lineIndex}>
+                  {line.map((token, index) => (
+                    <span key={index} style={{ color: token.color }}>
+                      {token.content}
+                    </span>
+                  ))}
+                  {lineIndex < tokens.length - 1 ? '\n' : null}
+                </span>
+              ))
+            : value}
+        </code>
+      </pre>
     </div>
   );
 }

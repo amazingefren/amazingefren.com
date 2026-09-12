@@ -17,6 +17,7 @@ import systemsStyles from '../../workspace/ui/systems.css?url';
 import workStyles from '../../work/ui/styles.css?url';
 import writingStyles from '../../workspace/ui/writing/styles.css?url';
 import publicationStyles from '../../publishing/rendering/styles.css?url';
+import previewStyles from '../../workspace/ui/writing/public-preview.css?url';
 
 function publicCatalog(): CatalogEntry[] {
   return systems
@@ -60,6 +61,7 @@ export function WorkspaceDocument({ children }: DocumentProps) {
   return (
     <html lang="en">
       <head>
+        <meta name="publication-preview-styles" content={previewStyles} />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="noindex, nofollow" />

@@ -1,6 +1,8 @@
 import type { RequestInfo } from 'rwsdk/worker';
-import { renderToString } from 'rwsdk/worker';
-import { Children, isValidElement, type ReactNode } from 'react';
+import {
+  publicationFeed,
+  publicationMarkdown,
+} from '../../../publishing/domain/source/index.ts';
 import { PublicationMarkdown } from '../../../publishing/rendering/PublicationMarkdown.tsx';
 import type { Snapshot } from '../../../contracts/writing/index.ts';
 import type { WritingGateway } from '../../composition/writing.ts';
@@ -90,14 +92,7 @@ export function createPublicationRoutes(
           headers: { 'cache-control': 'no-store' },
         });
       const snapshot = result.value[0];
-      const source = `# ${snapshot.title}\n\n${snapshot.chapters.map((chapter) => `${snapshot.kind === 'book' ? `## ${chapter.title}\n\n` : ''}${chapter.body}`).join('\n\n')}`;
-      const body = source.replace(
-        /asset:([a-zA-Z0-9_-]+)/g,
-        (_, id: string) => {
-          const asset = snapshot.assets.find((item) => item.id === id);
-          return asset ? `https://amazingefren.com${asset.dataUrl}` : '';
-        },
-      );
+      const body = publicationMarkdown(snapshot);
       return new Response(body, {
         headers: {
           'content-type': 'text/markdown; charset=utf-8',
@@ -115,29 +110,7 @@ export function createPublicationRoutes(
           headers: { 'cache-control': 'no-store' },
         });
       const atom = new URL(request.url).pathname.endsWith('atom.xml');
-      const root = 'https://amazingefren.com';
-      const entries = (
-        await Promise.all(
-          result.value.map(async (snapshot) => {
-            const link = `${root}/readings/${snapshot.slug}`;
-            const html = await renderToString(
-              <SnapshotBody snapshot={snapshot} absolute />,
-              { injectRSCPayload: false, Document: PublicationFeedDocument },
-            );
-            return atom
-              ? `<entry><id>${xml(link)}</id><title>${xml(snapshot.title)}</title><link href="${xml(link)}"/><published>${xml(snapshot.publishedAt)}</published><updated>${xml(snapshot.updatedAt ?? snapshot.publishedAt)}</updated><content type="html">${xml(html)}</content></entry>`
-              : `<item><guid isPermaLink="true">${xml(link)}</guid><title>${xml(snapshot.title)}</title><link>${xml(link)}</link><pubDate>${new Date(snapshot.publishedAt).toUTCString()}</pubDate><description>${xml(html)}</description></item>`;
-          }),
-        )
-      ).join('');
-      const updated =
-        result.value
-          .map((item) => item.updatedAt ?? item.publishedAt)
-          .sort()
-          .at(-1) ?? '1970-01-01T00:00:00.000Z';
-      const body = atom
-        ? `<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><id>${root}/readings</id><title>Readings</title><link href="${root}/readings"/><link rel="self" href="${root}/readings/atom.xml"/><updated>${xml(updated)}</updated><author><name>Efren Castro</name></author>${entries}</feed>`
-        : `<?xml version="1.0" encoding="utf-8"?><rss version="2.0"><channel><title>Readings</title><link>${root}/readings</link><description>Published writing.</description>${entries}</channel></rss>`;
+      const body = publicationFeed(result.value, atom ? 'atom' : 'rss');
       return new Response(body, {
         headers: {
           'content-type': atom
@@ -149,19 +122,6 @@ export function createPublicationRoutes(
       });
     },
   };
-}
-
-function PublicationFeedDocument({ children }: { children: ReactNode }) {
-  return (
-    <>
-      {Children.toArray(children).filter(
-        (child) =>
-          isValidElement<{ id?: string }>(child) &&
-          child.type === 'div' &&
-          child.props.id === 'hydrate-root',
-      )}
-    </>
-  );
 }
 
 function SnapshotBody({
@@ -203,18 +163,5 @@ function SnapshotBody({
         </section>
       ))}
     </div>
-  );
-}
-function xml(value: string) {
-  return value.replace(
-    /[<>&"']/g,
-    (character) =>
-      ({
-        '<': '&lt;',
-        '>': '&gt;',
-        '&': '&amp;',
-        '"': '&quot;',
-        "'": '&apos;',
-      })[character]!,
   );
 }

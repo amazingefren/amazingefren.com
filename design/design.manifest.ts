@@ -17,8 +17,6 @@ export default {
       'Use sans serif for interfaces and body copy, serif for editorial emphasis and reading, and monospace for short metadata. Do not add font downloads.',
       'Keep content direct. Reuse approved personal text. Synthetic data and unavailable states must be explicit.',
       'Tokens compile into checked-in CSS so pages remain usable without JavaScript or private engines. Compiled CSS and served logo copies are not editing entrypoints.',
-      'Legacy dashboard palette tokens remain for compatibility. The served telemetry page adopts the shared sun/moon shell and interaction states.',
-      'Public design checks are small drift checks, not a replacement for the future private system engine or visual review.',
     ],
     openQuestions: [
       'Application implementation was authorized on 2026-09-09. User accepted the revised workspace as a starting point on 2026-09-09; owner identity and storage need live configuration.',
@@ -246,6 +244,18 @@ export default {
     },
   ],
   patterns: [
+    {
+      id: 'design.publication-layout',
+      status: 'approved',
+      purpose:
+        'Keep manuscript editing and publication settings visible together.',
+      implementation: 'workspace/ui/writing/Publications.tsx',
+      rules: [
+        'Adopt the reviewed publication-layout prototype. Keep public preview on the shared public renderer and styles.',
+        'Compact library navigation, a dominant manuscript canvas, formatting directly above it and a persistent right settings rail. On narrow screens, reveal settings through a native disclosure. Focus mode can hide surrounding navigation.',
+        'Reuse AE tokens, brand, native controls, theme and focus behavior. Real Markdown and remappable Vim; do not imply WYSIWYG or working scheduled delivery.',
+      ],
+    },
     {
       id: 'design.public-navigation-transition',
       status: 'approved',

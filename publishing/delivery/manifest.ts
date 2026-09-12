@@ -24,6 +24,21 @@ export default {
     'Scheduling, EPUB/PDF, mirrors, and backup restoration are not enabled.',
   ],
   contracts: ['contracts/writing/index.ts'],
+  browser: {
+    shell: 'web/ui/shared/PublicShell.tsx',
+    renderer: 'publishing/rendering/PublicationMarkdown.tsx',
+    diagram: 'publishing/rendering/PublicationDiagram.tsx',
+    preview: 'workspace/ui/writing/PublicPreview.tsx',
+    previewStyles:
+      'WorkspaceDocument supplies the bundled preview stylesheet URL through publication-preview-styles metadata. The iframe links it without importing CSS query modules into the client SSR graph.',
+    styles: ['web/adapters/http/public.css', 'publishing/rendering/styles.css'],
+  },
+  source: {
+    implementation: 'publishing/domain/source/index.ts',
+    tests: ['publishing/tests/domain/source.test.ts'],
+    formats:
+      'Markdown downloads and RSS/Atom retain approved Markdown source, including Mermaid fences. JSON returns chapter bodies; offline bundles include Markdown and local assets. Browser diagrams are presentation only.',
+  },
   bindings: [
     'web/composition/writing.ts',
     'web/adapters/http/publications.tsx',

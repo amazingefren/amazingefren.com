@@ -55,6 +55,20 @@ const assets: PublicationAssetPort = {
   },
 };
 
+test('offline Markdown retains Mermaid source without browser controls', async () => {
+  const source = '```mermaid\nflowchart LR\n  A[Draft] --> B[Review]\n```';
+  const value = {
+    ...snapshot,
+    chapters: [{ ...snapshot.chapters[0]!, body: source }],
+  };
+  const result = await createOfflineBundle(active([value]), assets).build();
+  assert.equal(result.ok, true);
+  if (!result.ok) return;
+  const contents = new TextDecoder().decode(result.value.body);
+  assert.ok(contents.includes(source));
+  assert.doesNotMatch(contents, /<svg|<button|diagram-tools/);
+});
+
 test('offline bundle contains the active revision, full text, and local approved asset', async () => {
   const result = await createOfflineBundle(active([snapshot]), assets).build();
   assert.equal(result.ok, true);

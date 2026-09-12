@@ -180,6 +180,7 @@ export const supportedPublicationLanguages = new Set([
   'sql',
   'emacs-lisp',
   'markdown',
+  'mermaid',
 ]);
 
 export function publicationLanguage(value?: string | null) {
@@ -189,6 +190,17 @@ export function publicationLanguage(value?: string | null) {
 
 export function publicationAssetId(value: string) {
   return value.startsWith('asset:') ? value.slice(6) : null;
+}
+
+export function publicationDiagramSize(value: string) {
+  const viewBox =
+    /\bviewBox=["']\s*[-.\d]+\s+[-.\d]+\s+([\d.]+)\s+([\d.]+)\s*["']/i.exec(
+      value,
+    );
+  if (!viewBox) return { width: 1, height: 1 };
+  const width = Number(viewBox[1]);
+  const height = Number(viewBox[2]);
+  return width > 0 && height > 0 ? { width, height } : { width: 1, height: 1 };
 }
 
 export function safePublicationUrl(value: string, key: 'href' | 'src') {

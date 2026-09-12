@@ -357,7 +357,7 @@ em {
 }
 .reader-layout {
   display: grid;
-  grid-template-columns: 155px minmax(0, 690px);
+  grid-template-columns: 155px minmax(0, 760px);
   gap: 75px;
   justify-content: center;
   padding: 88px 0 110px;
@@ -394,7 +394,7 @@ em {
   line-height: 1.65;
 }
 .prose {
-  max-width: 620px;
+  max-width: 690px;
   padding: 26px 0 40px;
   color: var(--ae-prose);
   font: var(--ae-text-20)/1.83 var(--ae-font-serif);
@@ -485,6 +485,11 @@ em {
   font: 400 clamp(120px, 19vw, 260px)/0.7 var(--ae-font-serif);
   letter-spacing: -0.13em;
   opacity: 0.75;
+}
+@media (max-width: 900px) {
+  .reader-layout {
+    grid-template-columns: 1fr;
+  }
 }
 @media (max-width: 850px) {
   .site-shell {

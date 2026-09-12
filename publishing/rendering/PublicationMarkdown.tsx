@@ -1,7 +1,9 @@
 import { renderMermaidSVG } from 'beautiful-mermaid';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import type { ReactNode } from 'react';
 import { PublicationCode } from './PublicationCode.tsx';
+import { PublicationDiagram } from './PublicationDiagram.tsx';
 import {
   publicationAssetId,
   publicationLanguage,
@@ -15,12 +17,50 @@ export type PublicationMarkdownProps = {
   assets: readonly PublicationAsset[];
   resolveAsset?(asset: PublicationAsset): string | null;
   includeActions?: boolean;
+  renderDiagram?(svg: string, source: string): ReactNode;
 };
 
 const maximumDiagramSource = 20_000;
 const maximumDiagramOutput = 300_000;
 
-function MermaidDiagram({ value }: { value: string }) {
+type SourceNode = {
+  tagName?: string;
+  children?: SourceNode[];
+  properties?: Record<string, unknown>;
+  position?: { start: { line: number }; end: { line: number } };
+};
+
+function sourcePosition(node?: SourceNode) {
+  return {
+    'data-source-line': node?.position?.start.line,
+    'data-source-end-line': node?.position?.end.line,
+  };
+}
+
+function annotateSource() {
+  return (tree: SourceNode) => {
+    const visit = (node: SourceNode) => {
+      if (
+        node.position &&
+        node.tagName &&
+        /^(p|h[1-6]|pre|ul|ol|blockquote|table|hr)$/.test(node.tagName)
+      )
+        node.properties = { ...node.properties, ...sourcePosition(node) };
+      node.children?.forEach(visit);
+    };
+    visit(tree);
+  };
+}
+
+function MermaidDiagram({
+  value,
+  includeActions,
+  renderDiagram,
+}: {
+  value: string;
+  includeActions: boolean;
+  renderDiagram?: PublicationMarkdownProps['renderDiagram'];
+}) {
   if (value.length > maximumDiagramSource)
     return (
       <DiagramFailure
@@ -41,13 +81,15 @@ function MermaidDiagram({ value }: { value: string }) {
       );
     return (
       <figure className="publication-diagram">
-        <div dangerouslySetInnerHTML={{ __html: svg }} />
-        <details>
-          <summary>Diagram source</summary>
-          <pre>
-            <code>{value}</code>
-          </pre>
-        </details>
+        {renderDiagram ? (
+          renderDiagram(svg, value)
+        ) : (
+          <PublicationDiagram
+            includeActions={includeActions}
+            source={value}
+            svg={svg}
+          />
+        )}
       </figure>
     );
   } catch {
@@ -82,12 +124,14 @@ export function PublicationMarkdown({
   assets,
   resolveAsset,
   includeActions = true,
+  renderDiagram,
 }: PublicationMarkdownProps) {
   const library = new Map(assets.map((asset) => [asset.id, asset]));
   return (
     <article className="publication-markdown">
       <Markdown
         remarkPlugins={[remarkGfm]}
+        rehypePlugins={[annotateSource]}
         urlTransform={(url, key) => {
           if (key === 'src' && publicationAssetId(url))
             return library.has(publicationAssetId(url) ?? '') ? url : '';
@@ -100,9 +144,11 @@ export function PublicationMarkdown({
             };
             const classes = source.children?.[0]?.properties?.className ?? [];
             return classes.some((item) => item.startsWith('language-')) ? (
-              <>{children}</>
+              <div {...sourcePosition(node)}>{children}</div>
             ) : (
-              <pre className="publication-code-block">{children}</pre>
+              <pre className="publication-code-block" {...sourcePosition(node)}>
+                {children}
+              </pre>
             );
           },
           p: ({ children, node }) => {
@@ -111,9 +157,14 @@ export function PublicationMarkdown({
               source.children?.length === 1 &&
               source.children[0]?.tagName === 'img';
             return imageOnly ? (
-              <figure className="publication-inline-image">{children}</figure>
+              <figure
+                className="publication-inline-image"
+                {...sourcePosition(node)}
+              >
+                {children}
+              </figure>
             ) : (
-              <p>{children}</p>
+              <p {...sourcePosition(node)}>{children}</p>
             );
           },
           code: ({ className, children, ...props }) => {
@@ -122,7 +173,13 @@ export function PublicationMarkdown({
             const language = publicationLanguage(requestedLanguage);
             const source = String(children);
             if (language === 'mermaid')
-              return <MermaidDiagram value={source} />;
+              return (
+                <MermaidDiagram
+                  includeActions={includeActions}
+                  renderDiagram={renderDiagram}
+                  value={source}
+                />
+              );
             if (className?.includes('language-'))
               return (
                 <PublicationCode

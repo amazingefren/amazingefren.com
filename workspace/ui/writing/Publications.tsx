@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { ThemeControl } from '../../../design/ui/index.ts';
 import { Editor, MarkdownPreview } from './Editor.tsx';
+import { PublicPreview } from './PublicPreview.tsx';
 import { readMarkdownImport } from './markdown-import.ts';
 import { prepareImage } from './image-compression.ts';
+import './publications.css';
 import { publicationInstant } from './editor-helpers.ts';
 import type {
   Asset,
   Command,
   Publication,
   PublicationFields,
+  Snapshot,
   StudioDocument,
   StudioProps,
   StudioState,
@@ -47,6 +50,7 @@ export function PublicationsView(props: StudioProps) {
   const [filter, setFilter] = useState('all');
   const [active, setActive] = useState('');
   const [preview, setPreview] = useState(false);
+  const [publicPreview, setPublicPreview] = useState<Snapshot | null>(null);
   const [split, setSplit] = useState(false);
   const [tools, setTools] = useState(false);
   const [message, setMessage] = useState('');
@@ -63,7 +67,6 @@ export function PublicationsView(props: StudioProps) {
     assets: Asset[];
   } | null>(null);
   const createDialog = useRef<HTMLDialogElement>(null);
-  const options = useRef<HTMLDialogElement>(null);
   const chapters = useRef<HTMLDialogElement>(null);
   const release = useRef<HTMLDialogElement>(null);
   const locked = useRef(false);
@@ -73,6 +76,7 @@ export function PublicationsView(props: StudioProps) {
   useEffect(() => {
     setActive('');
     setPreview(false);
+    setPublicPreview(null);
     setSplit(false);
     setTools(false);
     setTagText(null);
@@ -387,10 +391,50 @@ export function PublicationsView(props: StudioProps) {
       }
       updateChapter({ body: result.body });
       setMessage('Imported Markdown.');
-      options.current?.close();
     } finally {
       setImporting(false);
     }
+  }
+  function openPublicPreview() {
+    if (!project || !fields) return;
+    const previewChapters = source.map((item) => {
+      const current = drafts[item.id] ?? item;
+      return {
+        documentId: current.id,
+        revision: current.revision,
+        title: current.title,
+        body: current.body,
+      };
+    });
+    const assetIds = new Set(
+      previewChapters.flatMap((item) =>
+        [...item.body.matchAll(/!\[[^\]]*]\(asset:([^\s)]+)/g)].map(
+          (match) => match[1],
+        ),
+      ),
+    );
+    if (fields.coverAssetId) assetIds.add(fields.coverAssetId);
+    const selected = publicationAt
+      ? publicationInstant(publicationAt, timezone)
+      : undefined;
+    setPublicPreview({
+      id: `draft-preview-${project.id}`,
+      publishedAt:
+        project.live?.publishedAt ?? selected ?? new Date().toISOString(),
+      updatedAt: project.live?.updatedAt ?? null,
+      timezone: project.live?.timezone ?? timezone,
+      title: fields.title,
+      slug: fields.slug,
+      summary: fields.summary,
+      kind: project.kind,
+      seoTitle: fields.seoTitle,
+      seoDescription: fields.seoDescription,
+      tags: [...fields.tags],
+      coverAssetId: fields.coverAssetId,
+      chapters: previewChapters,
+      assets: state.assets.filter((asset) => assetIds.has(asset.id)),
+      projectVersion: project.version,
+    });
   }
   if (!props.recordId) {
     const publications = state.publications.filter(
@@ -505,346 +549,413 @@ export function PublicationsView(props: StudioProps) {
       </section>
     );
   return (
-    <section className="zen-writer">
-      <header className="zen-toolbar">
-        <div>
-          <button
-            onClick={() => {
-              if (dirty || saving) {
-                void save();
-                return;
-              }
-              props.navigate('publishing');
-            }}
-          >
-            Publications
-          </button>
-          <span className="zen-save-state" role="status">
-            {saving ? 'Saving...' : dirty ? 'Unsaved' : 'Saved'}
-          </span>
-        </div>
-        <div>
-          {project.kind === 'book' && (
-            <button onClick={() => chapters.current?.showModal()}>
-              Chapters
+    <section className="publication-studio">
+      {publicPreview && (
+        <PublicPreview
+          onClose={() => {
+            setPublicPreview(null);
+            requestAnimationFrame(() =>
+              document.getElementById('public-preview-toggle')?.focus(),
+            );
+          }}
+          snapshot={publicPreview}
+        />
+      )}
+      <div className="publication-workspace" hidden={Boolean(publicPreview)}>
+        <aside className="publication-rail" aria-label="Publication library">
+          <div className="publication-rail-heading">
+            <span>Library</span>
+            <button
+              aria-label="New publication"
+              disabled={props.busy || saving}
+              onClick={() => createDialog.current?.showModal()}
+            >
+              +
             </button>
-          )}
-          <button
-            aria-pressed={!preview && !split}
-            onClick={() => {
-              setPreview(false);
-              setSplit(false);
-            }}
-          >
-            Write
-          </button>
-          <button
-            aria-pressed={split}
-            onClick={() => {
-              setSplit(true);
-              setPreview(false);
-            }}
-          >
-            Split
-          </button>
-          <button
-            aria-pressed={preview}
-            onClick={() => {
-              setPreview(true);
-              setSplit(false);
-            }}
-          >
-            Read
-          </button>
-          <button
-            aria-expanded={tools}
-            onClick={() => {
-              setTools(!tools);
-              setPreview(false);
-              setSplit(false);
-            }}
-          >
-            Tools
-          </button>
-          <button onClick={() => options.current?.showModal()}>Details</button>
-          <button
-            className="ws-primary"
-            disabled={props.busy || saving || dirty || !chapter}
-            onClick={() => release.current?.showModal()}
-          >
-            {project.live ? 'Update' : 'Release'}
-          </button>
-        </div>
-      </header>
-      <div className="zen-manuscript">
-        {message && (
-          <p className="studio-notice" role="alert">
-            {message}
-            {dirty && (
-              <button onClick={() => setRetry((value) => value + 1)}>
-                Retry save
+          </div>
+          <nav>
+            {state.publications.map((item) => (
+              <button
+                aria-current={item.id === project.id ? 'page' : undefined}
+                className="publication-rail-item ae-nav-item"
+                key={item.id}
+                onClick={() => props.navigate('publishing', item.id)}
+              >
+                <span>{item.title}</span>
+                <small>
+                  {item.stage}
+                  {item.kind === 'book'
+                    ? ` · ${item.chapterIds.length} chapters`
+                    : ''}
+                </small>
               </button>
-            )}
-          </p>
-        )}
-        {chapter ? (
-          <>
-            {project.kind === 'book' && (
-              <p className="zen-book-context">
-                {fields.title} / Chapter{' '}
-                {project.chapterIds.indexOf(chapter.id) + 1}
-              </p>
-            )}
-            {preview ? (
-              <h1 className="zen-title">
-                {project.kind === 'book' ? chapter.title : fields.title}
-              </h1>
-            ) : (
-              <input
-                className="zen-title"
-                aria-label="Publication title"
-                value={project.kind === 'book' ? chapter.title : fields.title}
-                disabled={chapter.source?.format === 'org'}
-                onChange={(event) =>
-                  project.kind === 'book'
-                    ? updateChapter({ title: event.target.value })
-                    : updateMeta({ title: event.target.value })
-                }
-              />
-            )}
-            <Editor
-              key={chapter.id}
-              value={chapter.body}
-              onChange={(body) => updateChapter({ body })}
-              onSave={() => void save()}
-              assets={state.assets}
-              busy={saving || props.busy}
-              quiet
-              viewMode={preview ? 'reading' : split ? 'split' : 'markdown'}
-              toolsMode={tools}
-              onUploadImage={uploadInlineImage}
-              readOnly={chapter.source?.format === 'org'}
-            />
-            {chapter.source?.format === 'org' && (
-              <p className="studio-notice">
-                This org-sourced manuscript is read-only here. Edit it in the
-                Emacs workspace.
-              </p>
-            )}
-          </>
-        ) : (
-          <>
-            <h1>{fields.title}</h1>
+            ))}
+          </nav>
+          <button
+            className="publication-library-link"
+            onClick={() => props.navigate('publishing')}
+          >
+            All publications
+          </button>
+        </aside>
+        <main className="publication-manuscript-pane">
+          <header className="publication-topbar">
+            <div className="publication-location">
+              <span className="publication-kicker">
+                {project.kind === 'book' && chapter
+                  ? `Chapter ${project.chapterIds.indexOf(chapter.id) + 1}`
+                  : project.stage}
+              </span>
+              <span className="publication-save-state" role="status">
+                {saving ? 'Saving…' : dirty ? 'Unsaved changes' : 'Saved'}
+              </span>
+            </div>
             <button
               className="ws-primary"
-              disabled={props.busy}
-              onClick={() =>
-                void run({
-                  operation: 'publishing.projects.add-chapter',
-                  input: {
-                    id: project.id,
-                    expectedVersion: project.version,
-                    title: 'Chapter 1',
-                  },
-                })
-              }
+              disabled={props.busy || saving || !dirty}
+              onClick={() => void save()}
             >
-              Add first chapter
+              Save
             </button>
-          </>
-        )}
-      </div>
-      <dialog className="zen-panel ws-dialog" ref={options}>
-        <div className="zen-panel-heading">
-          <h2>Publication settings</h2>
-          <button onClick={() => options.current?.close()}>Close</button>
-        </div>
-        <div className="zen-panel-content">
-          <button
-            onClick={() => {
-              options.current?.close();
-              setTools(true);
-            }}
-          >
-            Writing tools
-          </button>
-          {chapter && (
+          </header>
+          <div className="publication-viewbar" aria-label="Editor view">
+            <div>
+              <button
+                aria-pressed={!preview && !split}
+                onClick={() => {
+                  setPreview(false);
+                  setSplit(false);
+                }}
+              >
+                Write
+              </button>
+              <button
+                aria-pressed={split}
+                onClick={() => {
+                  setSplit(true);
+                  setPreview(false);
+                }}
+              >
+                Split
+              </button>
+              <button
+                aria-pressed={preview}
+                onClick={() => {
+                  setPreview(true);
+                  setSplit(false);
+                }}
+              >
+                Read
+              </button>
+              <button
+                aria-expanded={tools}
+                onClick={() => {
+                  setTools(!tools);
+                  setPreview(false);
+                  setSplit(false);
+                }}
+              >
+                Tools
+              </button>
+            </div>
+            <button
+              id="public-preview-toggle"
+              onClick={openPublicPreview}
+              type="button"
+            >
+              Public preview
+            </button>
+          </div>
+          <div className="publication-manuscript">
+            {message && (
+              <p className="studio-notice" role="alert">
+                {message}
+                {dirty && (
+                  <button onClick={() => setRetry((value) => value + 1)}>
+                    Retry save
+                  </button>
+                )}
+              </p>
+            )}
+            {chapter ? (
+              <>
+                {project.kind === 'book' && (
+                  <p className="publication-book-context">
+                    {fields.title} / Chapter{' '}
+                    {project.chapterIds.indexOf(chapter.id) + 1}
+                  </p>
+                )}
+                {preview ? (
+                  <h1 className="publication-title">
+                    {project.kind === 'book' ? chapter.title : fields.title}
+                  </h1>
+                ) : (
+                  <input
+                    className="publication-title"
+                    aria-label="Publication title"
+                    value={
+                      project.kind === 'book' ? chapter.title : fields.title
+                    }
+                    disabled={chapter.source?.format === 'org'}
+                    onChange={(event) =>
+                      project.kind === 'book'
+                        ? updateChapter({ title: event.target.value })
+                        : updateMeta({ title: event.target.value })
+                    }
+                  />
+                )}
+                <Editor
+                  key={chapter.id}
+                  value={chapter.body}
+                  onChange={(body) => updateChapter({ body })}
+                  onSave={() => void save()}
+                  assets={state.assets}
+                  busy={saving || props.busy}
+                  quiet
+                  viewMode={preview ? 'reading' : split ? 'split' : 'markdown'}
+                  toolsMode={tools}
+                  onUploadImage={uploadInlineImage}
+                  readOnly={chapter.source?.format === 'org'}
+                />
+                {chapter.source?.format === 'org' && (
+                  <p className="studio-notice">
+                    This org-sourced manuscript is read-only here. Edit it in
+                    the Emacs workspace.
+                  </p>
+                )}
+              </>
+            ) : (
+              <>
+                <h1>{fields.title}</h1>
+                <button
+                  className="ws-primary"
+                  disabled={props.busy}
+                  onClick={() =>
+                    void run({
+                      operation: 'publishing.projects.add-chapter',
+                      input: {
+                        id: project.id,
+                        expectedVersion: project.version,
+                        title: 'Chapter 1',
+                      },
+                    })
+                  }
+                >
+                  Add first chapter
+                </button>
+              </>
+            )}
+          </div>
+        </main>
+        <details className="publication-settings" open>
+          <summary>Publication settings</summary>
+          <div className="publication-settings-content">
+            <div className="publication-settings-heading">
+              <h2>Publication settings</h2>
+              <ThemeControl />
+            </div>
+            <button
+              onClick={() => {
+                setTools(true);
+              }}
+            >
+              Writing tools
+            </button>
+            {chapter && (
+              <label>
+                Import Markdown
+                <input
+                  type="file"
+                  accept=".md,text/markdown,text/plain"
+                  disabled={
+                    props.busy ||
+                    saving ||
+                    dirty ||
+                    importing ||
+                    chapter.source?.format === 'org'
+                  }
+                  onChange={(event) => {
+                    const file = event.currentTarget.files?.[0];
+                    event.currentTarget.value = '';
+                    void importMarkdown(file);
+                  }}
+                />
+              </label>
+            )}
+            <button
+              onClick={() => {
+                props.navigate('media');
+              }}
+            >
+              Image library and details
+            </button>
+            {project.kind === 'book' && (
+              <button onClick={() => chapters.current?.showModal()}>
+                Manage chapters
+              </button>
+            )}
+            <button
+              className="ws-primary"
+              disabled={props.busy || saving || dirty || !chapter}
+              onClick={() => release.current?.showModal()}
+            >
+              {project.live ? 'Review update' : 'Review release'}
+            </button>
+            {project.kind === 'book' && (
+              <label>
+                Book title
+                <input
+                  value={fields.title}
+                  onChange={(event) =>
+                    updateMeta({ title: event.target.value })
+                  }
+                />
+              </label>
+            )}
             <label>
-              Import Markdown
+              URL slug
               <input
-                type="file"
-                accept=".md,text/markdown,text/plain"
-                disabled={
-                  props.busy ||
-                  saving ||
-                  dirty ||
-                  importing ||
-                  chapter.source?.format === 'org'
+                value={fields.slug}
+                onChange={(event) => updateMeta({ slug: event.target.value })}
+              />
+            </label>
+            <label>
+              Summary
+              <textarea
+                value={fields.summary}
+                onChange={(event) =>
+                  updateMeta({ summary: event.target.value })
                 }
+              />
+            </label>
+            <label>
+              Tags
+              <input
+                value={tagText ?? fields.tags.join(', ')}
                 onChange={(event) => {
-                  const file = event.currentTarget.files?.[0];
-                  event.currentTarget.value = '';
-                  void importMarkdown(file);
+                  setTagText(event.target.value);
+                  updateMeta({
+                    tags: event.target.value
+                      .split(',')
+                      .map((item) => item.trim())
+                      .filter(Boolean),
+                  });
                 }}
               />
             </label>
-          )}
-          <button
-            onClick={() => {
-              options.current?.close();
-              props.navigate('media');
-            }}
-          >
-            Image library and details
-          </button>
-          <ThemeControl />
-          {project.kind === 'book' && (
             <label>
-              Book title
-              <input
-                value={fields.title}
-                onChange={(event) => updateMeta({ title: event.target.value })}
-              />
-            </label>
-          )}
-          <label>
-            URL slug
-            <input
-              value={fields.slug}
-              onChange={(event) => updateMeta({ slug: event.target.value })}
-            />
-          </label>
-          <label>
-            Summary
-            <textarea
-              value={fields.summary}
-              onChange={(event) => updateMeta({ summary: event.target.value })}
-            />
-          </label>
-          <label>
-            Tags
-            <input
-              value={tagText ?? fields.tags.join(', ')}
-              onChange={(event) => {
-                setTagText(event.target.value);
-                updateMeta({
-                  tags: event.target.value
-                    .split(',')
-                    .map((item) => item.trim())
-                    .filter(Boolean),
-                });
-              }}
-            />
-          </label>
-          <label>
-            Cover image
-            <select
-              value={fields.coverAssetId ?? ''}
-              onChange={(event) =>
-                updateMeta({ coverAssetId: event.target.value || null })
-              }
-            >
-              <option value="">No cover</option>
-              {state.assets.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <details>
-            <summary>Search metadata</summary>
-            <label>
-              Search title
-              <input
-                value={fields.seoTitle}
+              Cover image
+              <select
+                value={fields.coverAssetId ?? ''}
                 onChange={(event) =>
-                  updateMeta({ seoTitle: event.target.value })
+                  updateMeta({ coverAssetId: event.target.value || null })
                 }
-              />
-            </label>
-            <label>
-              Search description
-              <textarea
-                value={fields.seoDescription}
-                onChange={(event) =>
-                  updateMeta({ seoDescription: event.target.value })
-                }
-              />
-            </label>
-          </details>
-          {chapter && (
-            <details>
-              <summary>Version history</summary>
-              {chapter.revisions
-                .slice()
-                .reverse()
-                .map((item) => (
-                  <button
-                    key={item.number}
-                    disabled={dirty || props.busy}
-                    onClick={() =>
-                      void run({
-                        operation: 'studio.notes.restore',
-                        input: {
-                          id: chapter.id,
-                          expectedRevision: chapter.revision,
-                          revision: item.number,
-                        },
-                      })
-                    }
-                  >
-                    Restore revision {item.number}
-                  </button>
+              >
+                <option value="">No cover</option>
+                {state.assets.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
                 ))}
+              </select>
+            </label>
+            <details>
+              <summary>Search metadata</summary>
+              <label>
+                Search title
+                <input
+                  value={fields.seoTitle}
+                  onChange={(event) =>
+                    updateMeta({ seoTitle: event.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Search description
+                <textarea
+                  value={fields.seoDescription}
+                  onChange={(event) =>
+                    updateMeta({ seoDescription: event.target.value })
+                  }
+                />
+              </label>
             </details>
-          )}
-          <details>
-            <summary>Exports and releases</summary>
             {chapter && (
-              <button
-                onClick={() =>
-                  download(
-                    `${fields.slug || 'manuscript'}.md`,
-                    chapter.body,
-                    'text/markdown',
-                  )
-                }
-              >
-                Download manuscript
-              </button>
+              <details>
+                <summary>Version history</summary>
+                {chapter.revisions
+                  .slice()
+                  .reverse()
+                  .map((item) => (
+                    <button
+                      key={item.number}
+                      disabled={dirty || props.busy}
+                      onClick={() =>
+                        void run({
+                          operation: 'studio.notes.restore',
+                          input: {
+                            id: chapter.id,
+                            expectedRevision: chapter.revision,
+                            revision: item.number,
+                          },
+                        })
+                      }
+                    >
+                      Restore revision {item.number}
+                    </button>
+                  ))}
+              </details>
             )}
-            {project.releases.map((item) => (
-              <button
-                key={item.id}
-                onClick={() =>
-                  download(
-                    `${item.slug}-${item.id}.json`,
-                    JSON.stringify(item, null, 2),
-                    'application/json',
-                  )
-                }
-              >
-                Release {stamp(item.publishedAt)}
-              </button>
-            ))}
-            {project.live && (
-              <button
-                disabled={dirty || saving || props.busy}
-                onClick={() =>
-                  void run({
-                    operation: 'publishing.projects.withdraw',
-                    input: { id: project.id, expectedVersion: project.version },
-                  })
-                }
-              >
-                Withdraw publication
-              </button>
-            )}
-          </details>
-          <p>Scheduled publishing is not configured.</p>
-        </div>
-      </dialog>
+            <details>
+              <summary>Exports and releases</summary>
+              {chapter && (
+                <button
+                  onClick={() =>
+                    download(
+                      `${fields.slug || 'manuscript'}.md`,
+                      chapter.body,
+                      'text/markdown',
+                    )
+                  }
+                >
+                  Download manuscript
+                </button>
+              )}
+              {project.releases.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() =>
+                    download(
+                      `${item.slug}-${item.id}.json`,
+                      JSON.stringify(item, null, 2),
+                      'application/json',
+                    )
+                  }
+                >
+                  Release {stamp(item.publishedAt)}
+                </button>
+              ))}
+              {project.live && (
+                <button
+                  disabled={dirty || saving || props.busy}
+                  onClick={() =>
+                    void run({
+                      operation: 'publishing.projects.withdraw',
+                      input: {
+                        id: project.id,
+                        expectedVersion: project.version,
+                      },
+                    })
+                  }
+                >
+                  Withdraw publication
+                </button>
+              )}
+            </details>
+            <p>Scheduled publishing is not configured.</p>
+          </div>
+        </details>
+      </div>
       <dialog className="zen-panel ws-dialog" ref={chapters}>
         <div className="zen-panel-heading">
           <h2>Chapters</h2>
@@ -971,6 +1082,31 @@ export function PublicationsView(props: StudioProps) {
             {saving ? 'Publishing...' : 'Publish reviewed revision'}
           </button>
         </div>
+      </dialog>
+      <dialog className="ws-dialog" ref={createDialog}>
+        <form onSubmit={create}>
+          <h2>New publication</h2>
+          <label>
+            Title
+            <input name="title" required autoFocus />
+          </label>
+          <label>
+            Format
+            <select name="kind">
+              <option value="article">Article</option>
+              <option value="page">Page</option>
+              <option value="book">Book</option>
+            </select>
+          </label>
+          <div className="studio-actions">
+            <button type="button" onClick={() => createDialog.current?.close()}>
+              Cancel
+            </button>
+            <button className="ws-primary" disabled={props.busy}>
+              Create
+            </button>
+          </div>
+        </form>
       </dialog>
     </section>
   );
