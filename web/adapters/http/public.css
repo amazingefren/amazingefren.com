@@ -19,8 +19,7 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
-  background: var(--ae-page-background);
-  background-attachment: fixed;
+  background: var(--ae-background);
   min-height: 100svh;
   color: var(--ae-ink);
 }
