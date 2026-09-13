@@ -36,7 +36,14 @@ const snapshot = {
 };
 let withdrawn = false;
 let failedAsset = false;
+let privateLeak = false;
 let assetReads = 0;
+const publicSnapshots = () =>
+  withdrawn
+    ? []
+    : privateLeak
+      ? [{ ...snapshot, ownerId: 'owner-secret', source: 'private-draft' }]
+      : [snapshot];
 const runtime = new Miniflare(
   convertV4MiniflareOptions({
     workers: [
@@ -64,7 +71,7 @@ const runtime = new Miniflare(
             if (path === '/api/publications')
               return Response.json({
                 ok: true,
-                value: withdrawn ? [] : [snapshot],
+                value: publicSnapshots(),
               });
             if (path === `/api/publications/${snapshot.slug}`)
               return Response.json(
@@ -76,7 +83,7 @@ const runtime = new Miniflare(
                         message: 'Publication not found.',
                       },
                     }
-                  : { ok: true, value: [snapshot] },
+                  : { ok: true, value: publicSnapshots() },
               );
             return new Response(null, { status: 404 });
           },
@@ -87,6 +94,12 @@ const runtime = new Miniflare(
 );
 const send = (path, options) =>
   runtime.dispatchFetch(origin + path, { redirect: 'manual', ...options });
+const assertPublicPayload = (body) => {
+  assert.doesNotMatch(
+    body,
+    /"(?:ownerId|source|scheduledAt|releases|live|privateDraft)"|private-draft|owner-secret|https:\/\/workspace-owner\.internal|\/api\/writing\/assets\/|data:image\//,
+  );
+};
 try {
   const openapi = await send('/api/openapi.json');
   assert.equal(openapi.status, 200);
@@ -178,9 +191,56 @@ try {
     await opml.text(),
     /https:\/\/amazingefren.com\/readings\/feed.xml/,
   );
+  const publicationListResponse = await send('/api/publications');
+  assert.equal(publicationListResponse.status, 200);
+  const publicationList = await publicationListResponse.json();
+  assert.deepEqual(publicationList, { ok: true, value: [snapshot] });
+  assertPublicPayload(JSON.stringify(publicationList));
+  const publicationReadResponse = await send(
+    `/api/publications/${snapshot.slug}`,
+  );
+  assert.equal(publicationReadResponse.status, 200);
+  const publicationRead = await publicationReadResponse.json();
+  assert.deepEqual(publicationRead, { ok: true, value: [snapshot] });
+  assertPublicPayload(JSON.stringify(publicationRead));
+  const readerPage = await send(`/readings/${snapshot.slug}`);
+  assert.equal(readerPage.status, 200);
+  const readerHtml = await readerPage.text();
+  assert.match(readerHtml, /Synthetic export fixture/);
+  assert.match(readerHtml, /Approved test revision/);
+  assert.match(readerHtml, /\/api\/publications\/assets\/release-1\/image-1/);
+  assertPublicPayload(readerHtml);
+  const markdown = await send(`/readings/${snapshot.slug}/download.md`);
+  assert.equal(markdown.status, 200);
+  const markdownText = await markdown.text();
+  assert.match(markdownText, /Approved test revision/);
+  assert.match(
+    markdownText,
+    /https:\/\/amazingefren\.com\/api\/publications\/assets\/release-1\/image-1/,
+  );
+  assertPublicPayload(markdownText);
+  for (const [path, contentType] of [
+    ['/readings/feed.xml', 'application/rss+xml'],
+    ['/readings/atom.xml', 'application/atom+xml'],
+  ]) {
+    const feed = await send(path);
+    assert.equal(feed.status, 200);
+    assert.equal(feed.headers.get('content-type')?.split(';')[0], contentType);
+    const feedText = await feed.text();
+    assert.match(feedText, /Synthetic export fixture/);
+    assert.match(feedText, /Approved test revision/);
+    assert.match(
+      feedText,
+      /https:\/\/amazingefren\.com\/api\/publications\/assets\/release-1\/image-1/,
+    );
+    assertPublicPayload(feedText);
+  }
   const reading = await send('/readings');
   assert.equal(reading.status, 200);
   const readingHtml = await reading.text();
+  assert.match(readingHtml, /Synthetic export fixture/);
+  assert.doesNotMatch(readingHtml, /Approved test revision/);
+  assertPublicPayload(readingHtml);
   assert.match(readingHtml, /href="\/exports\/publications.zip"/);
   assert.match(readingHtml, /href="\/readings\/subscriptions.opml"/);
   const bundle = await send('/exports/publications.zip');
@@ -193,7 +253,49 @@ try {
   failedAsset = true;
   assert.equal((await send('/exports/publications.zip')).status, 503);
   failedAsset = false;
+  privateLeak = true;
+  const unsafeList = await send('/api/publications');
+  assert.equal(unsafeList.status, 503);
+  const unsafeListText = await unsafeList.text();
+  assert.match(unsafeListText, /Publications are unavailable/);
+  assertPublicPayload(unsafeListText);
+  privateLeak = false;
   withdrawn = true;
+  const withdrawnList = await send('/api/publications');
+  assert.equal(withdrawnList.status, 200);
+  const withdrawnListText = await withdrawnList.text();
+  assert.doesNotMatch(withdrawnListText, /Approved test revision|image-1/);
+  assertPublicPayload(withdrawnListText);
+  const withdrawnRead = await send(`/api/publications/${snapshot.slug}`);
+  assert.equal(withdrawnRead.status, 404);
+  assert.doesNotMatch(
+    await withdrawnRead.text(),
+    /Approved test revision|image-1/,
+  );
+  const withdrawnReader = await send(`/readings/${snapshot.slug}`);
+  assert.equal(withdrawnReader.status, 404);
+  assert.doesNotMatch(
+    await withdrawnReader.text(),
+    /Approved test revision|image-1/,
+  );
+  const withdrawnMarkdown = await send(
+    `/readings/${snapshot.slug}/download.md`,
+  );
+  assert.equal(withdrawnMarkdown.status, 404);
+  assert.doesNotMatch(
+    await withdrawnMarkdown.text(),
+    /Approved test revision|image-1/,
+  );
+  for (const path of ['/readings/feed.xml', '/readings/atom.xml']) {
+    const feed = await send(path);
+    assert.equal(feed.status, 200);
+    const feedText = await feed.text();
+    assert.doesNotMatch(
+      feedText,
+      /Synthetic export fixture|Approved test revision|image-1/,
+    );
+    assertPublicPayload(feedText);
+  }
   const afterWithdrawal = await send('/exports/publications.zip');
   assert.equal(afterWithdrawal.status, 200);
   assert.doesNotMatch(

@@ -28,7 +28,11 @@ for (const file of files) {
     manifest.excluded.some((pattern) => new RegExp(pattern).test(path))
   )
     continue;
-  if (!(await lstat(file)).isFile()) continue;
+  const metadata = await lstat(file).catch((error) => {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  });
+  if (!metadata?.isFile()) continue;
   if (extname(file) === manifest.python.extension) {
     python.push(file);
     continue;

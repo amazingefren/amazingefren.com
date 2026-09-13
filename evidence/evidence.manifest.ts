@@ -39,7 +39,6 @@ function operation(id: (typeof ids)[number]): Operation {
           method: 'POST',
           path: `/api/evidence/operations/${id}`,
         },
-        scope: 'required',
         status: 'implemented',
         directory: 'evidence/adapters',
         testsDirectory: 'evidence/tests',
@@ -54,7 +53,6 @@ function operation(id: (typeof ids)[number]): Operation {
           description: id.slice('evidence.'.length).replaceAll('-', ' '),
           readOnly: id === 'evidence.read' || id === 'evidence.export-reviewed',
         },
-        scope: 'required',
         status: 'implemented',
         directory: 'evidence/adapters',
         testsDirectory: 'evidence/tests',
@@ -68,7 +66,6 @@ function operation(id: (typeof ids)[number]): Operation {
           command: `ae evidence ${id.slice('evidence.'.length)}`,
           output: 'json',
         },
-        scope: 'required',
         status: 'implemented',
         directory: 'evidence/adapters',
         testsDirectory: 'evidence/tests',
@@ -115,19 +112,15 @@ export default {
   purpose: 'Track claims and observations with sources and explicit review.',
   owner: 'amazingefren',
   status: 'implemented',
-  scope: 'required',
   visibility: 'public',
-  schemaVersion: 5,
-  context: {
-    decisions: [
-      'Claims and observations remain distinct records with explicit sources and review state.',
-      'Only reviewed owner selections can export. Export does not publish.',
-      'Guest evidence uses isolated synthetic state and never reads private research.',
-      'Approved public evidence delivery remains deferred.',
-      'CLI and MCP adapters are injected owner library entrypoints and are not public remote MCP tools.',
-    ],
-    openQuestions: ['Approved public evidence export contract.'],
-  },
+  schemaVersion: 6,
+  decisions: [
+    'Claims and observations remain distinct records with explicit sources and review state.',
+    'Only reviewed owner selections can export. Export does not publish.',
+    'Guest evidence uses isolated synthetic state and never reads private research.',
+    'Approved public evidence delivery remains deferred.',
+    'CLI and MCP adapters are injected owner library entrypoints and are not public remote MCP tools.',
+  ],
   capabilities: ['hypothesis-tracking', 'source-ledger', 'reviewed-export'],
   governance: {
     permissionsDefined: [
@@ -165,7 +158,6 @@ export default {
       ],
     },
   ],
-  events: [],
   views: [
     {
       id: 'owner',

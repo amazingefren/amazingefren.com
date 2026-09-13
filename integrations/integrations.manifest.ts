@@ -7,22 +7,14 @@ export default {
   purpose: 'Adapt external services to versioned AE contracts.',
   owner: 'amazingefren',
   status: 'declared',
-  scope: 'required',
   visibility: 'public',
-  context: {
-    decisions: [
-      'Typed ports isolate external services.',
-      'Serve the same approved static bundle on a separate Tor-capable host.',
-      'Keep mirror assets local; reading must need no clearnet services.',
-      'Require portable IPFS releases; design pinning, updates, and deletion limits.',
-      'Apply privacy/policy.json; never expose private material through analytics.',
-    ],
-    openQuestions: [
-      'Initial providers, webhook verification, and retry semantics.',
-      'Tor hosting, key custody, mirror update integrity, and availability.',
-      'IPFS pinning and revision discovery; no blockchain or wallet dependency selected.',
-    ],
-  },
+  decisions: [
+    'Typed ports isolate external services.',
+    'Serve the same approved static bundle on a separate Tor-capable host.',
+    'Keep mirror assets local; reading must need no clearnet services.',
+    'Require portable IPFS releases; design pinning, updates, and deletion limits.',
+    'Apply privacy/policy.json; never expose private material through analytics.',
+  ],
   capabilities: [
     'adapters',
     'webhooks',
@@ -36,10 +28,8 @@ export default {
   },
   risks: [],
   dependencies: ['auth', 'publishing', 'privacy'],
-  schemaVersion: 5,
-  contracts: [],
+  schemaVersion: 6,
   operations: [],
-  events: [],
   capabilityPaths: {
     adapters: 'integrations/adapters',
     webhooks: 'integrations/adapters/webhooks',
@@ -55,5 +45,4 @@ export default {
     tests: 'integrations/tests',
     composition: 'integrations/composition',
   },
-  entrypoints: [],
 } as const satisfies SystemManifest;

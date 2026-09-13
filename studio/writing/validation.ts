@@ -1,45 +1,85 @@
 import type {
   Asset,
-  Publication,
   Snapshot,
   StudioDocument,
   StudioState,
 } from '../../contracts/writing/index.ts';
 
+const DOCUMENT_KINDS = ['note', 'document', 'manuscript'] as const;
+const PUBLICATION_KINDS = ['article', 'page', 'book'] as const;
+const STAGES = ['draft', 'review', 'scheduled', 'published'] as const;
+const ASSET_MIMES = [
+  'image/png',
+  'image/jpeg',
+  'image/webp',
+  'image/gif',
+] as const;
+
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
+
 const isString = (value: unknown): value is string => typeof value === 'string';
+
 const isNumber = (value: unknown): value is number =>
   typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
+
 const isStringArray = (value: unknown): value is string[] =>
   Array.isArray(value) && value.every(isString);
-const hasOnly = (value: Record<string, unknown>, keys: readonly string[]) =>
-  Object.keys(value).every((key) => keys.includes(key)) &&
-  keys.every((key) => key in value);
-const hasRequiredAndOptional = (
+
+const hasKeys = (
   value: Record<string, unknown>,
   required: readonly string[],
-  optional: readonly string[],
-) =>
-  Object.keys(value).every((key) => [...required, ...optional].includes(key)) &&
-  required.every((key) => key in value);
+  optional: readonly string[] = [],
+): boolean => {
+  const allowed = new Set([...required, ...optional]);
+  return (
+    Object.keys(value).every((key) => allowed.has(key)) &&
+    required.every((key) => key in value)
+  );
+};
+
+const hasExactly = (
+  value: Record<string, unknown>,
+  keys: readonly string[],
+): boolean =>
+  Object.keys(value).every((key) => keys.includes(key)) &&
+  keys.every((key) => key in value);
+
 const isSource = (value: unknown): boolean =>
   isRecord(value) &&
-  hasRequiredAndOptional(
-    value,
-    ['format', 'text', 'exportProfileVersion'],
-    ['sourceHash'],
-  ) &&
+  hasKeys(value, ['format', 'text', 'exportProfileVersion'], ['sourceHash']) &&
   value.format === 'org' &&
   isString(value.text) &&
   isString(value.exportProfileVersion) &&
   (value.sourceHash === undefined || isString(value.sourceHash));
+
 const isIsoDate = (value: unknown): value is string =>
   isString(value) && !Number.isNaN(Date.parse(value));
 
+const isAssetMime = (value: unknown): value is Asset['mime'] =>
+  ASSET_MIMES.includes(value as Asset['mime']);
+
+const isDocumentKind = (value: unknown): value is StudioDocument['kind'] =>
+  DOCUMENT_KINDS.includes(value as StudioDocument['kind']);
+
+const isPublicationKind = (value: unknown): value is Snapshot['kind'] =>
+  PUBLICATION_KINDS.includes(value as Snapshot['kind']);
+
+const isStage = (value: unknown): boolean =>
+  STAGES.includes(value as (typeof STAGES)[number]);
+
+const isRevision = (value: unknown): boolean =>
+  isRecord(value) &&
+  hasKeys(value, ['number', 'title', 'body', 'savedAt'], ['source']) &&
+  isNumber(value.number) &&
+  isString(value.title) &&
+  isString(value.body) &&
+  isIsoDate(value.savedAt) &&
+  (value.source === undefined || isSource(value.source));
+
 const isAsset = (value: unknown): value is Asset =>
   isRecord(value) &&
-  hasOnly(value, [
+  hasExactly(value, [
     'id',
     'name',
     'mime',
@@ -50,9 +90,7 @@ const isAsset = (value: unknown): value is Asset =>
   ]) &&
   isString(value.id) &&
   isString(value.name) &&
-  ['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(
-    value.mime as string,
-  ) &&
+  isAssetMime(value.mime) &&
   isString(value.dataUrl) &&
   isString(value.alt) &&
   isString(value.caption) &&
@@ -60,7 +98,7 @@ const isAsset = (value: unknown): value is Asset =>
 
 const isDocument = (value: unknown): value is StudioDocument =>
   isRecord(value) &&
-  hasRequiredAndOptional(
+  hasKeys(
     value,
     [
       'id',
@@ -78,7 +116,7 @@ const isDocument = (value: unknown): value is StudioDocument =>
     ['source'],
   ) &&
   isString(value.id) &&
-  ['note', 'document', 'manuscript'].includes(value.kind as string) &&
+  isDocumentKind(value.kind) &&
   isString(value.title) &&
   isString(value.body) &&
   isStringArray(value.tags) &&
@@ -88,25 +126,20 @@ const isDocument = (value: unknown): value is StudioDocument =>
   isNumber(value.revision) &&
   isIsoDate(value.updatedAt) &&
   Array.isArray(value.revisions) &&
-  value.revisions.every(
-    (revision) =>
-      isRecord(revision) &&
-      hasRequiredAndOptional(
-        revision,
-        ['number', 'title', 'body', 'savedAt'],
-        ['source'],
-      ) &&
-      isNumber(revision.number) &&
-      isString(revision.title) &&
-      isString(revision.body) &&
-      isIsoDate(revision.savedAt) &&
-      (revision.source === undefined || isSource(revision.source)),
-  ) &&
+  value.revisions.every(isRevision) &&
   (value.source === undefined || isSource(value.source));
+
+const isSnapshotChapter = (value: unknown): boolean =>
+  isRecord(value) &&
+  hasExactly(value, ['documentId', 'revision', 'title', 'body']) &&
+  isString(value.documentId) &&
+  isNumber(value.revision) &&
+  isString(value.title) &&
+  isString(value.body);
 
 export const isSnapshot = (value: unknown): value is Snapshot =>
   isRecord(value) &&
-  hasRequiredAndOptional(
+  hasKeys(
     value,
     [
       'id',
@@ -136,7 +169,7 @@ export const isSnapshot = (value: unknown): value is Snapshot =>
   isString(value.title) &&
   isString(value.slug) &&
   isString(value.summary) &&
-  ['article', 'page', 'book'].includes(value.kind as string) &&
+  isPublicationKind(value.kind) &&
   isString(value.seoTitle) &&
   isString(value.seoDescription) &&
   isStringArray(value.tags) &&
@@ -145,19 +178,11 @@ export const isSnapshot = (value: unknown): value is Snapshot =>
   Array.isArray(value.assets) &&
   value.assets.every(isAsset) &&
   Array.isArray(value.chapters) &&
-  value.chapters.every(
-    (chapter) =>
-      isRecord(chapter) &&
-      hasOnly(chapter, ['documentId', 'revision', 'title', 'body']) &&
-      isString(chapter.documentId) &&
-      isNumber(chapter.revision) &&
-      isString(chapter.title) &&
-      isString(chapter.body),
-  );
+  value.chapters.every(isSnapshotChapter);
 
-const isPublication = (value: unknown): value is Publication =>
+const isPublication = (value: unknown): boolean =>
   isRecord(value) &&
-  hasRequiredAndOptional(
+  hasKeys(
     value,
     [
       'id',
@@ -183,7 +208,7 @@ const isPublication = (value: unknown): value is Publication =>
   isString(value.id) &&
   (value.revision === undefined ||
     (isNumber(value.revision) && value.revision > 0)) &&
-  ['article', 'page', 'book'].includes(value.kind as string) &&
+  isPublicationKind(value.kind) &&
   isString(value.title) &&
   isString(value.slug) &&
   isString(value.summary) &&
@@ -192,9 +217,7 @@ const isPublication = (value: unknown): value is Publication =>
   isString(value.seoDescription) &&
   (value.coverAssetId === null || isString(value.coverAssetId)) &&
   isStringArray(value.chapterIds) &&
-  ['draft', 'review', 'scheduled', 'published'].includes(
-    value.stage as string,
-  ) &&
+  isStage(value.stage) &&
   isNumber(value.version) &&
   isIsoDate(value.updatedAt) &&
   (value.scheduledAt === null || isIsoDate(value.scheduledAt)) &&
@@ -205,7 +228,7 @@ const isPublication = (value: unknown): value is Publication =>
 
 export const isStudioState = (value: unknown): value is StudioState =>
   isRecord(value) &&
-  hasOnly(value, [
+  hasExactly(value, [
     'schemaVersion',
     'synthetic',
     'version',

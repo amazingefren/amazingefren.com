@@ -28,34 +28,100 @@ import { WorkPage } from './work-page.tsx';
 import { WritingPage } from './writing-page.tsx';
 import { BenchmarkPage } from './benchmark-page.tsx';
 
-const labels = {
-  dashboard: 'Dashboard',
-  work: 'Work',
-  documents: 'Notes',
-  tasks: 'Tasks',
-  experiments: 'Experiments',
-  benchmarks: 'Benchmarks',
-  evidence: 'Evidence',
-  relationships: 'Relationships',
-  publishing: 'Publications',
-  systems: 'Systems',
-  connections: 'Connections',
-  access: 'Access',
+type WorkspaceAppProps = {
+  initialPage: WorkspacePage;
+  catalog: CatalogEntry[];
+  audience?: WorkspaceAudience;
+  initialState?: WorkspaceState;
+  basePath?: '/guest' | '/workspace';
 };
-const symbols = ['▦', '◇', '▤', '☷', '◉', '∷', '≡', '⇄', '↗', '⌘', '⊞', '⌑'];
+
+const navigationItems: Record<
+  WorkspacePage,
+  { label: string; symbol: string }
+> = {
+  dashboard: { label: 'Dashboard', symbol: '▦' },
+  work: { label: 'Work', symbol: '◇' },
+  documents: { label: 'Notes', symbol: '▤' },
+  tasks: { label: 'Tasks', symbol: '☷' },
+  experiments: { label: 'Experiments', symbol: '◉' },
+  benchmarks: { label: 'Benchmarks', symbol: '∷' },
+  evidence: { label: 'Evidence', symbol: '≡' },
+  relationships: { label: 'Relationships', symbol: '⇄' },
+  publishing: { label: 'Publications', symbol: '↗' },
+  systems: { label: 'Systems', symbol: '⌘' },
+  connections: { label: 'Connections', symbol: '⊞' },
+  access: { label: 'Access', symbol: '⌑' },
+};
+
+const workspaceErrorCodes: readonly WorkspaceError['code'][] = [
+  'invalid',
+  'denied',
+  'missing',
+  'conflict',
+  'unavailable',
+];
+
+function parseOwnerResult(result: unknown): WorkspaceResult<WorkspaceState> {
+  if (result && typeof result === 'object' && 'ok' in result) {
+    if (
+      result.ok === true &&
+      'value' in result &&
+      isWorkspaceState(result.value) &&
+      !result.value.synthetic
+    )
+      return { ok: true, value: result.value };
+    if (
+      result.ok === false &&
+      'error' in result &&
+      result.error &&
+      typeof result.error === 'object' &&
+      'message' in result.error &&
+      typeof result.error.message === 'string'
+    ) {
+      const responseCode =
+        'code' in result.error ? String(result.error.code) : '';
+      const code = workspaceErrorCodes.includes(
+        responseCode as WorkspaceError['code'],
+      )
+        ? (responseCode as WorkspaceError['code'])
+        : 'unavailable';
+      return {
+        ok: false,
+        error: { code, message: result.error.message },
+      };
+    }
+  }
+  return {
+    ok: false,
+    error: {
+      code: 'unavailable',
+      message: 'The owner service returned an invalid response.',
+    },
+  };
+}
+
+function createOwnerWorkspacePort(): WorkspacePort {
+  return {
+    async execute(command) {
+      const response = await fetch('/api/workspace/operation', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(command),
+      });
+      return parseOwnerResult(await response.json());
+    },
+  };
+}
+
 export function WorkspaceApp({
   initialPage,
   catalog,
   audience = 'guest',
   initialState,
   basePath,
-}: {
-  initialPage: WorkspacePage;
-  catalog: CatalogEntry[];
-  audience?: WorkspaceAudience;
-  initialState?: WorkspaceState;
-  basePath?: '/guest' | '/workspace';
-}) {
+}: WorkspaceAppProps) {
   const base = basePath ?? (audience === 'owner' ? '/workspace' : '/guest');
   const dirty = useRef(false);
   const currentPath = useRef('');
@@ -78,58 +144,7 @@ export function WorkspaceApp({
       port.current =
         audience === 'guest'
           ? createBrowserGuestPort(window.sessionStorage)
-          : {
-              async execute(command) {
-                const response = await fetch('/api/workspace/operation', {
-                  method: 'POST',
-                  credentials: 'same-origin',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(command),
-                });
-                const result: unknown = await response.json();
-                if (result && typeof result === 'object' && 'ok' in result) {
-                  if (
-                    result.ok === true &&
-                    'value' in result &&
-                    isWorkspaceState(result.value) &&
-                    !result.value.synthetic
-                  )
-                    return { ok: true, value: result.value };
-                  if (
-                    result.ok === false &&
-                    'error' in result &&
-                    result.error &&
-                    typeof result.error === 'object' &&
-                    'message' in result.error &&
-                    typeof result.error.message === 'string'
-                  )
-                    return {
-                      ok: false,
-                      error: {
-                        code:
-                          'code' in result.error &&
-                          [
-                            'invalid',
-                            'denied',
-                            'missing',
-                            'conflict',
-                            'unavailable',
-                          ].includes(String(result.error.code))
-                            ? (result.error.code as WorkspaceError['code'])
-                            : 'unavailable',
-                        message: result.error.message,
-                      },
-                    };
-                }
-                return {
-                  ok: false,
-                  error: {
-                    code: 'unavailable',
-                    message: 'The owner service returned an invalid response.',
-                  },
-                };
-              },
-            };
+          : createOwnerWorkspacePort();
     } catch {
       setError(
         'Browser storage is unavailable. Enable session storage to use the guest workspace.',
@@ -300,28 +315,31 @@ export function WorkspaceApp({
         </a>
         <p className="ws-nav-label">PERSONAL WORKSPACE</p>
         <nav onKeyDown={moveNavigation}>
-          {workspacePages.map((item, index) => (
-            <a
-              className="ae-nav-item"
-              href={`${base}/${item}`}
-              key={item}
-              aria-current={item === page ? 'page' : undefined}
-              onClick={(event) => {
-                if (
-                  !event.metaKey &&
-                  !event.ctrlKey &&
-                  !event.shiftKey &&
-                  !event.altKey
-                ) {
-                  event.preventDefault();
-                  navigate(item);
-                }
-              }}
-            >
-              <span aria-hidden="true">{symbols[index]}</span>
-              {labels[item]}
-            </a>
-          ))}
+          {workspacePages.map((item) => {
+            const navigation = navigationItems[item];
+            return (
+              <a
+                className="ae-nav-item"
+                href={`${base}/${item}`}
+                key={item}
+                aria-current={item === page ? 'page' : undefined}
+                onClick={(event) => {
+                  if (
+                    !event.metaKey &&
+                    !event.ctrlKey &&
+                    !event.shiftKey &&
+                    !event.altKey
+                  ) {
+                    event.preventDefault();
+                    navigate(item);
+                  }
+                }}
+              >
+                <span aria-hidden="true">{navigation.symbol}</span>
+                {navigation.label}
+              </a>
+            );
+          })}
         </nav>
         <p className="ws-nav-label ws-public-label">PUBLIC SIDE</p>
         <nav>
@@ -398,7 +416,7 @@ export function WorkspaceApp({
             </button>
             <span>Workspace</span>
             <span className="ws-slash">/</span>
-            <strong>{labels[page]}</strong>
+            <strong>{navigationItems[page].label}</strong>
           </div>
           <div className="ws-header-tools">
             <ThemeControl />

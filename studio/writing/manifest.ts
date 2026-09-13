@@ -24,10 +24,9 @@ const operation = (
     {
       id: `${id}.http`,
       surface: { kind: 'http', method: 'POST', path: '/api/writing/operation' },
-      scope: 'required',
-      status: 'implemented',
+      status: 'declared',
       directory: 'studio/writing',
-      testsDirectory: 'studio/tests/writing',
+      testsDirectory: 'studio/tests',
       implementation: 'studio/writing/adapters.ts',
       tests: [],
     },
@@ -39,10 +38,9 @@ const operation = (
         description: `Invoke ${id} through the authorized writing port.`,
         readOnly,
       },
-      scope: 'required',
-      status: 'implemented',
+      status: 'declared',
       directory: 'studio/writing',
-      testsDirectory: 'studio/tests/writing',
+      testsDirectory: 'studio/tests',
       implementation: 'studio/writing/adapters.ts',
       tests: [],
     },
@@ -53,20 +51,19 @@ const operation = (
         command: `ae writing ${id.replace('studio.', '')}`,
         output: 'json',
       },
-      scope: 'required',
-      status: 'implemented',
+      status: 'declared',
       directory: 'studio/writing',
-      testsDirectory: 'studio/tests/writing',
+      testsDirectory: 'studio/tests',
       implementation: 'studio/writing/adapters.ts',
       tests: [],
     },
   ],
-  status: 'implemented',
+  status: 'declared',
   input: 'contracts/writing/index.ts',
   output: 'contracts/writing/index.ts',
   errors: 'contracts/writing/index.ts',
-  directory: `studio/writing/operations/${id}`,
-  testsDirectory: `studio/tests/writing/${id}`,
+  directory: 'studio/writing',
+  testsDirectory: 'studio/tests',
   implementation: 'studio/writing/guest.ts',
   verification: [
     {
@@ -93,8 +90,13 @@ const operation = (
       id: `${id}.failure`,
       category: 'failure',
       expectation:
-        'Invalid state and revision conflicts return typed failures without fallback data.',
-      tests: [],
+        id === 'studio.writing.read'
+          ? 'Corrupt or owner-shaped guest storage returns unavailable without resetting saved data.'
+          : 'Invalid state and revision conflicts return typed failures without fallback data.',
+      tests:
+        id === 'studio.writing.read' || id === 'studio.notes.save'
+          ? ['studio/tests/writing/guest-failures.test.ts']
+          : [],
     },
   ],
 });

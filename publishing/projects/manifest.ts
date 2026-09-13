@@ -29,8 +29,7 @@ const authoringOperation = (id: PublicationProjectOperationId): Operation => ({
     {
       id: `${id}.http`,
       surface: { kind: 'http', method: 'POST', path: '/api/writing/operation' },
-      scope: 'required',
-      status: 'implemented',
+      status: 'declared',
       directory: 'publishing/projects',
       testsDirectory: 'publishing/tests/projects',
       implementation: 'publishing/projects/adapters.ts',
@@ -44,8 +43,7 @@ const authoringOperation = (id: PublicationProjectOperationId): Operation => ({
         description: `Invoke ${id} through the authorized writing port.`,
         readOnly: false,
       },
-      scope: 'required',
-      status: 'implemented',
+      status: 'declared',
       directory: 'publishing/projects',
       testsDirectory: 'publishing/tests/projects',
       implementation: 'publishing/projects/adapters.ts',
@@ -58,20 +56,19 @@ const authoringOperation = (id: PublicationProjectOperationId): Operation => ({
         command: `ae writing ${id.replace('publishing.', '')}`,
         output: 'json',
       },
-      scope: 'required',
-      status: 'implemented',
+      status: 'declared',
       directory: 'publishing/projects',
       testsDirectory: 'publishing/tests/projects',
       implementation: 'publishing/projects/adapters.ts',
       tests: [],
     },
   ],
-  status: 'implemented',
+  status: 'declared',
   input: 'contracts/writing/index.ts',
   output: 'contracts/writing/index.ts',
   errors: 'contracts/writing/index.ts',
-  directory: `publishing/projects/operations/${id}`,
-  testsDirectory: `publishing/tests/projects/${id}`,
+  directory: 'publishing/projects',
+  testsDirectory: 'publishing/tests',
   implementation: 'publishing/projects/adapters.ts',
   verification: [
     {
@@ -100,7 +97,11 @@ const authoringOperation = (id: PublicationProjectOperationId): Operation => ({
       category: 'failure',
       expectation:
         'Missing projects, invalid input, and stale versions return typed failures.',
-      tests: [],
+      tests:
+        id === 'publishing.projects.update' ||
+        id === 'publishing.projects.publish'
+          ? ['publishing/tests/projects/guest-failures.test.ts']
+          : [],
     },
   ],
 });
@@ -111,11 +112,10 @@ const publicBinding = (
 ) => ({
   id,
   surface,
-  scope: 'required' as const,
   status: 'declared' as const,
   directory: 'publishing/projects',
   testsDirectory: 'publishing/tests/projects',
-  implementation: 'web/adapters/http/publications.tsx',
+  implementation: 'publishing/projects/delivery.ts',
   tests: [],
 });
 const publicOperation = (
@@ -185,6 +185,19 @@ const publicOperation = (
             method: 'GET',
             path: '/api/publications/{slug}',
           }),
+          {
+            id: `${id}.asset`,
+            surface: {
+              kind: 'http',
+              method: 'GET',
+              path: '/api/publications/assets/{releaseId}/{assetId}',
+            },
+            status: 'declared',
+            directory: 'publishing/projects',
+            testsDirectory: 'publishing/tests/projects',
+            implementation: 'publishing/projects/delivery.ts',
+            tests: [],
+          },
           publicBinding(`${id}.markdown`, {
             kind: 'export',
             format: 'markdown',
@@ -200,34 +213,34 @@ const publicOperation = (
   input: 'contracts/writing/index.ts',
   output: 'contracts/writing/index.ts',
   errors: 'contracts/writing/index.ts',
-  directory: `publishing/projects/operations/${id}`,
-  testsDirectory: `publishing/tests/projects/${id}`,
-  implementation: 'web/adapters/http/publications.tsx',
+  directory: 'publishing/projects',
+  testsDirectory: 'publishing/tests',
+  implementation: 'publishing/projects/delivery.ts',
   verification: [
     {
       id: `${id}.contract`,
       category: 'contract',
       expectation: 'Public snapshots use contracts/writing/index.ts.',
-      tests: [],
+      tests: ['web/tests/runtime/portable.mjs'],
     },
     {
       id: `${id}.access`,
       category: 'access',
       expectation: 'Only active public snapshots are available.',
-      tests: [],
+      tests: ['web/tests/runtime/portable.mjs'],
     },
     {
       id: `${id}.behavior`,
       category: 'behavior',
       expectation:
         'JSON, HTML, Markdown, feeds, and offline bundles use the same active snapshot.',
-      tests: [],
+      tests: ['web/tests/runtime/portable.mjs'],
     },
     {
       id: `${id}.failure`,
       category: 'failure',
       expectation: 'Unknown or withdrawn slugs do not disclose authoring data.',
-      tests: [],
+      tests: ['web/tests/runtime/portable.mjs'],
     },
   ],
 });

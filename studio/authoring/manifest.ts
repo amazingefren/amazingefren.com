@@ -2,6 +2,26 @@ import type { Operation } from '../../manifests/schema/operation.schema.ts';
 import { studioWritingOperations } from '../writing/manifest.ts';
 import { publicationProjectOperations } from '../../publishing/projects/manifest.ts';
 
+function authoringExpectation(
+  operation: Operation,
+  obligation: Operation['verification'][number],
+): string {
+  if (operation.id === 'studio.writing.reset')
+    return obligation.category === 'access'
+      ? 'Guest reset never invokes owner storage.'
+      : obligation.expectation;
+  if (obligation.category === 'access')
+    return 'The private service verifies the owner passkey session before each protected read or write.';
+  if (obligation.category === 'failure')
+    return 'Invalid writing state and revision conflicts return typed failures without exposing or resetting private data.';
+  if (obligation.category !== 'behavior') return obligation.expectation;
+  if (operation.id === 'studio.writing.read')
+    return "Read only the caller's stored writing state without changing it.";
+  if (operation.id.startsWith('publishing.'))
+    return 'Project transitions use expected versions. Saves and reviews do not change active public releases.';
+  return 'Private drafts and referenced assets stay owner-only. Writing commands never publish them.';
+}
+
 function authoring(operation: Operation): Operation {
   const reset = operation.id === 'studio.writing.reset';
   const publication = operation.id.startsWith('publishing.');
@@ -46,17 +66,37 @@ function authoring(operation: Operation): Operation {
     })),
     verification: operation.verification.map((item) => ({
       ...item,
-      expectation:
-        item.category === 'access'
-          ? reset
-            ? 'Guest reset never invokes owner storage.'
-            : 'The private service verifies the configured owner passkey session before each protected read or write.'
-          : item.expectation,
+      expectation: authoringExpectation(operation, item),
+      tests: reset ? item.tests : [],
     })),
   };
 }
 
-export const ownerWritingOperations = studioWritingOperations.map(authoring);
+export const ownerWritingOperations: Operation[] = studioWritingOperations.map(
+  (operation): Operation => {
+    const declared = authoring(operation);
+    if (operation.id !== 'studio.writing.read') return declared;
+    return {
+      ...declared,
+      bindings: [
+        ...declared.bindings,
+        {
+          id: 'studio.writing.read.asset',
+          surface: {
+            kind: 'http',
+            method: 'GET',
+            path: '/api/writing/assets/{id}',
+          },
+          status: 'declared',
+          directory: 'studio/writing',
+          testsDirectory: 'studio/tests',
+          implementation: null,
+          tests: [],
+        } as const,
+      ],
+    };
+  },
+);
 export const ownerProjectOperations = publicationProjectOperations
   .filter((operation) => operation.dataScope !== 'published')
   .map(authoring);

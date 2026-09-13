@@ -7,30 +7,19 @@ export default {
   purpose: 'Compose HTTP interfaces over system operations.',
   owner: 'amazingefren',
   status: 'implemented',
-  scope: 'required',
   visibility: 'public',
-  context: {
-    decisions: [
-      'Thin HTTP gateway; domain logic stays in owning systems.',
-      'Public OpenAPI 3.1 discovery derives implemented public HTTP bindings from the registry. Generic schemas retain public contract provenance; they do not infer payload validation from TypeScript source paths.',
-      'Path normalization and duplicate template checks follow https://spec.openapis.org/oas/v3.1.0.html. Protected and synthetic operations are excluded.',
-      'Expose public reading and catalog discovery without browser sessions.',
-      'Use the same contracts and access decisions as MCP and CLI clients.',
-    ],
-    openQuestions: ['Versioning and error contracts.'],
-  },
-  capabilities: [
-    'http-interface',
-    'public-content-access',
-    'public-system-access',
+  decisions: [
+    'Public OpenAPI discovery derives implemented public HTTP bindings from the registry and excludes protected and synthetic operations.',
+    'Generic schemas preserve referenced contract provenance; they do not infer payload validation from TypeScript source paths.',
   ],
+  capabilities: ['http-interface'],
   governance: {
     permissionsDefined: [],
     dataClassification: 'mixed',
   },
   risks: [],
   dependencies: ['auth', 'publishing', 'system-explorer', 'studio'],
-  schemaVersion: 5,
+  schemaVersion: 6,
   contracts: ['api/contracts/openapi.ts'],
   operations: [
     {
@@ -40,7 +29,6 @@ export default {
       bindings: [
         {
           id: 'api.openapi.http',
-          scope: 'required',
           status: 'implemented',
           directory: 'api/adapters',
           testsDirectory: 'api/tests',
@@ -78,11 +66,8 @@ export default {
       ],
     },
   ],
-  events: [],
   capabilityPaths: {
     'http-interface': 'api/adapters',
-    'public-content-access': 'api/gateway',
-    'public-system-access': 'api/gateway',
   },
   structure: {
     domain: 'api/domain',

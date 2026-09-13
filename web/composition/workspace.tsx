@@ -6,7 +6,9 @@ import type { OwnerWorkspaceGateway } from './owner-workspace.ts';
 import { workspacePages } from '../../workspace/contracts/index.ts';
 import type {
   CatalogEntry,
+  WorkspaceAudience,
   WorkspacePage,
+  WorkspaceState,
 } from '../../workspace/contracts/index.ts';
 import { themeBootstrap } from '../../design/behaviors/theme.ts';
 import { BrandMark } from '../../design/ui/BrandMark.tsx';
@@ -28,8 +30,8 @@ function publicCatalog(): CatalogEntry[] {
       purpose: system.purpose,
       status: system.status,
       capabilities: [...system.capabilities],
-      dependencies: [...system.dependencies],
-      contracts: [...system.contracts],
+      dependencies: [...(system.dependencies ?? [])],
+      contracts: [...(system.contracts ?? [])],
       operations: system.operations.map((operation) => ({
         id: operation.id,
         access: operation.access.kind,
@@ -85,50 +87,17 @@ export function WorkspaceDocument({ children }: DocumentProps) {
 }
 
 export function GuestWorkspaceRoute({ request, response }: RequestInfo) {
-  response.headers.set('Cache-Control', 'private, no-store');
-  const path = new URL(request.url).pathname;
-  if (path === '/guest')
-    return Response.redirect(new URL('/guest/dashboard', request.url), 302);
-  const requested = path.split('/')[2] || 'dashboard';
-  if (!workspacePages.includes(requested as WorkspacePage)) {
-    response.status = 404;
-    return (
-      <main className="ae-workspace ws-main">
-        <h1>Page not found</h1>
-        <a href="/guest/dashboard">Open Dashboard</a>
-      </main>
-    );
-  }
-  return (
-    <WorkspaceApp
-      initialPage={requested as WorkspacePage}
-      catalog={publicCatalog()}
-    />
-  );
+  return renderWorkspacePage(request, response, {
+    basePath: '/guest',
+    catalog: publicCatalog(),
+  });
 }
 
 export function LocalWorkspacePreviewRoute({ request, response }: RequestInfo) {
-  response.headers.set('Cache-Control', 'private, no-store');
-  const path = new URL(request.url).pathname;
-  if (path === '/workspace')
-    return Response.redirect(new URL('/workspace/dashboard', request.url), 302);
-  const requested = path.split('/')[2] || 'dashboard';
-  if (!workspacePages.includes(requested as WorkspacePage)) {
-    response.status = 404;
-    return (
-      <main className="ae-workspace ws-main">
-        <h1>Page not found</h1>
-        <a href="/workspace/dashboard">Open Dashboard</a>
-      </main>
-    );
-  }
-  return (
-    <WorkspaceApp
-      initialPage={requested as WorkspacePage}
-      catalog={publicCatalog()}
-      basePath="/workspace"
-    />
-  );
+  return renderWorkspacePage(request, response, {
+    basePath: '/workspace',
+    catalog: publicCatalog(),
+  });
 }
 
 export function createOwnerWorkspaceRoute(gateway: OwnerWorkspaceGateway) {
@@ -153,29 +122,49 @@ export function createOwnerWorkspaceRoute(gateway: OwnerWorkspaceGateway) {
         </main>
       );
     }
-    const path = new URL(request.url).pathname;
-    if (path === '/workspace')
-      return Response.redirect(
-        new URL('/workspace/dashboard', request.url),
-        302,
-      );
-    const requested = path.split('/')[2] || 'dashboard';
-    if (!workspacePages.includes(requested as WorkspacePage)) {
-      response.status = 404;
-      return (
-        <main className="ae-workspace ws-main">
-          <h1>Page not found</h1>
-          <a href="/workspace/dashboard">Open Dashboard</a>
-        </main>
-      );
-    }
-    return (
-      <WorkspaceApp
-        initialPage={requested as WorkspacePage}
-        catalog={publicCatalog()}
-        audience="owner"
-        initialState={result.value}
-      />
-    );
+    return renderWorkspacePage(request, response, {
+      basePath: '/workspace',
+      catalog: publicCatalog(),
+      audience: 'owner',
+      initialState: result.value,
+    });
   };
+}
+
+function renderWorkspacePage(
+  request: Request,
+  response: RequestInfo['response'],
+  options: {
+    basePath: '/guest' | '/workspace';
+    catalog: CatalogEntry[];
+    audience?: WorkspaceAudience;
+    initialState?: WorkspaceState;
+  },
+) {
+  response.headers.set('Cache-Control', 'private, no-store');
+  const path = new URL(request.url).pathname;
+  if (path === options.basePath)
+    return Response.redirect(
+      new URL(`${options.basePath}/dashboard`, request.url),
+      302,
+    );
+  const requested = path.split('/')[2] || 'dashboard';
+  if (!workspacePages.includes(requested as WorkspacePage)) {
+    response.status = 404;
+    return (
+      <main className="ae-workspace ws-main">
+        <h1>Page not found</h1>
+        <a href={`${options.basePath}/dashboard`}>Open Dashboard</a>
+      </main>
+    );
+  }
+  return (
+    <WorkspaceApp
+      initialPage={requested as WorkspacePage}
+      catalog={options.catalog}
+      audience={options.audience}
+      initialState={options.initialState}
+      basePath={options.basePath}
+    />
+  );
 }

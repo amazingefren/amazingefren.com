@@ -147,8 +147,6 @@ export default {
     publishingRequiresDeployment: false,
   },
   access: {
-    scope: 'required',
-    status: 'declared',
     principle:
       'Read public content and approved system descriptions without the website UI.',
     channels: {
@@ -156,7 +154,7 @@ export default {
       atom: 'publishing/adapters/atom',
       'stable-permalinks': 'publishing/domain/permalinks',
       'markdown-downloads': 'publishing/adapters/exports/markdown',
-      'no-javascript-html': 'web/ui/reading',
+      'no-javascript-html': 'web/ui/readings',
       'json-system-catalog': 'system-explorer/adapters/exports/json',
       'remote-mcp': 'mcp/transport',
       'claude-connector-compatibility': 'mcp/clients/claude',
@@ -205,23 +203,7 @@ export default {
     api: 'contracts/api',
     events: 'contracts/events',
     content: 'contracts/content',
-    studio: 'contracts/studio',
-  },
-  structure: {
-    sdk: 'sdk',
-    cli: 'cli/commands',
-    infrastructure: 'cloudflare',
-    workers: 'cloudflare/workers',
-    pages: 'cloudflare/pages',
-    d1: 'cloudflare/d1',
-    r2: 'cloudflare/r2',
-    deployment: '.github/workflows',
-    content: 'content',
-    articles: 'content/articles',
-    publications: 'content/publications',
-    projects: 'content/projects',
-    studioPrototype: 'prototypes/studio',
-    explorerPrototype: 'prototypes/system-explorer',
+    studio: 'contracts/writing',
   },
   privateMaterial: {
     repository: 'ae-workbench',

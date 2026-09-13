@@ -11,24 +11,20 @@ export interface SystemManifest {
   purpose: string;
   owner: string;
   status: 'declared' | 'prototype' | 'implemented';
-  scope: 'required';
   visibility: 'public' | 'private';
-  context: {
-    decisions: readonly string[];
-    openQuestions: readonly string[];
-  };
+  decisions?: readonly string[];
   capabilities: readonly string[];
   governance: {
     permissionsDefined: readonly string[];
     dataClassification: 'public' | 'private' | 'mixed';
   };
   risks: readonly Risk[];
-  dependencies: readonly string[];
-  schemaVersion: 5;
+  dependencies?: readonly string[];
+  schemaVersion: 6;
   views?: readonly SystemView[];
-  contracts: readonly string[];
+  contracts?: readonly string[];
   operations: readonly Operation[];
-  events: readonly {
+  events?: readonly {
     id: string;
     contract: string;
     direction: 'emits' | 'consumes';
@@ -46,6 +42,6 @@ export interface SystemManifest {
     status: 'placeholder' | 'ready';
   }[];
   capabilityPaths: Readonly<Record<string, string>>;
-  structure: Readonly<Record<string, string>>;
-  entrypoints: readonly string[];
+  structure?: Readonly<Record<string, string>>;
+  entrypoints?: readonly string[];
 }

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type {
   EvaluationDefinition,
   EvaluationPort,
+  EvaluationReport,
   EvaluationState,
 } from '../contracts/index.ts';
 import {
@@ -11,6 +12,52 @@ import {
   summarizeRun,
 } from '../domain/report.ts';
 import './styles.css';
+
+type MetricKind = EvaluationDefinition['metric']['kind'];
+type DraftCase = { id: string; input: string; expected: string };
+type DraftSubject = { id: string; label: string; model: string };
+
+const createDraftCase = (id: string): DraftCase => ({
+  id,
+  input: '',
+  expected: '',
+});
+
+const createDraftSubject = (id: string): DraftSubject => ({
+  id,
+  label: '',
+  model: '',
+});
+
+function updateEntry<T extends object>(
+  entries: readonly T[],
+  index: number,
+  patch: Partial<T>,
+): T[] {
+  return entries.map((entry, entryIndex) =>
+    entryIndex === index ? { ...entry, ...patch } : entry,
+  );
+}
+
+type ReportLookup =
+  { ok: true; report: EvaluationReport } | { ok: false; message: string };
+
+async function requestReport(
+  port: EvaluationPort,
+  runId: string | undefined,
+  format: 'json' | 'markdown',
+): Promise<ReportLookup> {
+  const result = await port.execute({
+    operation: 'evaluation.export-report',
+    format,
+    ...(runId ? { runId } : {}),
+  });
+  if (result.ok && 'report' in result) return result;
+  return {
+    ok: false,
+    message: result.ok ? 'Report unavailable.' : result.error.message,
+  };
+}
 
 export function EvaluationWorkbench({
   audience,
@@ -27,15 +74,13 @@ export function EvaluationWorkbench({
   const [message, setMessage] = useState('');
   const [name, setName] = useState('');
   const [hypothesis, setHypothesis] = useState('');
-  const [cases, setCases] = useState([
-    { id: 'case-1', input: '', expected: '' },
+  const [cases, setCases] = useState<DraftCase[]>(() => [
+    createDraftCase('case-1'),
   ]);
-  const [subjects, setSubjects] = useState([
-    { id: 'subject-1', label: '', model: '' },
+  const [subjects, setSubjects] = useState<DraftSubject[]>(() => [
+    createDraftSubject('subject-1'),
   ]);
-  const [metric, setMetric] = useState<'exact-match' | 'contains' | 'manual'>(
-    'exact-match',
-  );
+  const [metric, setMetric] = useState<MetricKind>('exact-match');
   const [repetitions, setRepetitions] = useState(1);
   const [requests, setRequests] = useState(1);
   const [tokens, setTokens] = useState(1000);
@@ -55,6 +100,32 @@ export function EvaluationWorkbench({
     () => Math.max(0, repetitions) * cases.length * subjects.length,
     [repetitions, cases, subjects],
   );
+  function updateCase(index: number, patch: Partial<DraftCase>) {
+    setCases((all) => updateEntry(all, index, patch));
+  }
+  function updateSubject(index: number, patch: Partial<DraftSubject>) {
+    setSubjects((all) => updateEntry(all, index, patch));
+  }
+  function editDefinition(definition: EvaluationDefinition) {
+    setEditing(definition);
+    setName(definition.name);
+    setHypothesis(definition.hypothesis);
+    setCases(definition.cases.map((item) => ({ ...item })));
+    setSubjects(
+      definition.subjects.map((item) => ({
+        id: item.id,
+        label: item.label,
+        model:
+          typeof item.configuration.model === 'string'
+            ? item.configuration.model
+            : '',
+      })),
+    );
+    setMetric(definition.metric.kind);
+    setRepetitions(definition.repetitions);
+    setRequests(definition.budget.maxRequests);
+    setTokens(definition.budget.maxTokens);
+  }
   async function execute(command: Parameters<EvaluationPort['execute']>[0]) {
     setBusy(true);
     setMessage('');
@@ -131,14 +202,12 @@ export function EvaluationWorkbench({
   }
   async function download(format: 'json' | 'markdown') {
     try {
-      const result = await port.execute({
-        operation: 'evaluation.export-report',
-        format,
-        ...(selectedRun ? { runId: selectedRun.id } : {}),
-      });
-      if (!result.ok || !('report' in result)) {
+      const result = await requestReport(port, selectedRun?.id, format);
+      if (!result.ok) {
         setMessage(
-          result.ok ? 'Report export is unavailable.' : result.error.message,
+          result.message === 'Report unavailable.'
+            ? 'Report export is unavailable.'
+            : result.message,
         );
         return;
       }
@@ -165,15 +234,8 @@ export function EvaluationWorkbench({
     setBusy(true);
     setMessage('');
     try {
-      const result = await port.execute({
-        operation: 'evaluation.export-report',
-        runId: selectedRun.id,
-        format: 'markdown',
-      });
-      if (!result.ok || !('report' in result)) {
-        setMessage(result.ok ? 'Report unavailable.' : result.error.message);
-        return;
-      }
+      const result = await requestReport(port, selectedRun.id, 'markdown');
+      if (!result.ok) return setMessage(result.message);
       setMessage(
         await onDocumentReport(
           `${selected?.name ?? 'Benchmark'} — observations`,
@@ -191,15 +253,8 @@ export function EvaluationWorkbench({
     setBusy(true);
     setMessage('');
     try {
-      const result = await port.execute({
-        operation: 'evaluation.export-report',
-        runId: selectedRun.id,
-        format: 'markdown',
-      });
-      if (!result.ok || !('report' in result)) {
-        setMessage(result.ok ? 'Report unavailable.' : result.error.message);
-        return;
-      }
+      const result = await requestReport(port, selectedRun.id, 'markdown');
+      if (!result.ok) return setMessage(result.message);
       setMessage(
         await onRecordEvidence(selectedRun.id, reportMarkdown(result.report)),
       );
@@ -242,15 +297,7 @@ export function EvaluationWorkbench({
                 Input
                 <textarea
                   value={item.input}
-                  onChange={(e) =>
-                    setCases((all) =>
-                      all.map((value, i) =>
-                        i === index
-                          ? { ...value, input: e.target.value }
-                          : value,
-                      ),
-                    )
-                  }
+                  onChange={(e) => updateCase(index, { input: e.target.value })}
                 />
               </label>
               <label>
@@ -258,13 +305,7 @@ export function EvaluationWorkbench({
                 <textarea
                   value={item.expected}
                   onChange={(e) =>
-                    setCases((all) =>
-                      all.map((value, i) =>
-                        i === index
-                          ? { ...value, expected: e.target.value }
-                          : value,
-                      ),
-                    )
+                    updateCase(index, { expected: e.target.value })
                   }
                 />
               </label>
@@ -282,7 +323,7 @@ export function EvaluationWorkbench({
             onClick={() =>
               setCases((all) => [
                 ...all,
-                { id: nextMatrixId('case', all), input: '', expected: '' },
+                createDraftCase(nextMatrixId('case', all)),
               ])
             }
           >
@@ -298,13 +339,7 @@ export function EvaluationWorkbench({
                 <input
                   value={item.label}
                   onChange={(e) =>
-                    setSubjects((all) =>
-                      all.map((value, i) =>
-                        i === index
-                          ? { ...value, label: e.target.value }
-                          : value,
-                      ),
-                    )
+                    updateSubject(index, { label: e.target.value })
                   }
                 />
               </label>
@@ -313,13 +348,7 @@ export function EvaluationWorkbench({
                 <input
                   value={item.model}
                   onChange={(event) =>
-                    setSubjects((all) =>
-                      all.map((value, i) =>
-                        i === index
-                          ? { ...value, model: event.target.value }
-                          : value,
-                      ),
-                    )
+                    updateSubject(index, { model: event.target.value })
                   }
                 />
               </label>
@@ -337,7 +366,7 @@ export function EvaluationWorkbench({
             onClick={() =>
               setSubjects((all) => [
                 ...all,
-                { id: nextMatrixId('subject', all), label: '', model: '' },
+                createDraftSubject(nextMatrixId('subject', all)),
               ])
             }
           >
@@ -407,26 +436,7 @@ export function EvaluationWorkbench({
           <h2>{selected.name}</h2>
           <button
             disabled={busy || Boolean(selected.frozenAt)}
-            onClick={() => {
-              setEditing(selected);
-              setName(selected.name);
-              setHypothesis(selected.hypothesis);
-              setCases(selected.cases.map((item) => ({ ...item })));
-              setSubjects(
-                selected.subjects.map((item) => ({
-                  id: item.id,
-                  label: item.label,
-                  model:
-                    typeof item.configuration.model === 'string'
-                      ? item.configuration.model
-                      : '',
-                })),
-              );
-              setMetric(selected.metric.kind);
-              setRepetitions(selected.repetitions);
-              setRequests(selected.budget.maxRequests);
-              setTokens(selected.budget.maxTokens);
-            }}
+            onClick={() => editDefinition(selected)}
           >
             Edit draft
           </button>

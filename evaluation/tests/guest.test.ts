@@ -1,8 +1,14 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createGuestEvaluationPort } from '../adapters/guest.ts';
+import type { EvaluationCommand } from '../contracts/index.ts';
 
-const definition = {
+type DefinitionInput = Extract<
+  EvaluationCommand,
+  { operation: 'evaluation.create-definition' }
+>['input'];
+
+const definition: DefinitionInput = {
   name: 'fixture',
   hypothesis: 'synthetic',
   cases: [
@@ -17,10 +23,17 @@ const definition = {
   repetitions: 1,
   budget: { maxRequests: 4, maxTokens: 40 },
 };
-async function setup(port = createGuestEvaluationPort()) {
+const manualDefinition: DefinitionInput = {
+  ...definition,
+  metric: { kind: 'manual' },
+};
+async function setup(
+  port = createGuestEvaluationPort(),
+  input: DefinitionInput = definition,
+) {
   await port.execute({
     operation: 'evaluation.create-definition',
-    input: definition,
+    input,
   });
   await port.execute({
     operation: 'evaluation.freeze-definition',
@@ -33,6 +46,17 @@ async function setup(port = createGuestEvaluationPort()) {
     revision: 1,
   });
   return port;
+}
+async function executeUnknown(
+  port: ReturnType<typeof createGuestEvaluationPort>,
+  command: unknown,
+) {
+  return port.execute(command as never);
+}
+async function readState(port: ReturnType<typeof createGuestEvaluationPort>) {
+  const result = await port.execute({ operation: 'evaluation.read' });
+  if (!result.ok || !('value' in result)) throw new Error('State read failed.');
+  return result.value;
 }
 const attempts = ['one:a', 'one:b', 'two:a', 'two:b'].map((value) => {
   const [subjectId, caseId] = value.split(':');
@@ -100,4 +124,59 @@ test('guest rejects duplicate coordinates and isolates ports and returned values
   assert.equal(isolated.ok, true);
   if (isolated.ok && 'value' in isolated)
     assert.equal(isolated.value.definitions.length, 0);
+});
+
+test('guest rejects malformed imported input and manual scores without mutation', async () => {
+  const port = await setup();
+  const before = await readState(port);
+  const invalidImports = [
+    {
+      operation: 'evaluation.import-attempts',
+      runId: 'run-2',
+      attempts: [null],
+    },
+    {
+      operation: 'evaluation.import-attempts',
+      runId: 'run-2',
+      attempts: [{ ...attempts[0], extra: true }],
+    },
+    {
+      operation: 'evaluation.import-attempts',
+      runId: 'run-2',
+      attempts: [{ ...attempts[0], usage: { requests: '1', tokens: 2 } }],
+    },
+  ];
+  for (const command of invalidImports) {
+    assert.deepEqual(await executeUnknown(port, command), {
+      ok: false,
+      error: {
+        code: 'invalid',
+        message: 'Imported attempts are invalid or duplicate.',
+      },
+    });
+    assert.deepEqual(await readState(port), before);
+  }
+
+  const manual = await setup(createGuestEvaluationPort(), manualDefinition);
+  const imported = await manual.execute({
+    operation: 'evaluation.import-attempts',
+    runId: 'run-2',
+    attempts,
+  });
+  assert.equal(imported.ok, true);
+  const manualBefore = await readState(manual);
+  for (const scores of [[null], [{ attemptId: 'attempt-3', passed: 'yes' }]]) {
+    assert.deepEqual(
+      await executeUnknown(manual, {
+        operation: 'evaluation.score-manual',
+        runId: 'run-2',
+        scores,
+      }),
+      {
+        ok: false,
+        error: { code: 'invalid', message: 'Manual scores are invalid.' },
+      },
+    );
+    assert.deepEqual(await readState(manual), manualBefore);
+  }
 });

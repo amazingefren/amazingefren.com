@@ -12,11 +12,11 @@
 - Use classes only for framework requirements or state with a lifecycle. Prefer composition. Keep domain rules outside UI components and gateways.
 - Use stable operation IDs and typed input, result, and error contracts. Validate, authorize, execute, return. Deny access before protected reads or writes.
 - Govern capabilities, operations, routes, events, dependencies, and access through colocated manifests and referenced contracts. Extend the schema when needed. Deny undeclared operations. Generate repetitive bindings in `ae-system-engine` when implemented.
-- Manifest order: purpose, decisions, capabilities, governance, risks; then contracts, bindings, and paths.
+- Manifest order: purpose, optional decisions, capabilities, governance, risks; then contracts, bindings, and paths. Decisions contain current constraints that typed fields cannot express. Do not append requests, dates, approval history, implementation summaries, or repeated rules. Keep unresolved work and history in the private workbench; no context or openQuestions sections.
 - Nest bindings beside operation access. Inherit permissions; do not duplicate them or operation IDs.
 - For commit messages, read `manifests/commits/commits.manifest.ts`. This does not authorize committing or rewriting history.
-- Give each capability and binding a manifest-linked directory. Use `.gitkeep` for empty scaffolds. Never fake implementation or passing tests.
-- Declare HTTP, MCP tools/resources, feeds, exports, CLI, and mirrors as typed bindings on owning operations. Ship applicable bindings together. Use Vim-based, remappable keyboard profiles.
+- Link capabilities and bindings to their owning implementation directories. Share directories when they share code. Create empty scaffolds only for planned work with a selected brief. Never fake implementation or passing tests.
+- Declare HTTP, MCP tools/resources, feeds, exports, CLI, and mirrors as typed bindings on owning operations. Ship applicable bindings together. Declare keyboard profiles only for implemented shortcuts. Use Vim-based, remappable profiles; AE Design owns shared shortcut safety rules.
 - Implement first. Test manifest obligations, behavior, access, and failures with independent expectations. No TDD or coverage target. Report missing tests; declarations are not proof.
 - Keep `ae-workbench/TIMELINE.md` dated and caveman-short. Record the trigger and decision once. Skip routine checks. I write the blog.
 - Keep hypotheses, benchmark protocols, rubrics, raw results, matrices, and analysis in `ae-workbench/`, referenced by its private manifest. Separate claims from observations. Record failures and uncertainty. Do not invent results.

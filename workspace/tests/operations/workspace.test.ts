@@ -22,6 +22,20 @@ function seed() {
   return result.value;
 }
 
+test('synthetic workspace seeding rejects duplicate identifiers', () => {
+  const result = createSyntheticWorkspaceState({
+    now: () => Date.parse('2026-09-09T12:00:00.000Z'),
+    nextId: () => 'same-id',
+  });
+  assert.deepEqual(result, {
+    ok: false,
+    error: {
+      code: 'unavailable',
+      message: 'Workspace identifier service is unavailable',
+    },
+  });
+});
+
 test('workspace commands preserve exact revision snapshots when publishing', () => {
   const deps = dependencies();
   const initial = createSyntheticWorkspaceState(deps);

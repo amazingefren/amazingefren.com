@@ -7,23 +7,12 @@ export default {
   purpose: 'Expose authorized system capabilities to AI clients.',
   owner: 'amazingefren',
   status: 'implemented',
-  scope: 'required',
   visibility: 'public',
-  context: {
-    decisions: [
-      'Thin adapter over authorized system operations.',
-      'Target remote MCP over Streamable HTTP; verify negotiated protocol support with each client.',
-      'Cloudflare MCP v2 article describes MCP specification 2026-07-28; it is not a separate Cloudflare standard.',
-      'Claude custom connectors are clients of the same remote MCP service.',
-      'Public read tools expose approved content and catalogs; private and write operations require separate authorization.',
-      'Consider Code Mode when operation volume warrants it; enforce access per operation.',
-      'Read tool and resource bindings from owning manifests; no separate registry.',
-      'Public transport negotiates 2025-11-25 and includes catalog tools plus publication ZIP and OPML resources. ZIP resources are capped at 4 MiB; larger exports use HTTP.',
-    ],
-    openQuestions: [
-      'Client compatibility matrix, SDK version, OAuth design, and connector testing.',
-    ],
-  },
+  decisions: [
+    'Tools and resources derive from owning operation bindings. Public transport excludes private and write operations; owner adapters require separate authorization.',
+    'Public transport negotiates 2025-11-25. ZIP resources are capped at 4 MiB; larger exports use HTTP.',
+    'Claude connectors use the same remote MCP transport; compatibility requires independent client verification.',
+  ],
   capabilities: [
     'tools',
     'resources',
@@ -37,7 +26,7 @@ export default {
   },
   risks: [],
   dependencies: ['auth', 'publishing', 'system-explorer', 'studio'],
-  schemaVersion: 5,
+  schemaVersion: 6,
   contracts: ['contracts/api/mcp-rpc.schema.json'],
   operations: [
     {
@@ -47,7 +36,6 @@ export default {
         {
           id: 'mcp.public.http',
           surface: { kind: 'http', method: 'POST', path: '/mcp' },
-          scope: 'required',
           status: 'implemented',
           implementation: 'mcp/transport/public.ts',
           tests: ['mcp/tests/public.test.ts'],
@@ -86,13 +74,12 @@ export default {
       ],
     },
   ],
-  events: [],
   capabilityPaths: {
     tools: 'mcp/transport',
     resources: 'mcp/transport',
     'content-discovery': 'mcp/transport',
     'system-discovery': 'mcp/transport',
-    'claude-connectors': 'mcp/clients/claude',
+    'claude-connectors': 'mcp/transport',
   },
   structure: {
     domain: 'mcp/domain',
@@ -102,5 +89,4 @@ export default {
     tests: 'mcp/tests',
     composition: 'mcp/composition',
   },
-  entrypoints: [],
 } as const satisfies SystemManifest;

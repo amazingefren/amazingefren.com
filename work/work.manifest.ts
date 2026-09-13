@@ -20,7 +20,6 @@ const operations: Operation[] = operationIds.map((id) => ({
         method: 'POST',
         path: `/api/work/operations/${id}`,
       },
-      scope: 'required',
       status: 'declared',
       directory: 'work/adapters',
       testsDirectory: 'work/tests',
@@ -35,7 +34,6 @@ const operations: Operation[] = operationIds.map((id) => ({
         description: id.slice(5).replaceAll('-', ' '),
         readOnly: id === 'work.read',
       },
-      scope: 'required',
       status: 'declared',
       directory: 'work/adapters',
       testsDirectory: 'work/tests',
@@ -49,7 +47,6 @@ const operations: Operation[] = operationIds.map((id) => ({
         command: `ae work ${id.slice(5)}`,
         output: 'json',
       },
-      scope: 'required',
       status: 'declared',
       directory: 'work/adapters',
       testsDirectory: 'work/tests',
@@ -104,22 +101,13 @@ export default {
     'Manage publications, features and bugs through next actions and dependencies.',
   owner: 'amazingefren',
   status: 'implemented',
-  scope: 'required',
   visibility: 'public',
-  context: {
-    decisions: [
-      'Owner authorized application implementation and agent refinement on 2026-09-09. AE Work extends the approved workspace shell.',
-      'Spaces collect work. Focus is bounded to three items. Readiness derives from next action, acceptance criteria, dependencies and blockers.',
-      'Publications are human-only. Agent work requires item and space permission; assignment does not grant permission. Owner accepts completion evidence.',
-      'Remove explanatory interface prose. Use concise names, state, and contextual controls; retain essential failure recovery.',
-      'Public code provides contracts and synthetic guest behavior. Owner rules and D1 persistence belong to ae-studio-engine.',
-      'HTTP connects to the configured owner service. MCP and CLI adapters share an injected WorkPort; live agent identity and remote MCP registration remain unconfigured.',
-    ],
-    openQuestions: [
-      'Owner service deployment and migration are not applied by this change.',
-      'Daily owner use must guide further interface changes; no usability improvement is yet measured.',
-    ],
-  },
+  decisions: [
+    'Spaces collect work. Focus is bounded to three items. Readiness derives from next action, acceptance criteria, dependencies, and blockers.',
+    'Publications are human-only. Agent work requires item and space permission; assignment grants no permission. Owner accepts completion evidence.',
+    'Public code owns contracts and synthetic guest behavior. Owner rules and D1 persistence belong to ae-studio-engine.',
+    'HTTP uses the configured owner service. MCP and CLI share an injected WorkPort; live agent identity and remote MCP registration remain unconfigured.',
+  ],
   capabilities: ['work-management', 'guest-work', 'portable-access'],
   governance: {
     permissionsDefined: ['work.read', 'work.write'],
@@ -127,7 +115,7 @@ export default {
   },
   risks: [],
   dependencies: ['workspace', 'design', 'auth'],
-  schemaVersion: 5,
+  schemaVersion: 6,
   views: [
     {
       id: 'guest',

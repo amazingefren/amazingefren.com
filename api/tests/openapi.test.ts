@@ -32,7 +32,6 @@ const operation = (
   bindings: [
     {
       id: `${id}.http`,
-      scope: 'required' as const,
       status: 'implemented' as const,
       implementation: 'api/index.ts',
       tests: [],
@@ -53,23 +52,16 @@ const system = (
   purpose: id,
   owner: 'owner',
   status: 'implemented',
-  scope: 'required',
   visibility,
-  context: { decisions: [], openQuestions: [] },
   capabilities: [],
   governance: {
     permissionsDefined: [],
     dataClassification: visibility === 'public' ? 'public' : 'private',
   },
   risks: [],
-  dependencies: [],
-  schemaVersion: 5,
-  contracts: [],
+  schemaVersion: 6,
   operations,
-  events: [],
   capabilityPaths: {},
-  structure: {},
-  entrypoints: [],
 });
 
 test('generates deterministic public OpenAPI paths and path parameters', () => {

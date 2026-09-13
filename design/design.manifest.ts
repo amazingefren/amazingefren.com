@@ -8,20 +8,14 @@ export default {
     'Own the shared visual language and interaction rules for AE interfaces.',
   owner: 'amazingefren',
   status: 'declared',
-  scope: 'required',
   visibility: 'public',
-  context: {
-    decisions: [
-      'This manifest and its referenced contracts are the design source of truth. Feature manifests own content, routes, operations, access, and page-specific composition.',
-      'Approved visual direction: sun/light uses orange accents and the warm Shared circles mark; moon/dark uses blue accents and the blue mark. Keep warm paper, dark navy, restrained rules, and rounded workspace controls.',
-      'Use sans serif for interfaces and body copy, serif for editorial emphasis and reading, and monospace for short metadata. Do not add font downloads.',
-      'Keep content direct. Reuse approved personal text. Synthetic data and unavailable states must be explicit.',
-      'Tokens compile into checked-in CSS so pages remain usable without JavaScript or private engines. Compiled CSS and served logo copies are not editing entrypoints.',
-    ],
-    openQuestions: [
-      'Application implementation was authorized on 2026-09-09. User accepted the revised workspace as a starting point on 2026-09-09; owner identity and storage need live configuration.',
-    ],
-  },
+  decisions: [
+    'This manifest and its referenced contracts are the design source of truth. Feature manifests own content, routes, operations, access, and page-specific composition.',
+    'Approved visual direction: sun/light uses orange accents and the warm Shared circles mark; moon/dark uses blue accents and the blue mark. Keep warm paper, dark navy, restrained rules, and rounded workspace controls.',
+    'Use sans serif for interfaces and body copy, serif for editorial emphasis and reading, and monospace for short metadata. Do not add font downloads.',
+    'Keep content direct. Reuse approved personal text. Synthetic data and unavailable states must be explicit.',
+    'Tokens compile into checked-in CSS so pages remain usable without JavaScript or private engines. Compiled CSS and served logo copies are not editing entrypoints.',
+  ],
   capabilities: [
     'foundations',
     'brand',
@@ -31,12 +25,11 @@ export default {
   ],
   governance: { permissionsDefined: [], dataClassification: 'public' },
   risks: [],
-  dependencies: [],
-  schemaVersion: 5,
+  schemaVersion: 6,
   languageVersion: 3,
   copy: {
     rules: [
-      '2026-09-09: Prefer an interface change over text that explains the system. Keep text for names, actions, meaningful state, and essential knowledge the interface cannot convey.',
+      'Prefer an interface change over text that explains the system. Keep text for names, actions, meaningful state, and essential knowledge the interface cannot convey.',
       'Keep text only when it names content, identifies a necessary state, explains a consequence, or helps recover from a failure.',
       'Do not add taglines, introductory filler, repeated headings, obvious instructions, or implementation explanations to application pages.',
       'Show sample-data scope once in the shared shell. Repeat it only where a distinct export or measurement could otherwise be mistaken for real data.',
@@ -155,7 +148,7 @@ export default {
       rules: [
         'Keep a visible focus ring on interactive controls. Noninteractive route focus targets use ae-focus-target with tabindex=-1 to receive focus without outlining the content region.',
         'Preserve browser shortcuts and editable input behavior.',
-        'Workbench shortcuts use manifest-declared remappable Vim profiles with a disable option. No shortcut engine is implemented by AE Design.',
+        'Implemented workbench shortcuts use remappable Vim profiles with a disable option. Declare profiles beside their owning implementation; do not add placeholder catalogs. AE Design implements no shortcut engine.',
         'Native selects keep their semantics and use the shared select-indicator token for the dropdown mark. Native controls are the baseline. Custom focus traps, menus, and dialogs need a reviewed pattern.',
       ],
     },
@@ -191,7 +184,7 @@ export default {
       purpose: 'Open the single owner workspace with a passkey.',
       implementation: 'auth/ui/Access.tsx',
       rules: [
-        'Owner approved ae-workbench/auth-launch on 2026-09-10. Use shared BrandMark, ThemeControl, tokens, native setup disclosure, and visible pending/error states.',
+        'Use shared BrandMark, ThemeControl, tokens, native setup disclosure, and visible pending/error states.',
         'Keep /auth/me unlinked from public navigation. Setup takes a one-time secret; sign-in and later enrollment require passkeys.',
       ],
     },
@@ -262,7 +255,6 @@ export default {
       purpose: 'Soften changes between public pages.',
       implementation: 'web/ui/shared/public-transitions.css',
       rules: [
-        'Owner approved the slower prototype on 2026-09-09.',
         'Animate only content: 180ms exit, 400ms entrance after 60ms, with 4px upward settle.',
         'Show only one static root, header, and footer snapshot to avoid contrast changes.',
         'Use native document navigation. Reduced motion and unsupported browsers keep normal links and history. Workspace pages do not opt in.',
@@ -275,7 +267,7 @@ export default {
         'Organize human and agent work by next action and dependency readiness.',
       implementation: null,
       rules: [
-        'Owner authorized application implementation on 2026-09-09. Three-item focus, flat work rows, cross-space lenses, connected item details, and tracked system scope.',
+        'Three-item focus, flat work rows, cross-space lenses, connected item details, and tracked system scope.',
         'Use shared tokens and native controls. No draggable columns, canvas gestures, custom dialogs, or new shortcut engine.',
         'Review both themes, narrow panes, keyboard return focus, empty states, unsaved input, and blocked actions before adoption.',
       ],
@@ -287,8 +279,7 @@ export default {
         'Separate fast personal capture from focused publication writing.',
       implementation: 'workspace/ui/writing/index.ts',
       rules: [
-        'Owner approved the revised writing prototype for application implementation on 2026-09-09.',
-        'Owner authorized the replacement publication prototype build on 2026-09-11. Keep Write, Split, Read, and saved-revision release review; Vim is the default editing profile and remains remappable. Org source stays protected from browser Markdown edits.',
+        'Keep Write, Split, Read, and saved-revision release review; Vim is the default editing profile and remains remappable. Org source stays protected from browser Markdown edits.',
         'Notes use a quick capture field and compact entries. Publications open from a library into one centered manuscript.',
         'Hide the workspace sidebar and header during publication writing. Keep save status and exit available; reveal settings, chapters, images, and publishing controls on request.',
         'Reuse AE Design typography, tokens, theme control, native dialogs, and visible keyboard focus. Vim editing is remappable and optional.',
@@ -311,7 +302,7 @@ export default {
       purpose: 'Present the approved Open field home.',
       implementation: 'web/ui/landing/OpenField.tsx',
       rules: [
-        'Owner approved Open field and optional animation on 2026-09-09. Center the introduction and contain the scene between header and footer.',
+        'Center the introduction and contain the Open field scene between header and footer.',
         'Light uses the approved bird paths and one corner-bracket detection box on the large middle bird, with no crosshairs. Dark uses the approved galaxy. Artwork opacity and alpha masks keep reading areas clear.',
         'Birds enter together once, using static silhouettes. Only the large middle bird receives a box, easing into a stop as detection locks. Dark mode uses the original static galaxy image. No motion button. Reduced motion and no JavaScript show static artwork. Pause when hidden. Never delay content or simulate live telemetry.',
       ],
@@ -382,7 +373,6 @@ export default {
       purpose: 'Distinguish work states and soften workspace controls.',
       implementation: null,
       rules: [
-        'Owner accepted sun/moon workspace colors, distinct review states, and rounded controls on 2026-09-09.',
         'Use status-progress for active work, status-ready for reviewable work, and status-attention for unresolved decisions. Always show a text label.',
         'Use workbench radius tokens for cards, controls, and dialogs. Existing public radii remain unchanged.',
         'Workspace accents are orange in light mode and blue in dark mode: sun and moon, as requested by the owner. The workbench active-surface gradient is limited to the featured in-progress card: warm orange in light mode, deep blue in dark mode. Navigation selection uses the workspace theme accent. The workbench shadow token provides restrained card elevation. Other panels stay flat.',
@@ -395,10 +385,9 @@ export default {
       purpose: 'Frame the accepted dashboard and Systems workspace.',
       implementation: null,
       rules: [
-        'Owner accepted the workspace visual direction on 2026-09-09, with the sidebar stripe removed.',
         'Group Dashboard, Documents, Tasks, Experiments, Relationships, Publishing, Systems, Connections, and Access under Personal workspace; keep Public side separate.',
         'Current navigation uses a rounded soft fill, theme-colored icon and label, and medium text weight. No edge stripe, inset stripe shadow, or decorative side marker. Use design.navigation-selection.',
-        'Keep the approved dark background gradient across the workspace. Keep panels solid and the sidebar distinct. Owner requested this on 2026-09-09.',
+        'Keep the approved dark background gradient across the workspace. Keep panels solid and the sidebar distinct.',
         'Open the dashboard on counts and work. Preserve the module-first Systems explorer with search, dependencies, contracts, bindings, and local console.',
         'Remove taglines, generic introductions, obvious interaction instructions, and redundant labels. Keep useful status, data source, and failure information.',
         'Use one page gutter and a 32px heading across workspace sections. Do not add a second page padding inside feature components. Keep forms compact and hide secondary creation or history panels behind native disclosures.',
@@ -455,7 +444,6 @@ export default {
     'design/behaviors/theme.ts',
   ],
   operations: [],
-  events: [],
   capabilityPaths: {
     foundations: 'design/foundations',
     brand: 'design/brand',

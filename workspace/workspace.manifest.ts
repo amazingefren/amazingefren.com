@@ -50,7 +50,6 @@ function operation(
           method: 'POST',
           path: `/api/guest/workspace/${name}`,
         },
-        scope: 'required',
         status: 'declared',
         directory: 'workspace/adapters/http',
         testsDirectory: 'workspace/tests/adapters',
@@ -65,7 +64,6 @@ function operation(
           description,
           readOnly: name === 'read',
         },
-        scope: 'required',
         status: 'declared',
         directory: 'workspace/adapters/mcp',
         testsDirectory: 'workspace/tests/adapters',
@@ -79,7 +77,6 @@ function operation(
           command: `ae guest-workspace ${name}`,
           output: 'json',
         },
-        scope: 'required',
         status: 'declared',
         directory: 'workspace/adapters/cli',
         testsDirectory: 'workspace/tests/adapters',
@@ -160,7 +157,6 @@ const ownerExecuteOperation = {
         method: 'POST',
         path: '/api/workspace/operation',
       },
-      scope: 'required',
       status: 'declared',
       directory: 'workspace/adapters/http',
       testsDirectory: 'workspace/tests/adapters',
@@ -234,27 +230,13 @@ export default {
     'Run the personal workspace and a session-isolated synthetic guest replica.',
   owner: 'amazingefren',
   status: 'prototype',
-  scope: 'required',
   visibility: 'public',
-  context: {
-    decisions: [
-      '2026-09-10: Evidence links to a private claim and observation ledger, with sources and explicit review before owner-only export. Guest benchmark and evidence ledgers persist within the sandbox session and reset with the workspace.',
-      '2026-09-10: Benchmarks opens the Evaluation workbench. Owner operations use passkey-protected private storage; guest imports and comparisons use isolated synthetic state.',
-      'First deployment adds the web launch access boundary to all guest views and HTTP APIs. Public guest operation contracts describe the retained synthetic capability; anonymous hosting is disabled until a later release.',
-      'AE Work application build authorized on 2026-09-09. Work routes, operations and storage contracts belong to work/work.manifest.ts; the workspace shell links Work alongside existing sections.',
-      'AE Design owns copy and interaction rules. Keep a single 32px page gutter, compact forms, one status label, and no implementation prose. Dark workspace background uses the shared public radial gradient.',
-      'Route navigation focuses the main region through the shared ae-focus-target behavior without a content outline. Interactive controls retain visible keyboard focus.',
-      'Guest workspace data is synthetic, bounded, stored in sessionStorage, and never falls back to owner records.',
-      'The frozen WorkspacePort command contract is the shared boundary for browser, HTTP, MCP, and CLI adapters.',
-      'Document saves use optimistic document revisions. Publishing copies the requested stored revision into a separate snapshot.',
-      'Owner adapters deny callers before private storage reads and use injected identity, authorization, and compare-version storage ports.',
-      'The public owner gateway is implemented with optional service injection and fails closed when the private service binding is unconfigured. Deployment configuration remains unavailable in this public implementation.',
-    ],
-    openQuestions: [
-      'Configure the optional Cloudflare Worker service binding before enabling owner routes in a deployment.',
-      'Private service deployment, passkey enrollment configuration, and D1 migration remain separate private-engine work.',
-    ],
-  },
+  decisions: [
+    'The web launch boundary protects all owner and guest routes and APIs. Guest data remains synthetic, bounded, session-isolated, and never falls back to owner records.',
+    'WorkspacePort is the shared browser, HTTP, MCP, and CLI boundary. Owner adapters authorize before private storage reads and use injected identity and compare-version storage ports.',
+    'Document saves use optimistic revisions. Publishing copies the requested stored revision into a separate snapshot.',
+    'Owner gateways fail closed when their private service binding is missing. AE Design owns shell, copy, focus, and interaction rules; feature systems own their operations.',
+  ],
   capabilities: [
     'domain',
     'operations',
@@ -272,7 +254,7 @@ export default {
   },
   risks: [],
   dependencies: ['design', 'auth', 'publishing'],
-  schemaVersion: 5,
+  schemaVersion: 6,
   views: [
     ...pageNames.map((page) => ({
       id: `guest-${page}`,
@@ -321,6 +303,29 @@ export default {
         },
       ],
     })),
+    {
+      id: 'owner-publishing-review',
+      directory: 'workspace/ui',
+      testsDirectory: 'workspace/tests',
+      implementation: 'workspace/ui/app.tsx',
+      path: '/workspace/publishing/{projectId}/review',
+      status: 'declared',
+      audience: 'owner',
+      access: {
+        kind: 'authenticated',
+        permissions: ['workspace.read', 'workspace.write', 'workspace.publish'],
+        ownership: 'caller',
+      },
+      data: 'owner',
+      operations: ['workspace.owner-execute'],
+      verification: [
+        {
+          expectation:
+            'The review alias preserves the owner workspace authorization boundary before forwarding to the publishing page.',
+          tests: ['workspace/tests/owner-publishing-review.test.ts'],
+        },
+      ],
+    },
   ],
   contracts: [
     'workspace/contracts/index.ts',
@@ -330,7 +335,6 @@ export default {
     errorContract,
   ],
   operations: [...syntheticOperations, ownerExecuteOperation],
-  events: [],
   capabilityPaths: {
     domain: 'workspace/domain',
     operations: 'workspace/operations',

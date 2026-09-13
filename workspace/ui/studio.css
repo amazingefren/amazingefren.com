@@ -22,9 +22,7 @@
 
 .ws-studio-page-header,
 .ws-studio-panel-heading,
-.ws-studio-form-actions,
 .ws-studio-page-header-side,
-.ws-studio-history-list li,
 .ws-studio-task-list li,
 .ws-studio-relationship-list li {
   display: flex;
@@ -33,7 +31,6 @@
 
 .ws-studio-page-header,
 .ws-studio-panel-heading,
-.ws-studio-history-list li,
 .ws-studio-task-list li,
 .ws-studio-relationship-list li {
   justify-content: space-between;
@@ -61,7 +58,6 @@
   font-size: var(--ae-text-18);
 }
 
-.ws-studio-eyebrow,
 .ws-studio-label,
 .ws-studio-field > span,
 .ws-studio-count,
@@ -72,11 +68,6 @@
   font-family: var(--ae-font-mono);
   font-size: var(--ae-text-12);
   letter-spacing: 0.02em;
-}
-
-.ws-studio-eyebrow {
-  margin: 0 0 var(--ae-space-8);
-  text-transform: uppercase;
 }
 
 .ws-studio-page-header-side {
@@ -103,76 +94,20 @@
   margin-bottom: var(--ae-space-16);
 }
 
-.ws-studio-documents-layout {
-  display: grid;
-  grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
-  align-items: start;
-  gap: var(--ae-space-20);
-}
-
-.ws-studio-document-list {
-  position: sticky;
-  top: var(--ae-space-20);
-}
-
-.ws-studio-document-list + .ws-studio-create-form,
-.ws-studio-create-form {
-  margin-top: var(--ae-space-20);
-}
-
-.ws-studio-search {
-  margin-bottom: var(--ae-space-16);
-}
-
-.ws-studio-record-list,
 .ws-studio-task-list,
-.ws-studio-history-list,
 .ws-studio-relationship-list {
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
-.ws-studio-record-list {
-  display: grid;
-  gap: var(--ae-space-4);
-  max-height: 440px;
-  overflow: auto;
-}
-
-.ws-studio-record {
-  display: grid;
-  width: 100%;
-  gap: var(--ae-space-8);
-  padding: var(--ae-space-12);
-  border: 1px solid transparent;
-  border-radius: var(--ae-workbench-radius-control);
-  background-color: transparent;
-  color: var(--ae-ink);
-  text-align: left;
-  cursor: pointer;
-}
-
-.ws-studio-record.is-selected {
-  border-color: var(--ae-line);
-  background-color: var(--ae-theme-ambient);
-}
-
-.ws-studio-record.is-selected strong {
-  color: var(--ae-theme-accent);
-}
-
-.ws-studio-record strong,
 .ws-studio-task-list strong,
-.ws-studio-history-list strong,
 .ws-studio-relationship-copy strong {
   color: var(--ae-ink-strong);
   font-weight: 600;
 }
 
-.ws-studio-record span,
 .ws-studio-task-list li > div > span,
-.ws-studio-history-list li > div > span,
 .ws-studio-relationship-copy > span,
 .ws-studio-relationship-copy em {
   display: block;
@@ -268,65 +203,13 @@
   color: var(--ae-ink);
 }
 
-.ws-studio-create-form > .ws-studio-button,
-.ws-studio-editor > .ws-studio-button {
+.ws-studio-create-form > .ws-studio-button {
   margin-top: var(--ae-space-20);
 }
 
-.ws-studio-form-actions {
-  flex-wrap: wrap;
-  gap: var(--ae-space-12);
-  margin-top: var(--ae-space-20);
-}
-
-.ws-studio-form-actions .ws-studio-metadata {
-  margin-left: auto;
-}
-
-.ws-studio-document-workspace,
 .ws-studio-experiment-list {
   display: grid;
   gap: var(--ae-space-20);
-}
-
-.ws-studio-editor .ws-studio-panel-heading {
-  align-items: end;
-}
-
-.ws-studio-editor textarea,
-.ws-studio-preview pre {
-  font-family: var(--ae-font-mono);
-}
-
-.ws-studio-preview pre {
-  max-height: 500px;
-  min-height: 96px;
-  padding: var(--ae-space-16);
-  margin: 0;
-  overflow: auto;
-  border: 1px solid var(--ae-line);
-  border-radius: var(--ae-workbench-radius-control);
-  background-color: var(--ae-background);
-  color: var(--ae-prose);
-  font-size: var(--ae-text-14);
-  line-height: 1.6;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.ws-studio-history-list {
-  display: grid;
-  gap: var(--ae-space-8);
-}
-
-.ws-studio-history-list li {
-  padding: var(--ae-space-12) 0;
-  border-top: 1px solid var(--ae-line);
-}
-
-.ws-studio-history-list li:first-child {
-  border-top: 0;
-  padding-top: 0;
 }
 
 .ws-studio-two-column {
@@ -379,6 +262,7 @@
 
 .ws-studio-inline-link {
   padding: 0;
+  min-height: 0;
   border: 0;
   background-color: transparent;
   color: var(--ae-theme-accent-soft);
@@ -386,6 +270,7 @@
   text-align: left;
   text-decoration: underline;
   text-decoration-color: var(--ae-line);
+  text-underline-offset: 0.2em;
 }
 
 .ws-studio-inline-link:hover {
@@ -408,10 +293,10 @@
 }
 
 .ws-studio-hypothesis {
-  padding: var(--ae-space-12);
-  border: 1px solid var(--ae-line);
+  padding: 0;
+  border: 0;
   border-radius: var(--ae-workbench-radius-control);
-  background-color: var(--ae-background);
+  background-color: transparent;
 }
 
 .ws-studio-hypothesis p {
@@ -506,22 +391,8 @@
     padding: var(--ae-space-20);
   }
 
-  .ws-studio-documents-layout,
   .ws-studio-two-column {
     grid-template-columns: 1fr;
-  }
-
-  .ws-studio-document-list {
-    position: static;
-  }
-
-  .ws-studio-document-list + .ws-studio-create-form,
-  .ws-studio-create-form {
-    margin-top: var(--ae-space-16);
-  }
-
-  .ws-studio-record-list {
-    max-height: 280px;
   }
 }
 
@@ -552,28 +423,11 @@
     grid-template-columns: 1fr;
   }
 
-  .ws-studio-form-actions .ws-studio-metadata {
-    width: 100%;
-    margin-left: 0;
-  }
-
-  .ws-studio-history-list li,
   .ws-studio-relationship-list li {
     align-items: start;
   }
 }
 
-.ws-studio-record:not(.is-selected):hover {
-  background-color: var(--ae-hover-surface);
-  border-color: var(--ae-hover-line);
-  color: var(--ae-ink);
-}
-.ws-studio-page {
-  padding: 0;
-}
-.ws-studio-create-form {
-  margin-top: 0;
-}
 .ws-studio-form-grid > .ws-studio-field {
   margin-top: 0;
 }
@@ -584,14 +438,6 @@
   font-weight: 500;
   cursor: pointer;
   padding: var(--ae-space-12) 0;
-}
-.ws-studio-history > summary {
-  font-size: var(--ae-text-16);
-  font-weight: 500;
-  cursor: pointer;
-}
-.ws-studio-history[open] > summary {
-  margin-bottom: var(--ae-space-20);
 }
 .ws-studio-experiment-list {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -608,17 +454,4 @@
   font-size: var(--ae-text-14);
   letter-spacing: 0;
   color: var(--ae-body-copy);
-}
-.ws-studio-hypothesis {
-  padding: 0;
-  background-color: transparent;
-  border: 0;
-}
-.ws-studio-inline-link {
-  padding: 0;
-  min-height: 0;
-  border: 0;
-  background-color: transparent;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
 }

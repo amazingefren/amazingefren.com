@@ -1,7 +1,6 @@
 export interface KeyboardProfile {
   preset: 'vim';
-  status: 'declared' | 'implemented';
-  scope: 'required';
+  status: 'implemented';
   modes: readonly ('normal' | 'insert' | 'visual')[];
   remappable: true;
   disableSingleCharacterShortcuts: true;
@@ -9,7 +8,7 @@ export interface KeyboardProfile {
   ignoreEditableTargetsOutsideEditor: true;
   directory: string;
   testsDirectory: string;
-  implementation: string | null;
+  implementation: string;
   tests: readonly string[];
   bindings: readonly {
     mode: 'normal' | 'insert' | 'visual';

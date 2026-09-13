@@ -7,30 +7,22 @@ export default {
   purpose: 'Publish approved TEX, DOCX, and PDF resume artifacts.',
   owner: 'amazingefren',
   status: 'declared',
-  scope: 'required',
   visibility: 'public',
-  context: {
-    decisions: [
-      'Existing TEX, DOCX, and PDF remain public.',
-      'Generation scripts, source context, and QA live in ae-resume-engine.',
-    ],
-    openQuestions: [],
-  },
+  decisions: [
+    'Existing TEX, DOCX, and PDF remain public.',
+    'Generation scripts, source context, and QA live in ae-resume-engine.',
+  ],
   capabilities: ['resume-downloads'],
   governance: {
     permissionsDefined: [],
     dataClassification: 'public',
   },
   risks: [],
-  dependencies: [],
-  schemaVersion: 5,
-  contracts: [],
+  schemaVersion: 6,
   operations: [],
-  events: [],
   capabilityPaths: {
     'resume-downloads': 'resume',
   },
-  structure: {},
   entrypoints: [
     'resume/Efren_Castro_Flagship_Resume.tex',
     'resume/Efren_Castro_Flagship_Resume.docx',

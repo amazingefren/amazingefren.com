@@ -12,6 +12,7 @@ const surfaces = new Set();
 const bindingIds = new Set();
 let obligationCount = 0;
 let missingTests = 0;
+let implementedMissingTests = 0;
 const riskIds = new Set();
 const viewPaths = new Set();
 
@@ -68,7 +69,6 @@ async function checkImplementationLocation(item) {
 }
 
 for (const path of [
-  ...Object.values(platform.structure),
   ...Object.values(platform.contracts),
   ...Object.values(platform.access.channels),
 ]) {
@@ -117,7 +117,21 @@ await checkRisks(platform.risks, platform.id, riskIds, checkPath);
 for (const system of systems) {
   await checkRisks(system.risks, system.id, riskIds, checkPath);
   assert.equal(system.kind, 'system');
-  assert.equal(system.schemaVersion, 5);
+  assert.equal(system.schemaVersion, 6);
+  assert(
+    !('context' in system),
+    `Removed manifest field: ${system.id}.context`,
+  );
+  assert(
+    !('openQuestions' in system),
+    `Removed manifest field: ${system.id}.openQuestions`,
+  );
+  assert(!('scope' in system), `Removed manifest field: ${system.id}.scope`);
+  for (const decision of system.decisions ?? [])
+    assert(
+      typeof decision === 'string' && decision.trim(),
+      `Empty decision: ${system.id}`,
+    );
   assert.equal(system.visibility, 'public');
   assert(['declared', 'prototype', 'implemented'].includes(system.status));
   for (const page of system.pages ?? []) {
@@ -135,7 +149,7 @@ for (const system of systems) {
     if (file.status === 'placeholder')
       assert.equal(metadata.size, 0, `Placeholder has content: ${file.source}`);
   }
-  for (const dependency of system.dependencies)
+  for (const dependency of system.dependencies ?? [])
     assert(ids.has(dependency), `Unknown dependency: ${dependency}`);
   const views = system.views ?? [];
   assert.equal(
@@ -257,7 +271,10 @@ for (const system of systems) {
         `Empty view obligation: ${view.id}`,
       );
       obligationCount += 1;
-      if (obligation.tests.length === 0) missingTests += 1;
+      if (obligation.tests.length === 0) {
+        missingTests += 1;
+        if (view.status === 'implemented') implementedMissingTests += 1;
+      }
       for (const path of obligation.tests) await checkPath(path);
       if (view.status === 'implemented')
         assert(obligation.tests.length > 0, `View tests missing: ${view.id}`);
@@ -276,7 +293,10 @@ for (const system of systems) {
         );
     }
   }
-  for (const path of [...system.entrypoints, ...system.contracts])
+  for (const path of [
+    ...(system.entrypoints ?? []),
+    ...(system.contracts ?? []),
+  ])
     await checkPath(path);
   assert.deepEqual(
     Object.keys(system.capabilityPaths).sort(),
@@ -284,7 +304,7 @@ for (const system of systems) {
     `Capability paths mismatch: ${system.id}`,
   );
   for (const path of [
-    ...Object.values(system.structure),
+    ...Object.values(system.structure ?? {}),
     ...Object.values(system.capabilityPaths),
   ])
     await checkDirectory(path, system.id);
@@ -297,7 +317,6 @@ for (const system of systems) {
     await checkDirectory(item.testsDirectory, system.id);
     await checkImplementationLocation(item);
   }
-  assert.equal(system.scope, 'required');
   for (const operation of system.operations) {
     if (operation.dataScope !== undefined)
       assert(
@@ -360,8 +379,16 @@ for (const system of systems) {
       );
       assert(obligation.expectation.trim());
       obligationCount += 1;
-      if (obligation.tests.length === 0) missingTests += 1;
+      if (obligation.tests.length === 0) {
+        missingTests += 1;
+        if (operation.status === 'implemented') implementedMissingTests += 1;
+      }
       for (const path of obligation.tests) await checkPath(path);
+      if (operation.status === 'implemented')
+        assert(
+          obligation.tests.length > 0,
+          `Operation tests missing: ${obligation.id}`,
+        );
     }
   }
   for (const operation of system.operations)
@@ -371,7 +398,10 @@ for (const system of systems) {
         `Duplicate binding ID: ${binding.id}`,
       );
       bindingIds.add(binding.id);
-      assert.equal(binding.scope, 'required');
+      assert(
+        !('scope' in binding),
+        `Removed binding field: ${binding.id}.scope`,
+      );
       assert(['declared', 'implemented'].includes(binding.status));
       const surface = binding.surface;
       assert(
@@ -419,8 +449,13 @@ for (const system of systems) {
     }
   if (system.keyboard) {
     const keyboard = system.keyboard;
+    assert.equal(
+      keyboard.status,
+      'implemented',
+      'Declare keyboard profiles only for implemented shortcuts',
+    );
     assert.equal(keyboard.preset, 'vim');
-    assert.equal(keyboard.scope, 'required');
+    assert(!('scope' in keyboard), 'Removed keyboard field: scope');
     assert(keyboard.remappable && keyboard.disableSingleCharacterShortcuts);
     assert(
       keyboard.preserveBrowserShortcuts &&
@@ -440,7 +475,7 @@ for (const system of systems) {
     if (system.status === 'implemented')
       assert.equal(keyboard.status, 'implemented');
   }
-  for (const event of system.events) await checkPath(event.contract);
+  for (const event of system.events ?? []) await checkPath(event.contract);
 }
 
 const bindingCount = systems.reduce(
@@ -456,13 +491,16 @@ console.log(
   `Risk declarations checked: ${riskIds.size}. Scores are qualitative; controls are not verified by this check.`,
 );
 console.log(
-  `Required bindings: ${bindingCount}. Vim profiles: ${systems.filter((system) => system.keyboard).length}.`,
+  `Bindings: ${bindingCount}. Vim profiles: ${systems.filter((system) => system.keyboard).length}.`,
 );
 console.log(
   `References checked: ${systems.length} systems, ${operationIds.size} operations, ${obligationCount} obligations.`,
 );
 console.log(
   `Obligations without test references: ${missingTests}. Tests and benchmarks were not executed.`,
+);
+console.log(
+  `Missing references by declaration status: ${implementedMissingTests} implemented, ${missingTests - implementedMissingTests} declared.`,
 );
 
 console.log(

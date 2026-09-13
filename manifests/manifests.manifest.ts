@@ -7,25 +7,14 @@ export default {
   purpose: 'Public manifest schema and explicit system registry.',
   owner: 'amazingefren',
   status: 'declared',
-  scope: 'required',
   visibility: 'public',
-  context: {
-    decisions: [
-      'Colocated declarations; central discovery.',
-      'Schema v5 adds owner, public, and guest data views. Visibility describes the manifest, not access to system data.',
-      'Guest replicas use synthetic session-isolated data. Public views use approved publications; neither grants owner API access.',
-      'Views reference owning operations with matching dataScope. View access controls entry only; each operation still enforces its own permissions. Views grant no permissions or implicit bindings; undeclared guest operations remain denied.',
-      'Views are design declarations until implemented and independently tested. Existing pages still describe mounted routes.',
-      'Manifest kind selects its schema. Many manifests can share a kind; schemas compose reusable parts.',
-      'System manifests describe software; convention manifests contain complete rules and examples.',
-      'Use *.schema.ts for structures and *.manifest.ts for declarations. Registry keeps kinds separate.',
-      'Risks live with their owner; platform risks live in ae.manifest.ts. Public summaries only; sensitive evidence stays private.',
-      'Scores are qualitative likelihood times impact (1-5 each), not probabilities. Residual stays unknown until assessed. Empty catalogs do not mean risk-free.',
-      'Private ae-system-engine owns code generation and full validation.',
-      'Current public checker validates declarations and references, not runtime enforcement.',
-    ],
-    openQuestions: ['Compatibility policy and generated binding design.'],
-  },
+  decisions: [
+    'Colocated manifests own contracts and access; the registry provides discovery. The public checker validates declarations and references, not runtime enforcement.',
+    'Optional decisions state current constraints that typed fields cannot express. Requests, approval history, and unresolved work belong in the private workbench.',
+    'Declare keyboard profiles only for implemented shortcuts. AE Design owns shared keyboard safety rules.',
+    'Private ae-system-engine owns generation and full validation; public checks work without it.',
+    'An empty risk catalog does not mean the system is risk-free.',
+  ],
   capabilities: [
     'system-description',
     'registry',
@@ -38,8 +27,7 @@ export default {
     dataClassification: 'public',
   },
   risks: [],
-  dependencies: [],
-  schemaVersion: 5,
+  schemaVersion: 6,
   contracts: [
     'manifests/schema/system.schema.ts',
     'manifests/schema/convention.schema.ts',
@@ -48,7 +36,6 @@ export default {
     'manifests/schema/operation.schema.ts',
   ],
   operations: [],
-  events: [],
   capabilityPaths: {
     'system-description': 'manifests/schema',
     registry: 'manifests',
@@ -56,7 +43,6 @@ export default {
     'commit-records': 'manifests/commits',
     'prototype-orchestration': 'manifests/prototypes',
   },
-  structure: {},
   entrypoints: [
     'manifests/schema/system.schema.ts',
     'manifests/registry.ts',

@@ -1,6 +1,5 @@
 export interface DeliveryBinding {
   id: string;
-  scope: 'required';
   status: 'declared' | 'implemented';
   directory: string;
   testsDirectory: string;

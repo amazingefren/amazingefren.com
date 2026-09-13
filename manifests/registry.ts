@@ -18,8 +18,9 @@ import evaluation from '../evaluation/evaluation.manifest.ts';
 import privacy from '../privacy/privacy.manifest.ts';
 import commits from './commits/commits.manifest.ts';
 import prototype from './prototypes/prototype.manifest.ts';
+import type { SystemManifest } from './schema/system.schema.ts';
 
-export const systems = [
+export const systems: readonly SystemManifest[] = [
   work,
   workspace,
   design,

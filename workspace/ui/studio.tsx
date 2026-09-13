@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import type { FormEvent, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import type { FormEvent } from 'react';
 import type {
-  WorkspaceDocument,
   WorkspaceExperiment,
   WorkspacePageProps,
   WorkspaceRelationship,
@@ -10,14 +9,6 @@ import type {
 } from '../contracts/index.ts';
 
 type Message = { kind: 'error' | 'success'; text: string } | null;
-type StudioPageProps = WorkspacePageProps & {
-  onDirtyChange?: (dirty: boolean) => void;
-};
-
-const dateLabel = (value: string) => {
-  const date = new Date(value);
-  return Number.isNaN(date.valueOf()) ? value : date.toLocaleString();
-};
 
 function Feedback({ message }: { message: Message }) {
   if (!message) return null;
@@ -34,12 +25,10 @@ function Feedback({ message }: { message: Message }) {
 function PageHeader({
   title,
   count,
-  action,
   headingId,
 }: {
   title: string;
   count?: number;
-  action?: ReactNode;
   headingId: string;
 }) {
   return (
@@ -51,7 +40,6 @@ function PageHeader({
         {typeof count === 'number' ? (
           <span className="ws-studio-count">{count}</span>
         ) : null}
-        {action}
       </div>
     </header>
   );
@@ -61,396 +49,6 @@ function useWorkspaceView(state: WorkspaceState) {
   const [view, setView] = useState(state);
   useEffect(() => setView(state), [state]);
   return [view, setView] as const;
-}
-
-function DocumentList({
-  documents,
-  selectedId,
-  search,
-  onSearch,
-  onSelect,
-}: {
-  documents: WorkspaceDocument[];
-  selectedId: string;
-  search: string;
-  onSearch(value: string): void;
-  onSelect(document: WorkspaceDocument): void;
-}) {
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    if (!query) return documents;
-    return documents.filter((document) =>
-      `${document.title} ${document.body}`.toLowerCase().includes(query),
-    );
-  }, [documents, search]);
-
-  return (
-    <aside
-      className="ws-studio-panel ws-studio-document-list"
-      aria-label="Documents"
-    >
-      <label className="ws-studio-field ws-studio-search">
-        <span className="ws-sr-only">Search documents</span>
-        <input
-          type="search"
-          value={search}
-          onChange={(event) => onSearch(event.target.value)}
-          placeholder="Search documents"
-        />
-      </label>
-      {documents.length === 0 ? (
-        <p className="ws-studio-empty">No documents yet.</p>
-      ) : filtered.length === 0 ? (
-        <p className="ws-studio-empty">No documents match “{search}”.</p>
-      ) : (
-        <ul className="ws-studio-record-list">
-          {filtered.map((document) => (
-            <li key={document.id}>
-              <button
-                type="button"
-                className={`ws-studio-record ${document.id === selectedId ? 'is-selected' : ''}`}
-                aria-current={document.id === selectedId ? 'true' : undefined}
-                onClick={() => onSelect(document)}
-              >
-                <strong>{document.title || 'Untitled document'}</strong>
-                <span>
-                  {dateLabel(document.updatedAt)} · revision {document.revision}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </aside>
-  );
-}
-
-export function DocumentsPage({
-  state,
-  execute,
-  busy,
-  navigate,
-  recordId,
-  onDirtyChange,
-}: StudioPageProps) {
-  const [view, setView] = useWorkspaceView(state);
-  const [selectedId, setSelectedId] = useState(
-    recordId ?? state.documents[0]?.id ?? '',
-  );
-  const [draftDocumentId, setDraftDocumentId] = useState('');
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [search, setSearch] = useState('');
-  const [createTitle, setCreateTitle] = useState('');
-  const [createBody, setCreateBody] = useState('');
-  const [message, setMessage] = useState<Message>(null);
-  const [blockedRecordId, setBlockedRecordId] = useState('');
-  const dirtyCallback = useRef(onDirtyChange);
-
-  const selected =
-    view.documents.find((document) => document.id === selectedId) ??
-    view.documents[0];
-  const hasUnsavedEdits = Boolean(
-    selected &&
-    draftDocumentId === selected.id &&
-    (title !== selected.title || body !== selected.body),
-  );
-  const hasNewDocumentDraft = createTitle.length > 0 || createBody.length > 0;
-  const isDirty = hasUnsavedEdits || hasNewDocumentDraft;
-  const confirmDiscard = () =>
-    !hasUnsavedEdits ||
-    typeof window === 'undefined' ||
-    window.confirm('Discard unsaved document edits?');
-
-  useEffect(() => {
-    dirtyCallback.current = onDirtyChange;
-  }, [onDirtyChange]);
-
-  useEffect(() => {
-    dirtyCallback.current?.(isDirty);
-    return () => dirtyCallback.current?.(false);
-  }, [isDirty]);
-
-  useEffect(() => {
-    if (!isDirty) return;
-    const preventUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      event.returnValue = '';
-    };
-    window.addEventListener('beforeunload', preventUnload);
-    return () => window.removeEventListener('beforeunload', preventUnload);
-  }, [isDirty]);
-
-  useEffect(() => {
-    const requested = recordId
-      ? view.documents.find((document) => document.id === recordId)
-      : undefined;
-    const next =
-      requested?.id ??
-      view.documents.find((document) => document.id === selectedId)?.id ??
-      view.documents[0]?.id ??
-      '';
-    if (blockedRecordId && blockedRecordId !== recordId) setBlockedRecordId('');
-    if (next === selectedId || blockedRecordId === next) return;
-    if (!confirmDiscard()) {
-      setBlockedRecordId(next);
-      return;
-    }
-    setBlockedRecordId('');
-    setSelectedId(next);
-  }, [blockedRecordId, hasUnsavedEdits, recordId, selectedId, view.documents]);
-
-  useEffect(() => {
-    if (selected && selected.id !== draftDocumentId) {
-      setDraftDocumentId(selected.id);
-      setTitle(selected.title);
-      setBody(selected.body);
-    }
-  }, [draftDocumentId, selected]);
-
-  const selectDocument = (document: WorkspaceDocument) => {
-    if (document.id !== selected?.id && !confirmDiscard()) return;
-    setBlockedRecordId('');
-    setSelectedId(document.id);
-    setDraftDocumentId(document.id);
-    setTitle(document.title);
-    setBody(document.body);
-    setMessage(null);
-    navigate('documents', document.id);
-  };
-
-  const createDocument = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!createTitle.trim()) {
-      setMessage({ kind: 'error', text: 'A document title is required.' });
-      return;
-    }
-    const selectCreated = confirmDiscard();
-    const result = await execute({
-      operation: 'workspace.create-document',
-      input: { title: createTitle.trim(), body: createBody },
-    });
-    if (!result.ok) {
-      setMessage({ kind: 'error', text: result.error.message });
-      return;
-    }
-    setView(result.value);
-    const created =
-      result.value.documents.find(
-        (document) =>
-          !view.documents.some((previous) => previous.id === document.id),
-      ) ?? result.value.documents[result.value.documents.length - 1];
-    if (created && selectCreated) {
-      setBlockedRecordId('');
-      setSelectedId(created.id);
-      setDraftDocumentId(created.id);
-      setTitle(created.title);
-      setBody(created.body);
-      navigate('documents', created.id);
-    }
-    setCreateTitle('');
-    setCreateBody('');
-    setMessage({
-      kind: 'success',
-      text: selectCreated
-        ? 'Document created.'
-        : 'Document created; current draft kept.',
-    });
-  };
-
-  const saveDocument = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!selected) return;
-    if (!title.trim()) {
-      setMessage({ kind: 'error', text: 'A document title is required.' });
-      return;
-    }
-    const result = await execute({
-      operation: 'workspace.save-document',
-      input: {
-        id: selected.id,
-        title: title.trim(),
-        body,
-        revision: selected.revision,
-      },
-    });
-    if (!result.ok) {
-      setMessage({ kind: 'error', text: result.error.message });
-      return;
-    }
-    setView(result.value);
-    setMessage({
-      kind: 'success',
-      text: `Saved revision ${result.value.documents.find((document) => document.id === selected.id)?.revision ?? selected.revision}.`,
-    });
-  };
-
-  const restoreRevision = async (sourceRevision: number) => {
-    if (!selected) return;
-    if (!confirmDiscard()) return;
-    const result = await execute({
-      operation: 'workspace.restore-document',
-      input: { id: selected.id, sourceRevision, revision: selected.revision },
-    });
-    if (!result.ok) {
-      setMessage({ kind: 'error', text: result.error.message });
-      return;
-    }
-    const restored = result.value.documents.find(
-      (document) => document.id === selected.id,
-    );
-    setView(result.value);
-    if (restored) {
-      setTitle(restored.title);
-      setBody(restored.body);
-      setDraftDocumentId(restored.id);
-    }
-    setMessage({
-      kind: 'success',
-      text: `Restored revision ${sourceRevision} as the current working revision.`,
-    });
-  };
-
-  return (
-    <section
-      className="ws-studio ws-studio-page"
-      aria-labelledby="documents-heading"
-    >
-      <PageHeader
-        title="Documents"
-        headingId="documents-heading"
-        count={view.documents.length}
-      />
-      <Feedback message={message} />
-      <div className="ws-studio-documents-layout">
-        <div>
-          <DocumentList
-            documents={view.documents}
-            selectedId={selected?.id ?? ''}
-            search={search}
-            onSearch={setSearch}
-            onSelect={selectDocument}
-          />
-          <details className="ws-studio-disclosure">
-            <summary>New document</summary>
-            <form
-              className="ws-studio-panel ws-studio-create-form"
-              onSubmit={createDocument}
-            >
-              <label className="ws-studio-field">
-                <span>Title</span>
-                <input
-                  required
-                  value={createTitle}
-                  onChange={(event) => setCreateTitle(event.target.value)}
-                />
-              </label>
-              <label className="ws-studio-field">
-                <span>Markdown</span>
-                <textarea
-                  value={createBody}
-                  onChange={(event) => setCreateBody(event.target.value)}
-                  rows={4}
-                />
-              </label>
-              <button
-                type="submit"
-                className="ws-studio-button is-primary"
-                disabled={busy}
-              >
-                {busy ? 'Creating…' : 'Create document'}
-              </button>
-            </form>
-          </details>
-        </div>
-        <div className="ws-studio-document-workspace">
-          {selected ? (
-            <>
-              <form
-                className="ws-studio-panel ws-studio-editor"
-                onSubmit={saveDocument}
-              >
-                <div className="ws-studio-panel-heading">
-                  <h2>{selected.title}</h2>
-                  <span className="ws-studio-metadata">
-                    Revision {selected.revision}
-                  </span>
-                </div>
-                <label className="ws-studio-field">
-                  <span>Title</span>
-                  <input
-                    required
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
-                  />
-                </label>
-                <label className="ws-studio-field">
-                  <span>Markdown</span>
-                  <textarea
-                    value={body}
-                    onChange={(event) => setBody(event.target.value)}
-                    rows={16}
-                  />
-                </label>
-                <div className="ws-studio-form-actions">
-                  <button
-                    type="submit"
-                    className="ws-studio-button is-primary"
-                    disabled={busy}
-                  >
-                    {busy ? 'Saving…' : 'Save revision'}
-                  </button>
-                </div>
-              </form>
-              <details className="ws-studio-panel ws-studio-history">
-                <summary>
-                  Revision history{' '}
-                  <span className="ws-studio-metadata">
-                    {selected.revisions.length}
-                  </span>
-                </summary>
-                {selected.revisions.length === 0 ? (
-                  <p className="ws-studio-empty">No saved revisions.</p>
-                ) : (
-                  <ol className="ws-studio-history-list">
-                    {[...selected.revisions]
-                      .sort((a, b) => b.revision - a.revision)
-                      .map((revision) => (
-                        <li key={revision.revision}>
-                          <div>
-                            <strong>Revision {revision.revision}</strong>
-                            <span>
-                              {dateLabel(revision.savedAt)} ·{' '}
-                              {revision.title || 'Untitled document'}
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            className="ws-studio-button is-secondary"
-                            disabled={
-                              busy || revision.revision === selected.revision
-                            }
-                            onClick={() => restoreRevision(revision.revision)}
-                          >
-                            {revision.revision === selected.revision
-                              ? 'Current'
-                              : 'Restore'}
-                          </button>
-                        </li>
-                      ))}
-                  </ol>
-                )}
-              </details>
-            </>
-          ) : (
-            <div className="ws-studio-panel ws-studio-empty-state">
-              <h2>No document selected</h2>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
-  );
 }
 
 export function TasksPage({
@@ -709,7 +307,7 @@ export function ExperimentsPage({ state, execute, busy }: WorkspacePageProps) {
       <details className="ws-studio-disclosure">
         <summary>New experiment</summary>
         <form
-          className="ws-studio-panel ws-studio-create-form ws-studio-experiment-create"
+          className="ws-studio-panel ws-studio-create-form"
           onSubmit={createExperiment}
         >
           <div className="ws-studio-form-grid">

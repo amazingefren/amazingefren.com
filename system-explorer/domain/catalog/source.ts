@@ -25,8 +25,8 @@ function project(system: (typeof systems)[number]): CatalogEntry {
     status: system.status,
     implementationVisibility: system.visibility,
     capabilities: [...system.capabilities],
-    dependencies: [...system.dependencies],
-    contracts: [...system.contracts],
+    dependencies: [...(system.dependencies ?? [])],
+    contracts: [...(system.contracts ?? [])],
     operations: system.operations
       .filter((operation) => operation.access.kind === 'public')
       .map((operation) => ({

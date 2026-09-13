@@ -75,7 +75,7 @@ export function contrast(foreground: string, background: string): number {
 
 export async function checkDesign(
   root: URL,
-  systems: readonly { id: string; dependencies: readonly string[] }[],
+  systems: readonly { id: string; dependencies?: readonly string[] }[],
 ) {
   assert.equal(
     await readFile(new URL(design.foundations.stylesheet, root), 'utf8'),
@@ -141,7 +141,7 @@ export async function checkDesign(
     assert(
       systems
         .find((system) => system.id === consumer)
-        ?.dependencies.includes('design'),
+        ?.dependencies?.includes('design'),
       `Missing design dependency: ${consumer}`,
     );
   const exceptions = new Set<string>(

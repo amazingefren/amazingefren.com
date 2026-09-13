@@ -21,6 +21,41 @@ function rejectMutation(mutation, message) {
   assert.match(result.stderr, message);
 }
 
+test('removed context and question fields cannot return', () => {
+  rejectMutation(
+    `systems[0].context = { decisions: [], openQuestions: [] };`,
+    /Removed manifest field: work.context/,
+  );
+  rejectMutation(
+    `systems[0].openQuestions = ['Pending work'];`,
+    /Removed manifest field: work.openQuestions/,
+  );
+});
+
+test('keyboard declarations require implemented shortcuts', () => {
+  rejectMutation(
+    `systems[0].keyboard = {
+      directory: 'work/ui', testsDirectory: 'work/tests',
+      implementation: null, tests: [], status: 'declared',
+    };`,
+    /Declare keyboard profiles only for implemented shortcuts/,
+  );
+});
+
+test('constant binding scope cannot return', () => {
+  rejectMutation(
+    `bindings[0].scope = 'required';`,
+    /Removed binding field: .*\.scope/,
+  );
+});
+
+test('implemented operations require references for each obligation', () => {
+  rejectMutation(
+    `systems.find(system => system.id === 'api').operations[0].verification[0].tests = [];`,
+    /Operation tests missing: api\.openapi\.public-only/,
+  );
+});
+
 test('HTTP collisions across systems include equivalent parameter names', () => {
   rejectMutation(
     `

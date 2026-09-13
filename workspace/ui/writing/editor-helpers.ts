@@ -1,6 +1,12 @@
 export const countWords = (value: string) =>
   value.trim() ? value.trim().split(/\s+/).length : 0;
-export const manuscriptOutline = (value: string) =>
+export type ManuscriptOutlineItem = {
+  line: number;
+  depth: number;
+  title: string;
+};
+
+export const manuscriptOutline = (value: string): ManuscriptOutlineItem[] =>
   value
     .split('\n')
     .map((text, line) => ({ text, line }))
@@ -10,18 +16,11 @@ export const manuscriptOutline = (value: string) =>
       depth: item.text.match(/^#+/)![0].length,
       title: item.text.replace(/^#+\s+/, ''),
     }));
-export function markdownInsertion(
-  command:
-    | 'bold'
-    | 'italic'
-    | 'heading'
-    | 'link'
-    | 'code'
-    | 'list'
-    | 'quote'
-    | 'table',
-  selected: string,
-) {
+
+export type MarkdownCommand =
+  'bold' | 'italic' | 'heading' | 'link' | 'code' | 'list' | 'quote' | 'table';
+
+export function markdownInsertion(command: MarkdownCommand, selected: string) {
   const text =
     selected ||
     (command === 'heading'

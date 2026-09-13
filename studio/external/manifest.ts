@@ -17,7 +17,6 @@ const draft = (
     {
       id: `${id}.http`,
       surface: { kind: 'http', method, path },
-      scope: 'required',
       status: 'implemented',
       directory: 'studio/external',
       testsDirectory: 'studio/tests/external',
@@ -32,7 +31,6 @@ const draft = (
         description: `Invoke ${id} through an authorized draft port.`,
         readOnly,
       },
-      scope: 'required',
       status: 'implemented',
       directory: 'studio/external',
       testsDirectory: 'studio/tests/external',
@@ -46,7 +44,6 @@ const draft = (
         command: `ae ${id.replaceAll('.', ' ')}`,
         output: 'json',
       },
-      scope: 'required',
       status: 'implemented',
       directory: 'studio/external',
       testsDirectory: 'studio/tests/external',
@@ -84,7 +81,6 @@ const clients = (id: string, method: 'GET' | 'POST' | 'DELETE'): Operation => ({
     {
       id: `${id}.http`,
       surface: { kind: 'http', method, path: '/api/v1/studio/clients' },
-      scope: 'required',
       status: 'implemented',
       directory: 'studio/external',
       testsDirectory: 'studio/tests/external',
